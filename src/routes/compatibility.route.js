@@ -26,18 +26,18 @@ export default function (app) {
       const kvKey1 = `result:${pageId}:${resultId1}`;
       const kvKey2 = `result:${pageId}:${resultId2}`;
 
-      const [dataString1, dataString2] = await Promise.all([
-        context.env.KV.get(kvKey1),
-        context.env.KV.get(kvKey2),
+      const [result1String, result2String] = await Promise.all([
+        context.env.CUSTOMER_ASSESSMENT_ANALYTICS.get(kvKey1),
+        context.env.CUSTOMER_ASSESSMENT_ANALYTICS.get(kvKey2),
       ]);
 
-      if (!dataString1 || !dataString2) {
-        console.error('One or both result data not found in KV.', { key1Exists: !!dataString1, key2Exists: !!dataString2 });
+      if (!result1String || !result2String) {
+        console.error('One or both result data not found in KV.', { key1Exists: !!result1String, key2Exists: !!result2String });
         return context.json({ error: '指定された分析データが見つかりません。' }, 404);
       }
 
-      const data1 = JSON.parse(dataString1);
-      const data2 = JSON.parse(dataString2);
+      const data1 = JSON.parse(result1String);
+      const data2 = JSON.parse(result2String);
 
       // --- OpenAI Service で相性診断実行 ---
       console.log('Calling OpenAI service for compatibility analysis...');
@@ -72,7 +72,7 @@ export default function (app) {
         createdAt: new Date().toISOString(),
       };
 
-      await context.env.KV.put(compatibilityKvKey, JSON.stringify(dataToStore));
+      await context.env.CUSTOMER_ASSESSMENT_ANALYTICS.put(compatibilityKvKey, JSON.stringify(dataToStore));
       console.log(`Compatibility result saved to KV with key: ${compatibilityKvKey}`);
 
       // --- 成功レスポンス ---
@@ -128,8 +128,8 @@ export default function (app) {
 
       // KVからキーを削除 (一件ずつ実行)
       const deletePromises = keysToDelete.map(key => {
-        console.log(`Deleting KV key: ${key}`);
-        return context.env.KV.delete(key);
+        console.log(`Deleting key: ${key}`);
+        return context.env.CUSTOMER_ASSESSMENT_ANALYTICS.delete(key);
       });
 
       await Promise.all(deletePromises);

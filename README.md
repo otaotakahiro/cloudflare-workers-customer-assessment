@@ -163,3 +163,4 @@ public/
 
 **開発者**: otaotakahiro
 **作成日**: 2024年6月10日
+**自動デプロイ**: ✅ GitHub ⟷ Cloudflare Workers 連携完了

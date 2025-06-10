@@ -113,7 +113,7 @@ export default function (app) {
 
       // ★★★ 新規追加: registrationNumber の採番 ★★★
       // 現在の会社IDに紐づく結果の数を取得して +1 する (簡易的なシーケンス)
-      const listResult = await context.env.KV.list({ prefix: `result:${pageId}:` });
+      const listResult = await context.env.CUSTOMER_ASSESSMENT_ANALYTICS.list({ prefix: `result:${pageId}:` });
       const registrationNumber = listResult.keys.length + 1;
       console.log(`Generated registration number: ${registrationNumber}`);
       // ★★★ ここまで追加 ★★★
@@ -137,7 +137,7 @@ export default function (app) {
 
       // 3. 新しい形式のキーでKVに保存
       const kvKey = `result:${pageId}:${resultId}`;
-      await context.env.KV.put(kvKey, JSON.stringify(dataToStore));
+      await context.env.CUSTOMER_ASSESSMENT_ANALYTICS.put(kvKey, JSON.stringify(dataToStore));
       console.log(`Result saved to KV with key: ${kvKey}`);
 
       // ★ レスポンスとして resultId を返す (以前は id という名前だった)
@@ -180,7 +180,7 @@ export default function (app) {
           // KVからキーを削除 (一件ずつ実行)
           const deletePromises = keysToDelete.map(key => {
               console.log(`Deleting key: ${key}`);
-              return context.env.KV.delete(key);
+              return context.env.CUSTOMER_ASSESSMENT_ANALYTICS.delete(key);
           });
 
           await Promise.all(deletePromises);
@@ -205,7 +205,7 @@ export default function (app) {
     // 将来的に `/c/:pageId/results/:resultId` のような形にするか、
     // クエリパラメータで pageId を渡すなどの修正が必要。
     // 今回はPOST側の修正のみ。
-    const result = await context.env.KV.get(id); // ← これは UUID だけでは動かなくなる可能性が高い
+    const result = await context.env.CUSTOMER_ASSESSMENT_ANALYTICS.get(id); // ← これは UUID だけでは動かなくなる可能性が高い
 
     if (!result) {
       return context.json({ error: 'Result not found' }, 404);

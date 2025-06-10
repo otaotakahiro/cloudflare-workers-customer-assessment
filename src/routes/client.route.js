@@ -18,7 +18,7 @@ const clientRoute = (app) => {
 
     try {
       // 1. KVから会社情報を取得
-      const companyInfoString = await c.env.COMPANY_KV.get(kvKey);
+      const companyInfoString = await c.env.CUSTOMER_ASSESSMENT_COMPANY.get(kvKey);
       if (!companyInfoString) {
         console.log(`Company data not found for ID: ${pageId}`);
         return c.notFound();
@@ -26,60 +26,52 @@ const clientRoute = (app) => {
       /** @type {CompanyData} */
       const companyInfo = JSON.parse(companyInfoString);
 
-      // 2. この会社に関連する分析結果のキーリストを取得
-      const listResult = await c.env.KV.list({ prefix: `result:${pageId}:` });
-      const resultKeys = listResult.keys;
+      // 2. KVから既存の分析結果一覧を取得
+      const listResult = await c.env.CUSTOMER_ASSESSMENT_ANALYTICS.list({ prefix: `result:${pageId}:` });
+      const results = [];
 
-      // ★★★ 追加: 分析結果データと相性診断結果データを取得 ★★★
-      let analysisResultsForJs = []; // JSでプルダウン等に使用するリスト
-      let compatibilityResults = []; // JSで一覧表示に使用するリスト
-      const fetchPromises = [];
-
-      // 分析結果 (`result:*`) の取得プロミスを追加
-      resultKeys.forEach(key => {
-        fetchPromises.push(
-          c.env.KV.get(key.name).then(resString => {
-            if (!resString) return null;
+      // 各結果データを非同期で取得
+      const resultPromises = listResult.keys.map(key =>
+        c.env.CUSTOMER_ASSESSMENT_ANALYTICS.get(key.name).then(resString => {
+          if (resString) {
             try {
-              const data = JSON.parse(resString);
-              // JS用に名前とIDのリストを作成
-              analysisResultsForJs.push({
-                resultId: data.resultId,
-                name: `${data.inputs?.familyName || ''} ${data.inputs?.firstName || ''}`.trim(),
-                registrationNumber: data.registrationNumber ?? null,
-              });
-              return data; // テーブル表示用のデータも返す
+              const resData = JSON.parse(resString);
+              return resData;
             } catch (e) {
               console.error(`Failed to parse result data for key ${key.name}:`, e);
               return null;
             }
-          })
-        );
-      });
+          }
+          return null;
+        })
+      );
 
-      // 相性診断結果 (`compatibility:*`) の取得プロミスを追加
-      const listCompatibilityResult = await c.env.KV.list({ prefix: `compatibility:${pageId}:` });
-      listCompatibilityResult.keys.forEach(key => {
-        fetchPromises.push(
-          c.env.KV.get(key.name).then(resString => {
-            if (!resString) return null;
+      const resolvedResults = await Promise.all(resultPromises);
+      results.push(...resolvedResults.filter(result => result !== null));
+
+      // 3. KVから既存の相性診断結果一覧を取得
+      const listCompatibilityResult = await c.env.CUSTOMER_ASSESSMENT_ANALYTICS.list({ prefix: `compatibility:${pageId}:` });
+      const compatibilityResults = [];
+      const compatibilityPromises = listCompatibilityResult.keys.map(key =>
+        c.env.CUSTOMER_ASSESSMENT_ANALYTICS.get(key.name).then(resString => {
+          if (resString) {
             try {
               compatibilityResults.push(JSON.parse(resString));
-              return null; // こちらは analysisResultsForJs には追加しない
+              return null;
             } catch (e) {
               console.error(`Failed to parse compatibility data for key ${key.name}:`, e);
               return null;
             }
-          })
-        );
-      });
+          }
+          return null;
+        })
+      );
 
-      // 全てのデータ取得を並列実行
-      const allFetchedData = (await Promise.all(fetchPromises)).filter(data => data !== null);
-      // allFetchedData には 分析結果のデータのみが含まれる (相性診断結果は compatibilityResults に直接 push されるため)
+      const resolvedCompatibilityResults = await Promise.all(compatibilityPromises);
+      compatibilityResults.push(...resolvedCompatibilityResults.filter(result => result !== null));
 
       // 分析結果一覧テーブル用のデータ準備 (resultsData)
-      let resultsData = allFetchedData; // 分析結果のみ
+      let resultsData = results; // 分析結果のみ
       resultsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
       // JS用の分析結果リストを名前でソート
@@ -184,7 +176,7 @@ const clientRoute = (app) => {
 
     try {
       console.log(`Fetching result from KV with key: ${kvKey}`);
-      const resultString = await c.env.KV.get(kvKey);
+      const resultString = await c.env.CUSTOMER_ASSESSMENT_ANALYTICS.get(kvKey);
 
       if (!resultString) {
         console.log('Result not found in KV');
@@ -232,7 +224,7 @@ const clientRoute = (app) => {
 
     try {
       console.log(`Fetching compatibility result from KV with key: ${kvKey}`);
-      const compatibilityString = await c.env.KV.get(kvKey);
+      const compatibilityString = await c.env.CUSTOMER_ASSESSMENT_ANALYTICS.get(kvKey);
 
       if (!compatibilityString) {
         console.log('Compatibility result not found in KV');

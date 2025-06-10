@@ -199,11 +199,11 @@ const adminRoute = (app) => {
   app.get('/companies', adminAuthMiddleware, async (c) => {
     try {
       // KVから全ての会社情報を取得
-      const { keys } = await c.env.COMPANY_KV.list({ prefix: 'company:' });
+      const { keys } = await c.env.CUSTOMER_ASSESSMENT_COMPANY.list({ prefix: 'company:' });
       const companies = [];
 
       for (const key of keys) {
-        const companyData = await c.env.COMPANY_KV.get(key.name);
+        const companyData = await c.env.CUSTOMER_ASSESSMENT_COMPANY.get(key.name);
         if (companyData) {
           companies.push(JSON.parse(companyData));
         }
@@ -302,7 +302,7 @@ const adminRoute = (app) => {
       }
 
       // 既存の会社IDチェック
-      const existingCompany = await c.env.COMPANY_KV.get(`company:${body.pageId}`);
+      const existingCompany = await c.env.CUSTOMER_ASSESSMENT_COMPANY.get(`company:${body.pageId}`);
       if (existingCompany) {
         return c.json({ error: 'この会社IDは既に使用されています。別のIDを入力してください。' }, 400);
       }
@@ -331,7 +331,7 @@ const adminRoute = (app) => {
         createdAt: new Date().toISOString(),
       };
 
-      await c.env.COMPANY_KV.put(kvKey, JSON.stringify(companyDataToStore));
+      await c.env.CUSTOMER_ASSESSMENT_COMPANY.put(kvKey, JSON.stringify(companyDataToStore));
 
       return c.json({
         message: `会社「${body.companyName}」(ID: ${body.pageId}) を登録しました。`,

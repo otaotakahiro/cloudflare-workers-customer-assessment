@@ -230,9 +230,128 @@ alwaysApply: true
 ### データ管理
 
 #### Cloudflare KV ストレージ
-- **会社情報**: `company:{companyId}` - 登録クリニック情報
-- **分析結果**: `result:{companyId}:{resultId}` - 顧客分析データ
-- **相性診断**: `compatibility:{companyId}:{resultId}` - 相性分析データ
+- **会社情報**: `costomer-assessment-company` - 登録クリニック情報
+  - ID: 63080eb827e448998d19a017940091e6
+  - データ構造: `company:{companyId}`
+- **個人分析情報**: `costomer-assessment-analytics` - 顧客分析データ
+  - ID: 675a145ad7c94266bd35bb9f75aea5e8
+  - データ構造: `result:{companyId}:{resultId}` - 顧客分析データ
+  - 拡張データ構造: `communication:{companyId}:{resultId}` - コミュニケーション実行状況
+  - 履歴データ構造: `history:{companyId}:{resultId}` - 対応履歴データ
+
+#### 新機能データ構造
+
+##### コミュニケーション実行管理
+```javascript
+{
+  resultId: "分析結果ID",
+  companyId: "会社ID",
+  communicationPlan: {
+    tenSecondScript: {
+      content: "来店時10秒スクリプト内容",
+      executed: true/false,
+      executedAt: "実行日時",
+      executedBy: "実行者名",
+      notes: "実行メモ"
+    },
+    closingScript: {
+      content: "クロージングスクリプト内容",
+      executed: true/false,
+      executedAt: "実行日時",
+      executedBy: "実行者名",
+      result: "成功/失敗/保留",
+      notes: "結果メモ"
+    },
+    followUpActions: [
+      {
+        type: "LINE/メール/電話",
+        content: "フォロー内容",
+        scheduledAt: "予定日時",
+        executed: true/false,
+        executedAt: "実行日時",
+        response: "顧客反応"
+      }
+    ]
+  },
+  overallProgress: {
+    totalItems: 5,
+    completedItems: 3,
+    completionRate: 60,
+    lastUpdated: "最終更新日時"
+  }
+}
+```
+
+##### 対応履歴管理
+```javascript
+{
+  historyId: "履歴ID",
+  resultId: "分析結果ID",
+  companyId: "会社ID",
+  customerName: "顧客名",
+  contactHistory: [
+    {
+      contactId: "対応ID",
+      contactType: "来店/電話/メール/LINE/SMS",
+      contactDate: "対応日時",
+      staffMember: "担当者名",
+      purpose: "来店目的/連絡目的",
+      content: "対応内容詳細",
+      customerResponse: "顧客反応",
+      nextAction: "次回アクション項目",
+      nextActionDate: "次回アクション予定日",
+      businessResult: {
+        serviceProvided: "提供サービス",
+        revenue: "売上金額",
+        nextBooking: "次回予約取得",
+        upsellSuccess: "アップセル成功"
+      },
+      satisfactionScore: 1-5,
+      notes: "その他メモ"
+    }
+  ],
+  summary: {
+    totalContacts: "総対応回数",
+    lastContactDate: "最終対応日",
+    totalRevenue: "累計売上",
+    averageSatisfaction: "平均満足度",
+    retentionStatus: "継続状況",
+    nextScheduledAction: "次回予定アクション"
+  }
+}
+```
+
+##### CSV出力データ構造
+```javascript
+{
+  exportId: "出力ID",
+  companyId: "会社ID",
+  exportType: "analytics/communications/history",
+  filters: {
+    dateRange: {
+      start: "開始日",
+      end: "終了日"
+    },
+    customerIds: ["顧客ID配列"],
+    staffMembers: ["担当者配列"],
+    serviceTypes: ["サービス種別配列"]
+  },
+  columns: [
+    // 基本情報
+    "顧客ID", "顧客名", "分析日", "担当者",
+    // 5つの核心指標
+    "継続志向度スコア", "継続志向度タイプ", "新規刺激欲求スコア", "新規刺激欲求タイプ",
+    "価格価値観感度スコア", "価格価値観感度タイプ", "決断スピードスコア", "決断スピードタイプ",
+    "コミュニケーションスタイルスコア", "コミュニケーションスタイルタイプ",
+    // 実行状況
+    "10秒スクリプト実行", "クロージング実行", "フォローアップ実行", "実行完了率",
+    // 対応履歴
+    "総対応回数", "最終対応日", "累計売上", "平均満足度", "継続状況"
+  ],
+  generatedAt: "生成日時",
+  downloadUrl: "ダウンロードURL（期限付き）"
+}
+```
 
 #### 管理機能
 - **/admin** - 会社登録・管理画面（Basic認証）
