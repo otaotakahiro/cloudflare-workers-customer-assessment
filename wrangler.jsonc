@@ -5,7 +5,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "cloudflare-workers-costomer−assessment",
-  // account_id: Cloudflare Dashboard で確認して設定してください
+  "account_id": "f936ae74ccb3e57720edbdd06d1f0f13",
   // "account_id": "your_account_id_here",
   "main": "./src/index.js",
   "compatibility_date": "2025-04-04",
