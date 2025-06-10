@@ -85,7 +85,7 @@ const adminRoute = (app) => {
                   </div>
                 </div>
                 <div class="mb-4">
-                  <label for="companyName">会社名ほげほげ</label>
+                  <label for="companyName">会社名</label>
                   <input type="text" id="companyName" name="companyName" required>
                 </div>
                 <div class="mb-4">
