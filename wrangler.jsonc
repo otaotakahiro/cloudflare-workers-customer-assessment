@@ -4,7 +4,7 @@
  */
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "beauty-clinic-customer-analysis",
+  "name": "cloudflare-workers-costomer−assessment",
   // account_id: Cloudflare Dashboard で確認して設定してください
   // "account_id": "your_account_id_here",
   "main": "./src/index.js",
@@ -22,16 +22,14 @@
   },
   "kv_namespaces": [
     {
-      "binding": "KV",
-      // 新しいKV Namespaceを作成して設定してください
-      "id": "your_kv_namespace_id_here",
-      "preview_id": "your_kv_namespace_id_here"
+      "binding": "costomer−assessment-company",
+      "id": "63080eb827e448998d19a017940091e6",
+      "preview_id": "63080eb827e448998d19a017940091e6"
     },
     {
-      "binding": "COMPANY_KV",
-      // 新しいKV Namespaceを作成して設定してください
-      "id": "your_company_kv_namespace_id_here",
-      "preview_id": "your_company_kv_namespace_id_here"
+      "binding": "costomer−assessment-analytics",
+      "id": "675a145ad7c94266bd35bb9f75aea5e8",
+      "preview_id": "675a145ad7c94266bd35bb9f75aea5e8"
     }
   ]
 }
