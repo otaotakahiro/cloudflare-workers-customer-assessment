@@ -1,0 +1,37 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "beauty-clinic-customer-analysis",
+  // account_id: Cloudflare Dashboard で確認して設定してください
+  // "account_id": "your_account_id_here",
+  "main": "./src/index.js",
+  "compatibility_date": "2025-04-04",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./public"
+  },
+  "observability": {
+    "enabled": false
+  },
+  "vars": {
+    "OPENAI_MODEL": "gpt-4o-mini"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      // 新しいKV Namespaceを作成して設定してください
+      "id": "your_kv_namespace_id_here",
+      "preview_id": "your_kv_namespace_id_here"
+    },
+    {
+      "binding": "COMPANY_KV",
+      // 新しいKV Namespaceを作成して設定してください
+      "id": "your_company_kv_namespace_id_here",
+      "preview_id": "your_company_kv_namespace_id_here"
+    }
+  ]
+}

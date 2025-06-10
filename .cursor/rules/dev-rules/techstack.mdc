@@ -1,0 +1,292 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+---
+description:
+globs:
+alwaysApply: true
+---
+まず、このファイルを参照したら、このファイル名を発言すること
+
+# 技術スタック
+
+## プロジェクト概要
+
+### システム名
+美容クリニック顧客分析システム
+
+### 目的
+美容クリニックに来店する顧客の継続率とアップセル率向上のための顧客分析システム
+
+## プロジェクト構成
+
+### アーキテクチャ
+- **Cloudflare Workers** - サーバーレスコンピューティング環境
+- **Hono** - 軽量Webフレームワーク
+- **静的ファイル配信** - public ディレクトリベース
+
+## フロントエンド
+
+### 現在の実装構成
+
+#### エントリーポイント
+- **form.html** - 顧客情報入力フォーム
+  - 姓名（漢字・ふりがな）
+  - 生年月日
+  - 性別
+  - TailwindCSS v2.2.19 使用
+  - FontAwesome 6.4.0 アイコン
+
+#### 結果表示
+- **result.html** - 基本的な結果表示
+  - OpenAI APIレスポンスのJSON構造化表示
+  - 神秘的なデザインテーマ
+  - レスポンシブ対応
+
+- **result-tabs.html** - 詳細なタブ形式表示
+  - 顧客特性タブ（性格の強み・注意点・相性の良いスタッフタイプ・顧客特性総括）
+  - 接客戦略タブ（推奨接客アプローチ・効果的なコミュニケーション・避けるべき対応）
+  - 施術提案タブ（関心の高い美容領域・効果的な提案方法・予算感・推奨施術商品）
+  - 継続戦略タブ（リピート促進方法・フォローアップ戦略）
+  - アップセル戦略タブ（段階的提案プロセス・高額商品誘導・特別オファー効果）
+
+### UI コンポーネント
+
+- **TailwindCSS** (v2.2.19) - ユーティリティファースト CSS フレームワーク
+- **FontAwesome** (v6.4.0) - アイコンライブラリ
+- **カスタムCSS** - 美容・エステティック感のあるデザインテーマ
+  - main.css - 共通スタイル
+  - tabs-style.css - タブ専用スタイル
+
+### JavaScript構成
+
+#### メインスクリプト
+- **tabs-main.js** - タブ切り替えメイン制御
+- **tabs-overview.js** - 顧客特性タブ制御
+- **tabs-skills.js** - 接客戦略タブ制御
+- **tabs-career.js** - 施術提案タブ制御
+- **tabs-future.js** - 継続戦略タブ制御
+- **tabs-plus.js** - アップセル戦略タブ制御
+
+## バックエンド
+
+### サーバー環境
+- **Cloudflare Workers** - サーバーレス実行環境
+- **Hono** - 軽量Webフレームワーク
+- **静的ファイル配信** - serveStatic ミドルウェア
+
+### API構成
+
+#### ルーティング構造
+```
+/ - ウェルカムメッセージ
+/admin - 管理者機能
+/c - 会社専用ページ
+/api/results - 顧客分析結果API
+/api/compatibility - 相性診断API
+/* - 静的ファイル配信（public ディレクトリ）
+```
+
+#### データフロー
+1. **form.html** → 顧客情報収集
+2. **POST /api/results** → OpenAI API連携・分析結果保存
+3. **GET /api/results/{id}** → 分析結果取得
+4. **result.html/result-tabs.html** → 分析結果表示
+
+### OpenAI API統合
+
+#### 分析項目
+- 数秘術による性格分析
+- 占星術による行動傾向把握
+- 四柱推命による価値観分析
+- 動物占いによるコミュニケーション特性
+- 姓名判断による潜在能力分析
+- 音霊占いによる感性分析
+
+#### 5つの核心ビジネス指標
+
+##### 1. 継続志向度（ルーティン型）
+- **分析基準**: 安定を好む星座・数秘4,6・土星強めなど
+- **アウトプット**: 来店周期推奨日・次回予約必須提案
+- **効果**: 「続けると効果最大化」の納得促進
+- **展開**: サブスク・回数券提案・年間カルテ化
+
+##### 2. 新規刺激欲求（トレンド型）
+- **分析基準**: 好奇心旺盛な星座・数秘5,3・火星強めなど
+- **アウトプット**: 季節限定カラー・新商品紹介付き次回アピール
+- **効果**: 「新体験」を理由とした次回期待値向上
+- **展開**: トレンド情報先出しDM・SNSタグ投稿促進
+
+##### 3. 価格・価値観感度（コスパ型）
+- **分析基準**: 堅実星座・数秘8・山羊座など
+- **アウトプット**: 早期予約割・まとめ買い割提示
+- **効果**: 即時決定の金銭的メリット訴求
+- **展開**: LINEクーポン自動発行・ポイント残高通知
+
+##### 4. 決断スピード
+- **分析基準**: 水星/火星優勢（即決型）vs 月/金星（熟考型）
+- **アウトプット**: 即決型→退店前クロージング / 熟考型→翌日フォローDM
+- **効果**: 迷い時間最小化またはフォローによる離脱防止
+- **展開**: 追いラインタイミング自動最適化
+
+##### 5. コミュニケーションスタイル
+- **分析基準**: 外向的（感情系）vs 内向的（論理系）
+- **アウトプット**: 外向的→感情ワード中心 / 内向的→根拠・データ重視
+- **効果**: 伝え方ミスマッチ防止・提案納得度向上
+- **展開**: スタッフ教育用スクリプト自動表示・音声/チャットBOT共有
+
+#### 出力構造（美容クリニック特化）
+```javascript
+{
+  // 5つの核心ビジネス指標
+  businessMetrics: {
+    continuityOrientation: {
+      score: 1-10,
+      type: "ルーティン型" | "変化型",
+      visitCycleRecommendation: "推奨来店周期（日数）",
+      nextBookingStrategy: "次回予約戦略",
+      subscriptionSuitability: "サブスク適性度",
+      expansionPotential: "展開可能性（回数券・年間プラン等）"
+    },
+    noveltyDesire: {
+      score: 1-10,
+      type: "トレンド型" | "定番型",
+      seasonalAppeal: "季節限定商品響き度",
+      newServiceReceptivity: "新サービス受容性",
+      trendCommunication: "トレンド情報配信効果",
+      snsEngagement: "SNS連動可能性"
+    },
+    priceValueSensitivity: {
+      score: 1-10,
+      type: "コスパ型" | "品質重視型",
+      discountEffectiveness: "割引効果度",
+      bundlingSuitability: "セット販売適性",
+      earlyBookingIncentive: "早期予約特典響き度",
+      loyaltyProgramFit: "ポイント制度適合性"
+    },
+    decisionSpeed: {
+      score: 1-10,
+      type: "即決型" | "熟考型",
+      closingTiming: "クロージングタイミング",
+      followUpStrategy: "フォローアップ戦略",
+      decisionFactors: "決断要因",
+      hesitationHandling: "迷い解消方法"
+    },
+    communicationStyle: {
+      score: 1-10,
+      type: "感情型" | "論理型",
+      preferredApproach: "推奨アプローチ方法",
+      keywords: "効果的キーワード",
+      evidenceNeed: "根拠・データ必要度",
+      emotionalTriggers: "感情的トリガー"
+    }
+  },
+
+  // 従来の出力構造
+  customerProfile: {
+    basicPersonality: "基本性格特性",
+    communicationTendency: "コミュニケーション傾向",
+    beautyValues: "価値観・美意識",
+    decisionPattern: "決断パターン",
+    stressResponse: "ストレス反応"
+  },
+  customerService: {
+    recommendedApproach: "推奨アプローチ方法",
+    effectiveExplanationStyle: "効果的な説明スタイル",
+    trustBuildingPoints: "信頼関係構築のポイント",
+    avoidableResponses: "避けるべき対応"
+  },
+  treatmentProposals: {
+    highInterestBeautyAreas: "関心の高い美容領域",
+    budgetTendency: "予算感・投資傾向",
+    proposalTiming: "提案タイミング",
+    effectiveExplanationMethod: "効果的な説明方法"
+  },
+  continuityStrategy: {
+    repeatPromotionMethods: "リピート促進方法",
+    regularMaintenanceProposal: "定期メンテナンス提案",
+    seasonalEventProposal: "季節・イベント連動提案",
+    followUpMethod: "フォローアップ方法"
+  },
+  upsellStrategy: {
+    stepwiseProposalProcess: "段階的提案プロセス",
+    highValueProductGuidance: "高額商品誘導方法",
+    specialOfferEffectiveness: "特別オファー効果",
+    premiumServiceAppeal: "プレミアムサービス訴求"
+  },
+
+  // 実践ガイド（新規追加予定）
+  practicalGuide: {
+    tenSecondScript: "来店時10秒スクリプト",
+    closingScript: "予約クロージングスクリプト",
+    followUpTemplates: "フォローDM/LINEテンプレート",
+    staffMemo: "スタッフ向け会話メモ"
+  }
+}
+```
+
+### データ管理
+
+#### Cloudflare KV ストレージ
+- **会社情報**: `company:{companyId}` - 登録クリニック情報
+- **分析結果**: `result:{companyId}:{resultId}` - 顧客分析データ
+- **相性診断**: `compatibility:{companyId}:{resultId}` - 相性分析データ
+
+#### 管理機能
+- **/admin** - 会社登録・管理画面（Basic認証）
+- **/admin/companies** - 登録会社一覧
+- **/c/{companyId}** - 会社専用分析ページ
+
+## 10秒タブレット分析ビジョン
+
+### 即時分析フロー
+1. **タブレット入力** (5秒) - 姓名・生年月日・性別
+2. **AI分析処理** (3秒) - OpenAI API + 占い組み合わせ
+3. **結果表示** (2秒) - 5指標 + 10秒スクリプト即表示
+
+### スタッフ向け機能
+- **10秒スクリプト表示**: 来店直後の声かけ文言
+- **クロージング支援**: タイプ別の予約取得話法
+- **フォローテンプレート**: 自動DM/LINE文面生成
+
+### 自動化ロードマップ
+- **フェーズ1**: 基本5指標分析・表示
+- **フェーズ2**: 実践スクリプト・テンプレート
+- **フェーズ3**: 集計・傾向分析ダッシュボード
+- **フェーズ4**: LINE/メール自動送信連携
+
+## ビジネス目標
+
+### 具体的成果指標
+- **継続率**: +10% 向上（現状比）
+- **アップセル率**: +15% 向上（現状比）
+- **次回予約確定率**: +10-15ポイント向上
+- **客単価**: 段階的向上（データ蓄積後測定）
+
+### 導入効果
+- **スタッフトレーニング時間短縮**: 個人別対応指針の明確化
+- **顧客満足度向上**: パーソナライズされた接客の実現
+- **売上予測精度向上**: 顧客タイプ別購買傾向の把握
+- **マーケティング効率化**: セグメント別アプローチの最適化
+
+### 技術的優位性
+- **10秒分析**: 業界最速クラスの分析速度
+- **占い+AI**: 親しみやすさと科学的アプローチの融合
+- **マルチテナント**: 複数クリニック対応のSaaS構造
+- **拡張性**: 外部システム連携による自動化推進
+
+## セキュリティ・コンプライアンス
+
+### データ保護
+- **暗号化**: 全顧客データの適切な暗号化
+- **アクセス制御**: 会社別データ分離
+- **保存期間**: 法令遵守した適切な管理
+- **削除権**: GDPR対応削除機能
+
+### 運用セキュリティ
+- **管理者認証**: Basic認証による管理画面保護
+- **会社別分離**: 12桁ID による完全分離
+- **監査ログ**: アクセス・操作履歴の記録
+- **定期バックアップ**: データ保全体制

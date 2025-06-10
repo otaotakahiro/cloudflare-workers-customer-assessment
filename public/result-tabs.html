@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>美容クリニック顧客分析</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="/styles/main.css" rel="stylesheet" />
+    <link href="/styles/tabs-style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="container mx-auto px-4 py-5 max-w-7xl">
+      <!-- ヘッダー部分 -->
+      <div class="header-section mb-0 text-center sticky top-0 z-50 bg-white shadow-md w-full py-3 flex flex-col items-center">
+        <h1 class="text-lg sm:text-xl font-bold mb-1" id="person-name">総合顧客分析</h1>
+        <div class="profile-info grid grid-cols-2 gap-x-2 gap-y-0 text-xs sm:text-sm leading-tight mb-2">
+          <div class="info-item text-center">氏名: <span id="full-name">-</span></div>
+          <div class="info-item text-center">性別: <span id="gender">-</span></div>
+          <div class="info-item text-center">生年月日: <span id="birth-date">-</span></div>
+          <div class="info-item text-center">分析日: <span id="analysis-date">-</span></div>
+        </div>
+        <div class="inline-flex flex-col sm:flex-row w-full justify-center border-t">
+          <!-- タブボタン (adjusted borders for header context) -->
+          <button id="overview-tab" class="tab-button active py-1.5 px-4 text-center font-medium text-sm border-b-2 border-blue-500 mb-px sm:mb-0 sm:py-2">
+            <i class="fas fa-user mr-1"></i>顧客特性
+          </button>
+          <button id="skills-tab" class="tab-button py-1.5 px-4 text-center font-medium text-sm text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300 mb-px sm:mb-0 sm:py-2">
+            <i class="fas fa-chart-bar mr-1"></i>接客戦略
+          </button>
+          <button id="career-tab" class="tab-button py-1.5 px-4 text-center font-medium text-sm text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300 mb-px sm:mb-0 sm:py-2">
+            <i class="fas fa-briefcase mr-1"></i>施術提案
+          </button>
+          <button id="future-tab" class="tab-button py-1.5 px-4 text-center font-medium text-sm text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300 mb-px sm:mb-0 sm:py-2">
+            <i class="fas fa-road mr-1"></i>継続戦略
+          </button>
+          <button id="plus-tab" class="tab-button py-1.5 px-4 text-center font-medium text-sm text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300 mb-px sm:mb-0 sm:py-2">
+            <i class="fas fa-plus-circle mr-1"></i>アップセル
+          </button>
+        </div>
+      </div>
+
+      <!-- ローディングインジケーター -->
+      <div id="loading-indicator" class="text-center py-10 mt-4">
+        <div class="spinner-border inline-block w-12 h-12 border-4 rounded-full border-blue-500 border-t-transparent animate-spin mb-4"></div>
+        <p class="mt-4 text-gray-600">データを読み込んでいます...</p>
+      </div>
+
+      <!-- エラーメッセージ -->
+      <div id="error-message" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 hidden">
+        <p id="error-text">データの読み込みに失敗しました。</p>
+      </div>
+
+      <!-- タブコンテンツ -->
+      <div class="tab-content-container" style="padding: 0;">
+        <!-- 顧客特性タブの内容 -->
+        <div class="tab-content active" id="overview-content">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- 強みセクション -->
+            <div class="card bg-white rounded-lg p-5 shadow-sm">
+              <h2 class="text-xl font-bold mb-3 flex items-center text-blue-700 bg-blue-50 p-2 rounded-md">
+                <i class="fas fa-star text-yellow-500 mr-2"></i>性格の強み
+              </h2>
+              <ul id="strengths-list" class="list-disc pl-5 space-y-2">
+                <!-- JavaScriptで挿入 -->
+              </ul>
+            </div>
+
+            <!-- 注意点セクション -->
+            <div class="card bg-white rounded-lg p-5 shadow-sm">
+              <h2 class="text-xl font-bold mb-3 flex items-center text-red-700 bg-red-50 p-2 rounded-md">
+                <i class="fas fa-exclamation-circle text-red-500 mr-2"></i>注意点
+              </h2>
+              <ul id="weaknesses-list" class="list-disc pl-5 space-y-2">
+                <!-- JavaScriptで挿入 -->
+              </ul>
+            </div>
+          </div>
+
+          <!-- 相性タイプと人物像を横並びに -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            <!-- 相性の良いスタッフタイプ -->
+            <div id="compatibility-container">
+              <h2 class="text-xl font-bold mb-4 bg-purple-50 p-2 rounded-md inline-block">相性の良いスタッフタイプ</h2>
+              <!-- JavaScriptで挿入 -->
+            </div>
+
+            <!-- 顧客特性総括 -->
+            <div id="personality-container">
+              <h2 class="text-xl font-bold mb-4 bg-green-50 p-2 rounded-md inline-block">顧客特性総括</h2>
+              <!-- JavaScriptで挿入 -->
+            </div>
+          </div>
+
+          <!-- 総合評価 -->
+          <div class="mt-8" id="evaluation-container">
+            <h2 class="text-xl font-bold mb-4 bg-blue-50 p-2 rounded-md inline-block">美容意識・投資傾向</h2>
+            <!-- JavaScriptで挿入 -->
+          </div>
+        </div>
+
+        <!-- 接客戦略タブの内容 -->
+        <div class="tab-content" id="skills-content">
+          <h2 class="text-2xl font-bold mb-6 bg-blue-50 p-2 rounded-md inline-block">接客戦略</h2>
+
+          <!-- 接客アプローチ -->
+          <div class="mb-10">
+            <h3 class="text-xl font-bold mb-4 flex items-center">
+              <i class="fas fa-handshake text-blue-500 mr-2"></i>推奨接客アプローチ
+            </h3>
+            <div id="skills-evaluations-container">
+              <!-- JavaScriptで挿入 -->
+            </div>
+          </div>
+
+          <!-- コミュニケーション方法 -->
+          <div class="mb-10">
+            <h3 class="text-xl font-bold mb-4 flex items-center">
+              <i class="fas fa-comments text-green-500 mr-2"></i>効果的なコミュニケーション
+            </h3>
+            <div id="interview-questions-container">
+              <!-- JavaScriptで挿入 -->
+            </div>
+          </div>
+
+          <!-- 避けるべき対応 -->
+          <div class="mb-10">
+            <h3 class="text-xl font-bold mb-4 flex items-center">
+              <i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>避けるべき対応
+            </h3>
+            <div id="warning-signals-container">
+              <!-- JavaScriptで挿入 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 施術提案タブの内容 -->
+        <div class="tab-content" id="career-content">
+          <h2 class="text-2xl font-bold mb-6 bg-blue-50 p-2 rounded-md inline-block">施術・商品提案</h2>
+
+          <!-- 関心の高い美容領域 -->
+          <div class="mb-10">
+            <h3 class="text-xl font-bold mb-4 flex items-center">
+              <i class="fas fa-heart text-pink-500 mr-2"></i>関心の高い美容領域
+            </h3>
+            <div id="aptitude-scores-container">
+              <!-- JavaScriptで挿入 -->
+            </div>
+          </div>
+
+          <!-- 効果的な提案方法 -->
+          <div class="mb-10">
+            <h3 class="text-xl font-bold mb-4 flex items-center">
+              <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>効果的な提案方法
+            </h3>
+            <div id="business-areas-container">
+              <!-- JavaScriptで挿入 -->
+            </div>
+          </div>
+
+          <!-- 予算感・投資傾向 -->
+          <div class="mb-10">
+            <h3 class="text-xl font-bold mb-4 flex items-center">
+              <i class="fas fa-yen-sign text-green-500 mr-2"></i>予算感・投資傾向
+            </h3>
+            <div id="success-keywords-container">
+              <!-- JavaScriptで挿入 -->
+            </div>
+          </div>
+
+          <!-- 推奨施術・商品 -->
+          <div class="mb-10">
+            <h3 class="text-xl font-bold mb-4 flex items-center">
+              <i class="fas fa-spa text-purple-500 mr-2"></i>推奨施術・商品
+            </h3>
+            <div id="suitable-fields-container">
+              <!-- JavaScriptで挿入 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 継続戦略タブの内容 -->
+        <div class="tab-content" id="future-content">
+          <h2 class="text-2xl font-bold mb-6 bg-blue-50 p-2 rounded-md inline-block">継続・リピート戦略</h2>
+
+          <!-- リピート促進方法 -->
+          <div class="mb-10">
+            <h3 class="text-xl font-bold mb-4 flex items-center">
+              <i class="fas fa-sync text-blue-500 mr-2"></i>リピート促進方法
+            </h3>
+            <div id="timeline-container">
+              <!-- JavaScriptで挿入 -->
+            </div>
+          </div>
+
+          <!-- フォローアップ戦略 -->
+          <div class="mb-10">
+            <h3 class="text-xl font-bold mb-4 flex items-center">
+              <i class="fas fa-phone text-green-500 mr-2"></i>フォローアップ戦略
+            </h3>
+            <div id="career-proposals-container">
+              <!-- JavaScriptで挿入 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- アップセルタブの内容 -->
+        <div class="tab-content" id="plus-content">
+          <h2 class="text-2xl font-bold mb-6 bg-blue-50 p-2 rounded-md inline-block">アップセル戦略</h2>
+
+          <!-- 段階的提案プロセス -->
+          <div class="mb-10">
+            <h3 class="text-xl font-bold mb-4 bg-green-50 p-2 rounded-md">段階的提案プロセス</h3>
+            <div id="as-boss-container">
+              <!-- JavaScriptで挿入 -->
+            </div>
+          </div>
+
+          <!-- 高額商品への誘導 -->
+          <div class="mb-10">
+            <h3 class="text-xl font-bold mb-4 bg-blue-50 p-2 rounded-md">高額商品・プランへの誘導</h3>
+            <div id="as-subordinate-container">
+              <!-- JavaScriptで挿入 -->
+            </div>
+          </div>
+
+          <!-- 特別オファーの効果 -->
+          <div class="mb-10">
+            <h3 class="text-xl font-bold mb-4 bg-purple-50 p-2 rounded-md">特別オファー・キャンペーンの効果</h3>
+            <div id="as-leader-container">
+              <!-- JavaScriptで挿入 -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- フッター -->
+    <div class="footer mt-8 px-4">
+      <div class="container mx-auto max-w-7xl">
+        <div class="flex flex-col mb-4 border-t pt-4">
+          <div class="flex justify-between w-full mb-6">
+            <a href="/index.html" class="text-sm text-blue-500 hover:text-blue-700 hover:underline transition-colors duration-200">
+              <!-- ＜＜フォームに戻る -->
+            </a>
+          </div>
+          <div class="text-center text-gray-500">
+            <p>© 2025 Beauty Clinic Customer Analysis</p>
+            <p class="text-xs mt-1">この分析は顧客の特性分析と心理学的アプローチに基づく分析結果です</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 各タブのスクリプトを明示的に読み込み -->
+    <script type="module" src="/scripts/tabs-overview.js"></script>
+    <script type="module" src="/scripts/tabs-skills.js"></script>
+    <script type="module" src="/scripts/tabs-career.js"></script>
+    <script type="module" src="/scripts/tabs-future.js"></script>
+    <script type="module" src="/scripts/tabs-plus.js"></script>
+    <script type="module" src="/scripts/tabs-main.js"></script>
+
+    <script>
+      // エラーハンドリング
+      window.addEventListener('error', function(event) {
+        console.error('Script error:', event);
+      });
+    </script>
+
+    <!-- Back to Top Button -->
+    <button
+      id="back-to-top-btn"
+      class="hidden fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg transition-opacity duration-300 z-50"
+      title="トップに戻る"
+    >
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+  </body>
+</html>
