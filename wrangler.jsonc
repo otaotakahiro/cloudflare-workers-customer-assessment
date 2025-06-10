@@ -4,7 +4,7 @@
  */
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "cloudflare-workers-costomer−assessment",
+  "name": "cloudflare-workers-customer-assessment",
   "account_id": "f936ae74ccb3e57720edbdd06d1f0f13",
   // "account_id": "your_account_id_here",
   "main": "./src/index.js",
@@ -22,12 +22,12 @@
   },
   "kv_namespaces": [
     {
-      "binding": "costomer−assessment-company",
+      "binding": "CUSTOMER_ASSESSMENT_COMPANY",
       "id": "63080eb827e448998d19a017940091e6",
       "preview_id": "63080eb827e448998d19a017940091e6"
     },
     {
-      "binding": "costomer−assessment-analytics",
+      "binding": "CUSTOMER_ASSESSMENT_ANALYTICS",
       "id": "675a145ad7c94266bd35bb9f75aea5e8",
       "preview_id": "675a145ad7c94266bd35bb9f75aea5e8"
     }
