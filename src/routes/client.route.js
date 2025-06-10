@@ -74,6 +74,13 @@ const clientRoute = (app) => {
       let resultsData = results; // 分析結果のみ
       resultsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
+      // JS用の分析結果リストを準備
+      let analysisResultsForJs = results.map(resultData => ({
+        resultId: resultData.resultId,
+        name: `${resultData.inputs?.familyName || ''} ${resultData.inputs?.firstName || ''}`.trim(),
+        registrationNumber: resultData.registrationNumber ?? null,
+      }));
+
       // JS用の分析結果リストを名前でソート
       analysisResultsForJs.sort((a, b) => a.name.localeCompare(b.name, 'ja'));
       // JS用の相性診断結果リストを作成日時でソート (新しい順)
