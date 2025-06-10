@@ -199,21 +199,47 @@ export default function (app) {
 
   // 結果を取得
   app.get('/:id', async context => {
-    const id = context.req.param('id');
-    // ★注意: このGETエンドポイントは現状 pageId を考慮していないため、
-    // 全ての会社の結果の中からIDだけで検索してしまう。
-    // 将来的に `/c/:pageId/results/:resultId` のような形にするか、
-    // クエリパラメータで pageId を渡すなどの修正が必要。
-    // 今回はPOST側の修正のみ。
-    const result = await context.env.CUSTOMER_ASSESSMENT_ANALYTICS.get(id); // ← これは UUID だけでは動かなくなる可能性が高い
+    try {
+      const resultId = context.req.param('id');
+      const pageId = context.req.query('pageId'); // クエリパラメータからpageIdを取得
 
-    if (!result) {
-      return context.json({ error: 'Result not found' }, 404);
+      if (!pageId) {
+        return context.json({ error: 'pageId is required as query parameter' }, 400);
+      }
+
+      // 新しいKVキー構造に対応
+      const kvKey = `result:${pageId}:${resultId}`;
+      console.log(`Retrieving result with key: ${kvKey}`);
+
+      const storedData = await context.env.CUSTOMER_ASSESSMENT_ANALYTICS.get(kvKey);
+
+      if (!storedData) {
+        console.log(`Result not found for key: ${kvKey}`);
+        return context.json({ error: 'Result not found' }, 404);
+      }
+
+      const parsedData = JSON.parse(storedData);
+
+      // レスポンス形式を整理（分析結果部分のみ返す）
+      return context.json({
+        id: resultId,
+        pageId: pageId,
+        inputs: parsedData.inputs,
+        data: parsedData.analysis.data, // AIからの分析結果
+        status: parsedData.analysis.status,
+        createdAt: parsedData.createdAt,
+        registrationNumber: parsedData.registrationNumber
+      });
+    } catch (error) {
+      console.error('Error retrieving result:', error);
+      return context.json(
+        {
+          error: '結果取得中にエラーが発生しました',
+          details: error.message,
+        },
+        500
+      );
     }
-    return context.json({
-      id, // これはUUID (resultId)
-      result: JSON.parse(result),
-    });
   });
 
   return app;
