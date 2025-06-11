@@ -367,7 +367,6 @@ const adminRoute = (app) => {
       console.log('Starting customer data export for all companies...');
 
       // 1. 全ての会社情報を取得
-      console.log('Fetching company data...');
       const { keys } = await c.env.CUSTOMER_ASSESSMENT_COMPANY.list({ prefix: 'company:' });
       const companies = [];
 
@@ -380,7 +379,6 @@ const adminRoute = (app) => {
       console.log(`Found ${companies.length} companies`);
 
       // 2. 各会社の顧客データを取得
-      console.log('Fetching customer data...');
       const allCustomers = [];
       for (const company of companies) {
         console.log(`Processing company: ${company.companyName} (${company.id})`);
@@ -405,7 +403,6 @@ const adminRoute = (app) => {
       console.log(`Found ${allCustomers.length} customers`);
 
       // 3. CSVヘッダーとデータ行を生成
-      console.log('Generating CSV data...');
       const headers = [
         '会社名',
         '会社ID',
@@ -416,17 +413,7 @@ const adminRoute = (app) => {
         '名（カナ）',
         '生年月日',
         '性別',
-        '分析日時',
-        '継続志向性スコア',
-        '継続志向性タイプ',
-        '新規性志向スコア',
-        '新規性志向タイプ',
-        '価格感度スコア',
-        '価格感度タイプ',
-        '決断速度スコア',
-        '決断速度タイプ',
-        'コミュニケーションスタイルスコア',
-        'コミュニケーションスタイルタイプ'
+        '日時'
       ];
 
       const rows = allCustomers.map(customer => {
@@ -441,17 +428,7 @@ const adminRoute = (app) => {
             customer.inputs?.firstNameKana || '',
             customer.inputs?.birthdate || '',
             customer.inputs?.gender || '',
-            customer.createdAt || '',
-            customer.analysis?.businessMetrics?.continuityOrientation?.score || '',
-            customer.analysis?.businessMetrics?.continuityOrientation?.type || '',
-            customer.analysis?.businessMetrics?.noveltyDesire?.score || '',
-            customer.analysis?.businessMetrics?.noveltyDesire?.type || '',
-            customer.analysis?.businessMetrics?.priceValueSensitivity?.score || '',
-            customer.analysis?.businessMetrics?.priceValueSensitivity?.type || '',
-            customer.analysis?.businessMetrics?.decisionSpeed?.score || '',
-            customer.analysis?.businessMetrics?.decisionSpeed?.type || '',
-            customer.analysis?.businessMetrics?.communicationStyle?.score || '',
-            customer.analysis?.businessMetrics?.communicationStyle?.type || ''
+            customer.createdAt || ''
           ];
         } catch (rowError) {
           console.error('Error processing customer row:', rowError);
