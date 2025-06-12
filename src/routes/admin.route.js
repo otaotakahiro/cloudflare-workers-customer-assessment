@@ -243,16 +243,6 @@ const adminRoute = (app) => {
               <a href="/admin/companies" class="nav-link active">登録会社一覧</a>
             </div>
 
-            <div class="mb-4">
-              <p class="text-gray-600">登録済み会社数: <strong>${companies.length}</strong></p>
-              <div class="mt-4">
-                <a href="/admin/export/customers" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded inline-flex items-center">
-                  <i class="fas fa-file-csv mr-2"></i>
-                  全店舗顧客データCSVエクスポート
-                </a>
-              </div>
-            </div>
-
             ${companies.length === 0 ?
               '<div class="text-center py-8 text-gray-500">まだ会社が登録されていません。</div>' :
               companies.map(company => `
@@ -361,113 +351,6 @@ const adminRoute = (app) => {
     }
   });
 
-  // --- 全店舗顧客データCSVエクスポート (GET /admin/export/customers) ---
-  app.get('/export/customers', adminAuthMiddleware, async (c) => {
-    try {
-      console.log('Starting customer data export for all companies...');
-
-      // 1. 全ての会社情報を取得
-      const { keys } = await c.env.CUSTOMER_ASSESSMENT_COMPANY.list({ prefix: 'company:' });
-      const companies = [];
-
-      for (const key of keys) {
-        const companyData = await c.env.CUSTOMER_ASSESSMENT_COMPANY.get(key.name);
-        if (companyData) {
-          companies.push(JSON.parse(companyData));
-        }
-      }
-      console.log(`Found ${companies.length} companies`);
-
-      // 2. 各会社の顧客データを取得
-      const allCustomers = [];
-      for (const company of companies) {
-        console.log(`Processing company: ${company.companyName} (${company.id})`);
-        const { keys } = await c.env.CUSTOMER_ASSESSMENT_ANALYTICS.list({ prefix: `result:${company.id}:` });
-
-        for (const key of keys) {
-          const customerData = await c.env.CUSTOMER_ASSESSMENT_ANALYTICS.get(key.name);
-          if (customerData) {
-            try {
-              const parsedData = JSON.parse(customerData);
-              allCustomers.push({
-                companyName: company.companyName,
-                companyId: company.id,
-                ...parsedData
-              });
-            } catch (parseError) {
-              console.error(`Error parsing customer data for key ${key.name}:`, parseError);
-            }
-          }
-        }
-      }
-      console.log(`Found ${allCustomers.length} customers`);
-
-      // 3. CSVヘッダーとデータ行を生成
-      const headers = [
-        '会社名',
-        '会社ID',
-        '登録番号',
-        '姓',
-        '名',
-        '姓（カナ）',
-        '名（カナ）',
-        '生年月日',
-        '性別',
-        '日時'
-      ];
-
-      const rows = allCustomers.map(customer => {
-        try {
-          return [
-            customer.companyName || '',
-            customer.companyId || '',
-            customer.registrationNumber || '',
-            customer.inputs?.familyName || '',
-            customer.inputs?.firstName || '',
-            customer.inputs?.familyNameKana || '',
-            customer.inputs?.firstNameKana || '',
-            customer.inputs?.birthdate || '',
-            customer.inputs?.gender || '',
-            customer.createdAt || ''
-          ];
-        } catch (rowError) {
-          console.error('Error processing customer row:', rowError);
-          return headers.map(() => ''); // エラー時は空の行を返す
-        }
-      });
-
-      // 4. CSVデータを生成
-      console.log('Creating CSV content...');
-      const csvContent = [
-        headers.join(','),
-        ...rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
-      ].join('\n');
-
-      // 5. レスポンスを返す
-      console.log('Sending response...');
-      const filename = `all_customers_${new Date().toISOString().split('T')[0]}.csv`;
-      return new Response(csvContent, {
-        headers: {
-          'Content-Type': 'text/csv; charset=utf-8',
-          'Content-Disposition': `attachment; filename="${filename}"`
-        }
-      });
-    } catch (error) {
-      console.error('Error exporting customer data:', error);
-      console.error('Error stack:', error.stack);
-      return c.html(`
-        <html>
-          <body>
-            <h1>エラーが発生しました</h1>
-            <p>顧客データのエクスポートに失敗しました。</p>
-            <p>エラー詳細: ${error.message}</p>
-            <a href="/admin/companies">会社一覧に戻る</a>
-          </body>
-        </html>
-      `, 500);
-    }
-  });
-
   app.get('/export/customers/:companyId', adminAuthMiddleware, async (c) => {
     try {
       const { companyId } = c.req.param();
@@ -515,14 +398,24 @@ const adminRoute = (app) => {
       const headers = [
         '会社名',
         '会社ID',
-        '登録番号',
+        '担当者名',
         '姓',
         '名',
         '姓（カナ）',
         '名（カナ）',
         '生年月日',
         '性別',
-        '日時'
+        '日時',
+        '継続志向度スコア',
+        '継続志向度タイプ',
+        '新規刺激欲求スコア',
+        '新規刺激欲求タイプ',
+        '価格価値観感度スコア',
+        '価格価値観感度タイプ',
+        '決断スピードスコア',
+        '決断スピードタイプ',
+        'コミュニケーションスタイルスコア',
+        'コミュニケーションスタイルタイプ'
       ];
 
       const rows = customers.map(customer => {
@@ -530,14 +423,24 @@ const adminRoute = (app) => {
           return [
             customer.companyName || '',
             customer.companyId || '',
-            customer.registrationNumber || '',
+            customer.contactPerson || '',
             customer.inputs?.familyName || '',
             customer.inputs?.firstName || '',
             customer.inputs?.familyNameKana || '',
             customer.inputs?.firstNameKana || '',
             customer.inputs?.birthdate || '',
             customer.inputs?.gender || '',
-            customer.createdAt || ''
+            customer.createdAt || '',
+            customer.analysis?.data?.overview?.businessMetrics?.continuityOrientation?.score || '',
+            customer.analysis?.data?.overview?.businessMetrics?.continuityOrientation?.type || '',
+            customer.analysis?.data?.overview?.businessMetrics?.noveltyDesire?.score || '',
+            customer.analysis?.data?.overview?.businessMetrics?.noveltyDesire?.type || '',
+            customer.analysis?.data?.overview?.businessMetrics?.priceValueSensitivity?.score || '',
+            customer.analysis?.data?.overview?.businessMetrics?.priceValueSensitivity?.type || '',
+            customer.analysis?.data?.overview?.businessMetrics?.decisionSpeed?.score || '',
+            customer.analysis?.data?.overview?.businessMetrics?.decisionSpeed?.type || '',
+            customer.analysis?.data?.overview?.businessMetrics?.communicationStyle?.score || '',
+            customer.analysis?.data?.overview?.businessMetrics?.communicationStyle?.type || ''
           ];
         } catch (rowError) {
           console.error('Error processing customer row:', rowError);
