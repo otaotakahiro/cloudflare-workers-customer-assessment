@@ -1,26 +1,26 @@
 /**
- * 能力評価タブのデータを設定するモジュール
+ * 美容クリニック接客戦略タブのデータを設定するモジュール
  */
 
 /**
- * 能力評価タブのデータを設定
- * @param {Object} skills - 能力評価データ
+ * 接客戦略タブのデータを設定
+ * @param {Object} skills - 接客戦略データ
  */
 export function populateSkillsTab(skills) {
     if (!skills) return;
 
-    // 特性別5段階評価
+    // 接客アプローチ評価
     populateSkillEvaluations(skills.evaluations);
 
-    // 面接時の質問例
+    // 効果的なコミュニケーション
     populateInterviewQuestions(skills.interviewQuestions);
 
-    // 危険サイン
+    // 避けるべき対応
     populateWarningSignals(skills.warningSignals);
 }
 
 /**
- * 特性別5段階評価の表示
+ * 接客アプローチ評価の表示
  * @param {Array} evaluations - 評価項目の配列
  */
 function populateSkillEvaluations(evaluations) {
@@ -28,7 +28,7 @@ function populateSkillEvaluations(evaluations) {
 
     const evaluationsContainer = document.getElementById('skills-evaluations-container');
     if (!evaluationsContainer) {
-        console.error('スキル評価コンテナが見つかりません');
+        console.error('接客アプローチ評価コンテナが見つかりません');
         return;
     }
 
@@ -59,7 +59,7 @@ function populateSkillEvaluations(evaluations) {
         // 5段階評価の場合、20%ずつ増加（1=20%, 2=40%, 3=60%, 4=80%, 5=100%）
         const percentage = Math.min(Math.max((scoreValue / 5) * 100, 0), 100);
 
-        // プログレスバー - シンプルなDIV構造に変更
+        // プログレスバー
         const barHTML = `
         <div class="w-full bg-gray-200 rounded-full" style="height: 12px;">
             <div class="${getScoreColorClass(scoreValue)}"
@@ -99,7 +99,7 @@ function getScoreColorClass(score) {
 }
 
 /**
- * 面接時の質問例の表示
+ * 効果的なコミュニケーションの表示
  * @param {Array} questions - 質問の配列
  */
 function populateInterviewQuestions(questions) {
@@ -107,7 +107,7 @@ function populateInterviewQuestions(questions) {
 
     const questionsContainer = document.getElementById('interview-questions-container');
     if (!questionsContainer) {
-        console.error('面接質問コンテナが見つかりません');
+        console.error('コミュニケーションコンテナが見つかりません');
         return;
     }
 
@@ -133,7 +133,7 @@ function populateInterviewQuestions(questions) {
 }
 
 /**
- * 危険サインの表示
+ * 避けるべき対応の表示
  * @param {Array} warnings - 警告の配列
  */
 function populateWarningSignals(warnings) {
@@ -141,7 +141,7 @@ function populateWarningSignals(warnings) {
 
     const warningsContainer = document.getElementById('warning-signals-container');
     if (!warningsContainer) {
-        console.error('警告サインコンテナが見つかりません');
+        console.error('避けるべき対応コンテナが見つかりません');
         return;
     }
 

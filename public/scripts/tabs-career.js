@@ -1,29 +1,29 @@
 /**
- * キャリア適性タブ用の表示処理
+ * 美容施術提案タブ用の表示処理
  */
 
 /**
- * キャリア適性タブのデータを表示
- * @param {Object} career - キャリアデータ
+ * 美容施術提案タブのデータを表示
+ * @param {Object} career - 美容施術データ
  */
 export function populateCareerTab(career) {
   if (!career) return;
 
-  // 適性スコアと新規事業領域を横並びにするためのグリッドを作成
+  // 美容領域スコアと施術提案方法を横並びにするためのグリッドを作成
   createTopGrid(career.aptitudeScores, career.businessAreas, career.successKeywords);
 
-  // 適性フィールド表示
+  // 推奨施術・商品表示
   populateSuitableFields(career.suitableFields);
 }
 
 /**
- * 適性スコアと新規事業領域を横並びに表示し、キーワードをその下に表示するグリッドを作成
- * @param {Array} scores - 適性スコアの配列
- * @param {Array} areas - 事業領域の配列
- * @param {Array} keywords - キーワードの配列
+ * 美容領域スコアと施術提案方法を横並びに表示し、投資傾向をその下に表示するグリッドを作成
+ * @param {Array} scores - 美容領域スコアの配列
+ * @param {Array} areas - 施術提案方法の配列
+ * @param {Array} keywords - 投資傾向の配列
  */
 function createTopGrid(scores, areas, keywords) {
-  // キャリア適性タブのコンテナを取得
+  // 美容施術提案タブのコンテナを取得
   const careerContent = document.getElementById('career-content');
   if (!careerContent) return;
 
@@ -38,7 +38,7 @@ function createTopGrid(scores, areas, keywords) {
 
   if (!scoresSection || !areasSection || !keywordsSection) return;
 
-  // 既存のセクションを削除（スコア、事業領域、キーワードのみ）
+  // 既存のセクションを削除（スコア、施術提案方法、投資傾向のみ）
   careerContent.removeChild(scoresSection);
   careerContent.removeChild(areasSection);
   careerContent.removeChild(keywordsSection);
@@ -53,31 +53,31 @@ function createTopGrid(scores, areas, keywords) {
     careerContent.prepend(newContainer);
   }
 
-  // 1. 適性スコアと新規事業領域を横並びにするグリッドを作成
+  // 1. 美容領域スコアと施術提案方法を横並びにするグリッドを作成
   const topGridContainer = document.createElement('div');
   topGridContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-6 mb-6';
   newContainer.appendChild(topGridContainer);
 
-  // グリッドコンテナに適性スコアと新規事業領域のセクションを追加
+  // グリッドコンテナに美容領域スコアと施術提案方法のセクションを追加
   topGridContainer.appendChild(scoresSection);
   topGridContainer.appendChild(areasSection);
 
-  // 2. キャリア成功のキーワードをその下に配置
+  // 2. 美容投資の傾向をその下に配置
   newContainer.appendChild(keywordsSection);
 
-  // 適性スコア表示
+  // 美容領域スコア表示
   populateAptitudeScores(scores);
 
-  // 新規事業領域表示
+  // 施術提案方法表示
   populateBusinessAreas(areas);
 
-  // キャリア成功のキーワード表示
+  // 美容投資の傾向表示
   populateSuccessKeywords(keywords);
 }
 
 /**
- * 適性スコアの表示
- * @param {Array} scores - 適性スコアの配列
+ * 美容領域スコアの表示
+ * @param {Array} scores - 美容領域スコアの配列
  */
 function populateAptitudeScores(scores) {
   if (!scores || !scores.length) return;
@@ -108,8 +108,8 @@ function populateAptitudeScores(scores) {
 }
 
 /**
- * 新規事業領域の表示
- * @param {Array} areas - 事業領域の配列
+ * 施術提案方法の表示
+ * @param {Array} areas - 施術提案方法の配列
  */
 function populateBusinessAreas(areas) {
   if (!areas || !areas.length) return;
@@ -147,8 +147,8 @@ function populateBusinessAreas(areas) {
 }
 
 /**
- * キャリア成功のキーワード表示
- * @param {Array} keywords - キーワードの配列
+ * 美容投資の傾向表示
+ * @param {Array} keywords - 投資傾向の配列
  */
 function populateSuccessKeywords(keywords) {
   if (!keywords || !keywords.length) return;
@@ -185,8 +185,8 @@ function populateSuccessKeywords(keywords) {
 }
 
 /**
- * 適性フィールド表示
- * @param {Array} fields - フィールドの配列
+ * 推奨施術・商品表示
+ * @param {Array} fields - 推奨施術・商品の配列
  */
 function populateSuitableFields(fields) {
   if (!fields || !fields.length) return;

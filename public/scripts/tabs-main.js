@@ -38,6 +38,12 @@ const TEST_DATA = {
                     description: "周囲の人を支える力があり、信頼関係を築くのが上手です。",
                     tags: ["信頼性", "サポート力", "忍耐力"],
                     note: "自分の意見も積極的に出すとより貢献度が増します"
+                },
+                {
+                    title: "細部重視の実務家",
+                    description: "細部まで注意を払い、確実に仕事を進めることができます。",
+                    tags: ["正確性", "実務力", "集中力"],
+                    note: "全体像を意識しながら進めることで、より効果的な成果を出せます"
                 }
             ]
         },
@@ -86,58 +92,58 @@ const TEST_DATA = {
     },
     career: {
         aptitudeScores: [
-            { field: "企画・分析職", score: 90 },
-            { field: "研究開発職", score: 85 },
-            { field: "品質管理職", score: 80 },
-            { field: "技術サポート職", score: 75 },
-            { field: "マネジメント職", score: 65 }
+            { field: "フェイシャルエステ", score: 90 },
+            { field: "ボディケア", score: 85 },
+            { field: "ヘアケア", score: 80 },
+            { field: "ネイルケア", score: 75 },
+            { field: "メイクアップ", score: 65 }
         ],
         businessAreas: [
             {
-                name: "テクノロジー分析コンサルティング",
+                name: "アンチエイジングケア",
                 icon: "lightbulb",
-                description: "複雑な技術情報を分析し、企業の意思決定をサポートするコンサルティングサービス",
-                tags: ["分析力", "論理性", "問題解決"]
+                description: "肌の若返りと美しさを保つための総合的なケアプログラム",
+                tags: ["若返り", "美肌", "リフトアップ"]
             },
             {
-                name: "品質管理システム開発",
+                name: "ボディシェイプアップ",
                 icon: "chart-line",
-                description: "生産プロセスやサービス提供の品質を高めるためのシステム構築やコンサルティング",
-                tags: ["細部への注意", "計画性", "改善力"]
+                description: "理想的な体型を実現するためのボディケアプログラム",
+                tags: ["ダイエット", "シェイプアップ", "ボディライン"]
             }
         ],
         successKeywords: [
             {
-                title: "専門性の深化",
+                title: "定期的なケア習慣",
                 icon: "graduation-cap",
-                description: "特定分野の専門知識を深め、その道のエキスパートとして認められることで価値を高める"
+                description: "定期的な施術とホームケアの組み合わせで効果を最大化"
             },
             {
-                title: "プロセス改善",
+                title: "カスタマイズケア",
                 icon: "chart-line",
-                description: "効率と品質を両立するプロセス構築と改善を追求することで組織に貢献する"
+                description: "個人の肌質や体質に合わせたオーダーメイドのケアプログラム"
             },
             {
-                title: "信頼関係の構築",
+                title: "長期的な美しさ",
                 icon: "handshake",
-                description: "長期的な信頼関係を築くことで、安定したキャリア基盤を形成する"
+                description: "一時的な効果ではなく、持続的な美しさを実現するケア"
             }
         ],
         suitableFields: [
             {
-                name: "企画・分析職",
-                examples: "データアナリスト、マーケットリサーチャー、経営企画など",
-                description: "論理的思考能力と詳細な分析力を活かせる職種です。複雑なデータから意味を見出し、計画立案する能力が発揮できます。"
+                name: "フェイシャルエステ",
+                examples: "リフトアップ、美白、保湿、毛穴ケアなど",
+                description: "肌の状態を改善し、若々しい印象を与える施術が適しています。定期的なケアで効果を維持できます。"
             },
             {
-                name: "研究開発職",
-                examples: "研究員、製品開発エンジニア、技術コンサルタントなど",
-                description: "忍耐強く細部にこだわる姿勢が、研究開発での成果につながります。長期的な目標に向けて着実に進める能力が評価されます。"
+                name: "ボディケア",
+                examples: "脂肪吸引、セルライト除去、ボディシェイプなど",
+                description: "体型の悩みを解決し、理想的なボディラインを実現する施術が効果的です。"
             },
             {
-                name: "品質管理職",
-                examples: "品質管理スペシャリスト、検査技術者など",
-                description: "詳細への注意力と完璧を求める姿勢が品質向上に貢献します。プロセスを徹底的に検証する能力が強みとなります。"
+                name: "ヘアケア",
+                examples: "育毛、ヘッドスパ、トリートメントなど",
+                description: "髪の健康と美しさを保つための施術が適しています。頭皮環境の改善も期待できます。"
             }
         ]
     },
@@ -202,102 +208,86 @@ const TEST_DATA = {
         ]
     },
     plus: {
-        asBoss: {
-            effectiveCommunication: [
+        asCustomer: {
+            beautyTendencies: [
                 {
-                    title: "明確な期待と基準の提示",
-                    description: "具体的な目標と評価基準を明確に伝えることで、安心して業務に取り組める環境を作ります。"
+                    title: "美容傾向1",
+                    description: "お客さんの美容に関する傾向とその特徴を説明"
                 },
                 {
-                    title: "定期的なフィードバック",
-                    description: "適切なタイミングで建設的なフィードバックを行い、成長を促します。"
+                    title: "美容傾向2",
+                    description: "お客さんの美容に関する傾向とその特徴を説明"
                 },
                 {
-                    title: "意見の尊重と傾聴",
-                    description: "意見や提案を尊重し、真摯に耳を傾けることで、自己表現を促します。"
+                    title: "美容傾向3",
+                    description: "お客さんの美容に関する傾向とその特徴を説明"
                 }
             ],
-            warningSignals: [
+            recommendedScripts: [
                 {
-                    title: "過度な完璧主義",
-                    description: "細部にこだわりすぎて決断が遅れたり、部下に過度なプレッシャーをかけたりすることがあります。"
+                    title: "おすすめスクリプト1",
+                    description: "お客さんの美容に関するおすすめスクリプトとその効果を説明"
                 },
                 {
-                    title: "変化への抵抗",
-                    description: "既存の方法や計画を変更することに抵抗を示し、柔軟性が低下することがあります。"
+                    title: "おすすめスクリプト2",
+                    description: "お客さんの美容に関するおすすめスクリプトとその効果を説明"
                 },
                 {
-                    title: "感情表現の抑制",
-                    description: "感情を表に出さないため、部下が真意を読み取りにくく不安を感じることがあります。"
-                }
-            ]
-        },
-        asSubordinate: {
-            effectiveApproach: [
-                {
-                    title: "明確な指示と期待の伝達",
-                    description: "何を求めているのか、どのような基準で評価されるのかを明確に伝えることで安心して業務に取り組めます。"
-                },
-                {
-                    title: "定期的なフィードバック",
-                    description: "進捗状況を確認し、適切なタイミングでフィードバックを提供することでモチベーションを維持できます。"
-                },
-                {
-                    title: "自己表現の促進",
-                    description: "意見や提案を積極的に求め、それを尊重する姿勢を示すことで自己表現を促進できます。"
+                    title: "おすすめスクリプト3",
+                    description: "お客さんの美容に関するおすすめスクリプトとその効果を説明"
                 }
             ],
-            warningSignals: [
-                {
-                    title: "過度な期待と要求",
-                    description: "高すぎる基準を設定すると、プレッシャーを感じて萎縮することがあります。"
+            stepByStepProposal: {
+                process: [
+                    {
+                        step: "段階1",
+                        description: "お客さんの美容に関する段階的提案プロセスの説明"
+                    },
+                    {
+                        step: "段階2",
+                        description: "お客さんの美容に関する段階的提案プロセスの説明"
+                    },
+                    {
+                        step: "段階3",
+                        description: "お客さんの美容に関する段階的提案プロセスの説明"
+                    }
+                ],
+                highEndProductGuide: {
+                    products: [
+                        {
+                            name: "高額商品1",
+                            description: "お客さんの美容に関する高額商品の説明とその効果"
+                        },
+                        {
+                            name: "高額商品2",
+                            description: "お客さんの美容に関する高額商品の説明とその効果"
+                        },
+                        {
+                            name: "高額商品3",
+                            description: "お客さんの美容に関する高額商品の説明とその効果"
+                        }
+                    ]
                 },
-                {
-                    title: "曖昧な指示",
-                    description: "不明確な指示や頻繁な方針変更は不安を引き起こし、パフォーマンスを低下させます。"
-                },
-                {
-                    title: "否定的なフィードバックのみ",
-                    description: "批判ばかりで肯定的な評価がないと、自信を喪失することがあります。"
+                specialOfferEffect: {
+                    offers: [
+                        {
+                            name: "特別オファー1",
+                            description: "お客さんの美容に関する特別オファーの説明とその効果"
+                        },
+                        {
+                            name: "特別オファー2",
+                            description: "お客さんの美容に関する特別オファーの説明とその効果"
+                        },
+                        {
+                            name: "特別オファー3",
+                            description: "お客さんの美容に関する特別オファーの説明とその効果"
+                        }
+                    ]
                 }
-            ]
-        },
-        asLeader: {
-            goalDirections: [
-                {
-                    title: "明確で測定可能な目標",
-                    description: "具体的で達成度を測定できる目標を設定することで、方向性が明確になります。"
-                },
-                {
-                    title: "長期的視点を持った計画",
-                    description: "短期的な成果だけでなく、長期的な価値創造を見据えた目標が効果的です。"
-                },
-                {
-                    title: "品質と効率のバランス",
-                    description: "質の高さと効率性の両立を目指す目標が、強みを最大限に活かせます。"
-                }
-            ],
-            teamComposition: [
-                {
-                    title: "創造的思考の持ち主",
-                    description: "新しいアイデアを生み出す人材がチームにいると、視野が広がり柔軟性が増します。"
-                },
-                {
-                    title: "行動力のある実践者",
-                    description: "計画を迅速に実行に移せる人材がいると、意思決定の遅れを補完できます。"
-                },
-                {
-                    title: "感情表現豊かなコミュニケーター",
-                    description: "チーム内の雰囲気を和らげ、感情面でのサポートを提供できる人材が有効です。"
-                },
-                {
-                    title: "柔軟性の高い変化対応者",
-                    description: "変化や予期せぬ状況に適応できる人材がいると、チーム全体の適応力が向上します。"
-                }
-            ]
+            }
         }
     }
-};
+}
 
 // デバッグ情報を処理するための機能（コンソールのみに出力）
 function updateDebug(message) {
@@ -508,7 +498,6 @@ function loadEmbeddedData() {
           firstName: profileData.inputs?.firstName || '',
           birthDate: profileData.inputs?.birthdate || '',
           gender: profileData.inputs?.gender || '',
-          // ★ userInfo は analysis.data.userInfo にもあるので、そちらを優先することも検討可能
           analysisDate: profileData.createdAt ? new Date(profileData.createdAt).toLocaleDateString('ja-JP') : new Date().toLocaleDateString('ja-JP')
       };
 
@@ -516,7 +505,6 @@ function loadEmbeddedData() {
       updateProfileInfo(userInfo);
 
       // ★ 全タブの内容を更新
-      //    ★ profileData の実際の構造に合わせて修正
       console.log('データ構造に合わせて各タブのデータを抽出します...');
       const analysisData = profileData.analysis?.data;
       console.log('analysis.data:', analysisData);
@@ -526,9 +514,13 @@ function loadEmbeddedData() {
       const skillsData = analysisData?.skills?.skills;
       const careerData = analysisData?.career?.career;
       const futureData = analysisData?.future?.future;
-      // plusデータはnullなので、取得を試みるが存在しない場合はnullのまま
       const plusData = analysisData?.plus?.plus;
-      // ★★★ ここまで修正 ★★★
+
+      // デバッグ用にplusDataの構造を詳細に出力
+      console.log('%cPlus Data Structure:', 'color: green; font-weight: bold;');
+      console.log('plusData:', plusData);
+      console.log('plusData type:', typeof plusData);
+      console.log('plusData keys:', plusData ? Object.keys(plusData) : 'null');
 
       console.log('抽出した各タブデータ:', {
         overview: overviewData ? '取得成功' : '取得失敗/null',
@@ -813,7 +805,7 @@ function diagnoseApiStructure(data) {
                 } else if (section === 'future') {
                     checkKeys(source[section], ['timeline', 'careerProposals'], msg, section);
                 } else if (section === 'plus') {
-                    checkKeys(source[section], ['asBoss', 'asSubordinate', 'asLeader'], msg, section);
+                    checkKeys(source[section], ['asCustomer', 'asSubordinate'], msg, section);
                 }
 
                 // 入れ子構造のチェック

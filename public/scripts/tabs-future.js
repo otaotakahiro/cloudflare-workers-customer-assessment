@@ -1,207 +1,216 @@
 /**
- * 未来予測タブ用の表示処理
+ * リピート促進・フォローアップ戦略タブ用の表示処理
  */
 
 /**
- * 未来予測タブのデータを表示
- * @param {Object} future - 未来予測データ
+ * リピート促進・フォローアップ戦略タブのデータを表示
+ * @param {Object} future - リピート促進・フォローアップ戦略データ
  */
 export function populateFutureTab(future) {
   if (!future) return;
 
-  console.log('未来予測タブの表示処理を開始');
+  console.log('リピート促進・フォローアップ戦略タブの表示処理を開始');
 
-  // タイムライン表示
-  populateTimeline(future.timeline);
+  // リピート促進方法の表示
+  populateRepeatPromotion(future.repeatPromotion);
 
-  // キャリア提案表示
-  populateCareerProposals(future.careerProposals);
+  // フォローアップ戦略の表示
+  populateFollowUpStrategy(future.followUpStrategy);
 
-  console.log('未来予測タブの表示処理が完了');
+  console.log('リピート促進・フォローアップ戦略タブの表示処理が完了');
 }
 
 /**
- * タイムラインの表示
- * @param {Array} timeline - タイムラインの配列
+ * リピート促進方法の表示
+ * @param {Object} repeatPromotion - リピート促進データ
  */
-function populateTimeline(timeline) {
-  if (!timeline || !timeline.length) {
-    console.warn('タイムラインデータがありません');
+function populateRepeatPromotion(repeatPromotion) {
+  if (!repeatPromotion) {
+    console.warn('リピート促進データがありません');
     return;
   }
 
   const container = document.getElementById('timeline-container');
   if (!container) {
-    console.error('タイムラインコンテナが見つかりません: timeline-container');
+    console.error('リピート促進コンテナが見つかりません: timeline-container');
     return;
   }
 
-  console.log('タイムラインコンテナを取得しました。コンテンツをクリアします');
+  console.log('リピート促進コンテナを取得しました。コンテンツをクリアします');
 
   // コンテナをクリア
   container.innerHTML = '';
 
-  // タイムラインのコンテナを作成
-  const timelineContainer = document.createElement('div');
-  timelineContainer.className = 'relative';
+  // タイミングセクション
+  if (repeatPromotion.timing && repeatPromotion.timing.length) {
+    const timingSection = document.createElement('div');
+    timingSection.className = 'mb-8';
 
-  // 垂直線を作成
-  const verticalLine = document.createElement('div');
-  verticalLine.className = 'absolute left-10 top-0 bottom-0 w-0.5 bg-green-200';
-  verticalLine.style.height = '100%';
-  verticalLine.style.zIndex = '1';
-  timelineContainer.appendChild(verticalLine);
+    // タイミングのタイトル
+    const timingTitle = document.createElement('h3');
+    timingTitle.className = 'text-xl font-bold mb-4 flex items-center text-blue-700 bg-blue-50 p-2 rounded-md';
+    timingTitle.innerHTML = '<i class="fas fa-clock text-blue-500 mr-2"></i>フォローアップタイミング';
+    timingSection.appendChild(timingTitle);
 
-  // タイムラインアイテムを追加
-  timeline.forEach((item, index) => {
-    // 期間によって色を変える
-    let colorClass;
-    let bgColorClass;
-    switch (item.term) {
-      case '短期':
-        colorClass = 'text-blue-600';
-        bgColorClass = 'bg-blue-100';
-        break;
-      case '中期':
-        colorClass = 'text-green-600';
-        bgColorClass = 'bg-green-100';
-        break;
-      case '中長期':
-        colorClass = 'text-yellow-600';
-        bgColorClass = 'bg-yellow-100';
-        break;
-      case '長期':
-        colorClass = 'text-purple-600';
-        bgColorClass = 'bg-purple-100';
-        break;
-      default:
-        colorClass = 'text-gray-800';
-        bgColorClass = 'bg-gray-100';
+    // タイミングリスト
+    const timingList = document.createElement('div');
+    timingList.className = 'space-y-4';
+
+    repeatPromotion.timing.forEach(item => {
+      const timingItem = document.createElement('div');
+      timingItem.className = 'bg-white p-4 border rounded-lg shadow-sm';
+
+      // 期間
+      const period = document.createElement('div');
+      period.className = 'font-bold text-blue-600 mb-2';
+      period.textContent = item.period;
+      timingItem.appendChild(period);
+
+      // 方法
+      const method = document.createElement('div');
+      method.className = 'mb-2';
+      method.innerHTML = `<span class="font-semibold">方法：</span>${item.method}`;
+      timingItem.appendChild(method);
+
+      // 内容
+      const content = document.createElement('div');
+      content.className = 'mb-2';
+      content.innerHTML = `<span class="font-semibold">内容：</span>${item.content}`;
+      timingItem.appendChild(content);
+
+      // 期待効果
+      const effect = document.createElement('div');
+      effect.className = 'text-sm text-gray-600';
+      effect.innerHTML = `<span class="font-semibold">期待効果：</span>${item.expectedEffect}`;
+      timingItem.appendChild(effect);
+
+      timingList.appendChild(timingItem);
+    });
+
+    timingSection.appendChild(timingList);
+    container.appendChild(timingSection);
+  }
+
+  // コミュニケーションセクション
+  if (repeatPromotion.communication) {
+    const communicationSection = document.createElement('div');
+    communicationSection.className = 'mb-8';
+
+    // コミュニケーションのタイトル
+    const communicationTitle = document.createElement('h3');
+    communicationTitle.className = 'text-xl font-bold mb-4 flex items-center text-green-700 bg-green-50 p-2 rounded-md';
+    communicationTitle.innerHTML = '<i class="fas fa-comments text-green-500 mr-2"></i>コミュニケーション戦略';
+    communicationSection.appendChild(communicationTitle);
+
+    // 好ましい方法
+    const preferredMethod = document.createElement('div');
+    preferredMethod.className = 'bg-white p-4 border rounded-lg shadow-sm mb-4';
+    preferredMethod.innerHTML = `
+      <div class="font-bold text-green-600 mb-2">好ましいコミュニケーション方法</div>
+      <div>${repeatPromotion.communication.preferredMethod}</div>
+    `;
+    communicationSection.appendChild(preferredMethod);
+
+    // キーポイント
+    if (repeatPromotion.communication.keyPoints && repeatPromotion.communication.keyPoints.length) {
+      const keyPoints = document.createElement('div');
+      keyPoints.className = 'bg-white p-4 border rounded-lg shadow-sm mb-4';
+      keyPoints.innerHTML = `
+        <div class="font-bold text-green-600 mb-2">重要なポイント</div>
+        <ul class="list-disc pl-5 space-y-1">
+          ${repeatPromotion.communication.keyPoints.map(point => `<li>${point}</li>`).join('')}
+        </ul>
+      `;
+      communicationSection.appendChild(keyPoints);
     }
 
-    const timelineItem = document.createElement('div');
-    timelineItem.className = 'relative flex items-start mb-8 pl-12';
+    // 避けるべきポイント
+    if (repeatPromotion.communication.avoidPoints && repeatPromotion.communication.avoidPoints.length) {
+      const avoidPoints = document.createElement('div');
+      avoidPoints.className = 'bg-white p-4 border rounded-lg shadow-sm';
+      avoidPoints.innerHTML = `
+        <div class="font-bold text-red-600 mb-2">避けるべきポイント</div>
+        <ul class="list-disc pl-5 space-y-1">
+          ${repeatPromotion.communication.avoidPoints.map(point => `<li>${point}</li>`).join('')}
+        </ul>
+      `;
+      communicationSection.appendChild(avoidPoints);
+    }
 
-    // 期間と内容のコンテナ
-    const contentContainer = document.createElement('div');
-    contentContainer.className = 'flex-grow ml-4';
+    container.appendChild(communicationSection);
+  }
 
-    // 期間表示 - Positioned over the line
-    const periodBadge = document.createElement('div');
-    // Added positioning styles, z-index, and background
-    periodBadge.className = `absolute left-10 transform -translate-x-1/2 z-20 py-1 px-3 rounded-md text-xs font-semibold shadow-sm ${bgColorClass} ${colorClass}`;
-    periodBadge.textContent = item.period;
-
-    // フェーズのタイトル
-    const phaseTitle = document.createElement('h4');
-    phaseTitle.className = 'text-lg font-bold mb-1 timeline-phase-title';
-    phaseTitle.textContent = item.phase;
-
-    // 説明テキスト
-    const description = document.createElement('div');
-    description.className = 'bg-white p-4 border rounded-md shadow-sm';
-    description.textContent = item.description;
-
-    // 要素を組み立て
-    // Append badge directly to timelineItem to position relative to it
-    timelineItem.appendChild(periodBadge);
-    // contentContainer no longer needs margin adjustment based on circle
-    contentContainer.appendChild(phaseTitle);
-    contentContainer.appendChild(description);
-
-    timelineItem.appendChild(contentContainer);
-
-    timelineContainer.appendChild(timelineItem);
-  });
-
-  container.appendChild(timelineContainer);
-
-  console.log('タイムラインの表示を完了しました');
+  console.log('リピート促進方法の表示を完了しました');
 }
 
 /**
- * キャリア提案の表示
- * @param {Array} proposals - キャリア提案の配列
+ * フォローアップ戦略の表示
+ * @param {Object} followUpStrategy - フォローアップ戦略データ
  */
-function populateCareerProposals(proposals) {
-  if (!proposals || !proposals.length) {
-    console.warn('キャリア提案データがありません');
+function populateFollowUpStrategy(followUpStrategy) {
+  if (!followUpStrategy) {
+    console.warn('フォローアップ戦略データがありません');
     return;
   }
 
   const container = document.getElementById('career-proposals-container');
   if (!container) {
-    console.error('キャリア提案コンテナが見つかりません: career-proposals-container');
+    console.error('フォローアップ戦略コンテナが見つかりません: career-proposals-container');
     return;
   }
 
-  console.log('キャリア提案コンテナを取得しました。コンテンツをクリアします');
+  console.log('フォローアップ戦略コンテナを取得しました。コンテンツをクリアします');
 
   // コンテナをクリア
   container.innerHTML = '';
 
-  proposals.forEach(proposal => {
-    const proposalItem = document.createElement('div');
-    proposalItem.className = 'border rounded-lg p-5 mb-5 shadow-sm';
+  // 各期間の戦略を表示
+  const periods = [
+    { key: 'shortTerm', title: '短期戦略（1-3ヶ月）', icon: 'rocket', color: 'blue' },
+    { key: 'mediumTerm', title: '中期戦略（3-6ヶ月）', icon: 'chart-line', color: 'green' },
+    { key: 'longTerm', title: '長期戦略（6ヶ月以上）', icon: 'mountain', color: 'purple' }
+  ];
 
-    // アイコンによって色を変える
-    const colorClass = getColorByIcon(proposal.icon);
-    const iconClass = getIconClass(proposal.icon);
+  periods.forEach(period => {
+    const strategy = followUpStrategy[period.key];
+    if (!strategy) return;
+
+    const strategyItem = document.createElement('div');
+    strategyItem.className = 'border rounded-lg p-5 mb-5 shadow-sm';
 
     // タイトル部分
     const titleSection = document.createElement('div');
-    titleSection.className = `text-lg font-bold mb-3 p-2 rounded-md bg-${colorClass}-50 text-${colorClass}-700 inline-block`;
-    titleSection.innerHTML = `<i class="fas fa-${iconClass} mr-2"></i>${proposal.term}：${proposal.title}`;
-
-    proposalItem.appendChild(titleSection);
+    titleSection.className = `text-lg font-bold mb-3 p-2 rounded-md bg-${period.color}-50 text-${period.color}-700 inline-block`;
+    titleSection.innerHTML = `<i class="fas fa-${period.icon} mr-2"></i>${period.title}`;
+    strategyItem.appendChild(titleSection);
 
     // アクションリスト
-    if (proposal.actions && proposal.actions.length) {
-      const actionsList = document.createElement('ul');
-      actionsList.className = 'space-y-2 ml-6 list-disc';
-
-      proposal.actions.forEach(action => {
-        const listItem = document.createElement('li');
-        listItem.className = 'text-sm';
-        listItem.textContent = action;
-        actionsList.appendChild(listItem);
-      });
-
-      proposalItem.appendChild(actionsList);
+    if (strategy.actions && strategy.actions.length) {
+      const actionsList = document.createElement('div');
+      actionsList.className = 'mb-4';
+      actionsList.innerHTML = `
+        <div class="font-semibold text-gray-700 mb-2">具体的なアクション</div>
+        <ul class="space-y-2 ml-6 list-disc">
+          ${strategy.actions.map(action => `<li class="text-sm">${action}</li>`).join('')}
+        </ul>
+      `;
+      strategyItem.appendChild(actionsList);
     }
 
-    container.appendChild(proposalItem);
+    // 目標リスト
+    if (strategy.goals && strategy.goals.length) {
+      const goalsList = document.createElement('div');
+      goalsList.innerHTML = `
+        <div class="font-semibold text-gray-700 mb-2">達成目標</div>
+        <ul class="space-y-2 ml-6 list-disc">
+          ${strategy.goals.map(goal => `<li class="text-sm">${goal}</li>`).join('')}
+        </ul>
+      `;
+      strategyItem.appendChild(goalsList);
+    }
+
+    container.appendChild(strategyItem);
   });
 
-  console.log('キャリア提案の表示を完了しました');
-}
-
-/**
- * アイコン名からFontAwesomeのアイコンクラスを取得
- * @param {string} icon - アイコン名
- * @return {string} FontAwesomeのアイコンクラス
- */
-function getIconClass(icon) {
-  const iconMap = {
-    'rocket': 'rocket',
-    'chart-line': 'chart-line',
-    'mountain': 'mountain'
-  };
-
-  return iconMap[icon] || 'circle'; // デフォルトはサークル
-}
-
-/**
- * アイコン名から色を決定
- * @param {string} icon - アイコン名
- * @return {string} Tailwind CSSの色クラス
- */
-function getColorByIcon(icon) {
-  const colorMap = {
-    'rocket': 'blue',
-    'chart-line': 'green',
-    'mountain': 'indigo'
-  };
-
-  return colorMap[icon] || 'blue'; // デフォルトは青
+  console.log('フォローアップ戦略の表示を完了しました');
 }
