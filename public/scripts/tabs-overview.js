@@ -7,48 +7,154 @@
  * @param {Object} overview - 人物概要データ
  */
 export function populateOverviewTab(overview) {
-    console.log('人物概要タブのデータ:', overview);
+    if (!overview) return;
 
-    if (!overview) {
-        console.error('人物概要データが存在しません');
-        return;
-    }
-
-    // 全体のコンテナを取得
     const container = document.getElementById('overview-content');
-    if (!container) {
-        console.error('人物概要コンテナが見つかりません');
-        return;
-    }
+    if (!container) return;
 
-    // HTMLの既存の構造を保持するため、強みと短所のh2要素を維持
-    // タイトルを追加する代わりに既存のHTMLタイトルを活用
+    // Clear existing content
+    container.innerHTML = '';
 
-    // 強み表示
-    populateStrengths(overview.strengths);
+    // Create main sections
+    const sections = [
+        { id: 'satisfaction-factors', title: '満足要因' },
+        { id: 'dissatisfaction-factors', title: '不満要因' },
+        { id: 'optimal-staff-types', title: '最適スタッフタイプ' },
+        { id: 'service-scripts', title: '接客スクリプト' }
+    ];
 
-    // 短所表示
-    populateWeaknesses(overview.weaknesses);
+    sections.forEach(section => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'overview-section';
+        sectionDiv.id = section.id;
 
-    // 相性タイプと人物像を格納するフレックスコンテナを作成
-    const flexContainer = document.createElement('div');
-    flexContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-6 mt-8';
-    container.appendChild(flexContainer);
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'section-title';
+        titleDiv.textContent = section.title;
 
-    // 相性タイプと人物像のコンテナを作成
-    const compatibilityContainer = document.createElement('div');
-    compatibilityContainer.id = 'compatibility-container';
-    flexContainer.appendChild(compatibilityContainer);
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'section-content';
 
-    const personalityContainer = document.createElement('div');
-    personalityContainer.id = 'personality-container';
-    flexContainer.appendChild(personalityContainer);
+        sectionDiv.appendChild(titleDiv);
+        sectionDiv.appendChild(contentDiv);
+        container.appendChild(sectionDiv);
+    });
 
-    // 相性タイプ表示
-    populateCompatibility(overview.compatibility);
+    // Populate each section
+    populateSatisfactionFactors(overview.satisfactionFactors);
+    populateDissatisfactionFactors(overview.dissatisfactionFactors);
+    populateOptimalStaffTypes(overview.optimalStaffTypes);
+    populateServiceScripts(overview.serviceScripts);
+}
 
-    // 人物像表示
-    populatePersonality(overview.personality);
+function populateSatisfactionFactors(factors) {
+    const container = document.querySelector('#satisfaction-factors .section-content');
+    if (!container || !factors) return;
+
+    const list = document.createElement('ul');
+    list.className = 'factors-list';
+
+    factors.forEach(factor => {
+        const item = document.createElement('li');
+        item.className = 'factor-item';
+        item.textContent = factor;
+        list.appendChild(item);
+    });
+
+    container.appendChild(list);
+}
+
+function populateDissatisfactionFactors(factors) {
+    const container = document.querySelector('#dissatisfaction-factors .section-content');
+    if (!container || !factors) return;
+
+    const list = document.createElement('ul');
+    list.className = 'factors-list';
+
+    factors.forEach(factor => {
+        const item = document.createElement('li');
+        item.className = 'factor-item';
+        item.textContent = factor;
+        list.appendChild(item);
+    });
+
+    container.appendChild(list);
+}
+
+function populateOptimalStaffTypes(types) {
+    const container = document.querySelector('#optimal-staff-types .section-content');
+    if (!container || !types) return;
+
+    const grid = document.createElement('div');
+    grid.className = 'staff-types-grid';
+
+    types.types.forEach(type => {
+        const card = document.createElement('div');
+        card.className = 'staff-type-card';
+
+        const title = document.createElement('div');
+        title.className = 'type-title';
+        title.textContent = type.title;
+
+        const description = document.createElement('div');
+        description.className = 'type-description';
+        description.textContent = type.description;
+
+        const tags = document.createElement('div');
+        tags.className = 'type-tags';
+        type.tags.forEach(tag => {
+            const tagSpan = document.createElement('span');
+            tagSpan.className = 'tag';
+            tagSpan.textContent = tag;
+            tags.appendChild(tagSpan);
+        });
+
+        const script = document.createElement('div');
+        script.className = 'type-script';
+        script.textContent = type.scriptExample;
+
+        card.appendChild(title);
+        card.appendChild(description);
+        card.appendChild(tags);
+        card.appendChild(script);
+        grid.appendChild(card);
+    });
+
+    container.appendChild(grid);
+}
+
+function populateServiceScripts(scripts) {
+    const container = document.querySelector('#service-scripts .section-content');
+    if (!container || !scripts) return;
+
+    const sections = [
+        { key: 'greeting', title: '来店時' },
+        { key: 'counseling', title: 'カウンセリング時' },
+        { key: 'closing', title: 'クロージング時' },
+        { key: 'followUp', title: 'アフターフォロー時' }
+    ];
+
+    sections.forEach(section => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'script-section';
+
+        const title = document.createElement('h3');
+        title.className = 'script-title';
+        title.textContent = section.title;
+
+        const script = document.createElement('div');
+        script.className = 'script-content';
+        script.textContent = scripts[section.key].script;
+
+        const purpose = document.createElement('div');
+        purpose.className = 'script-purpose';
+        purpose.textContent = scripts[section.key].purpose;
+
+        sectionDiv.appendChild(title);
+        sectionDiv.appendChild(script);
+        sectionDiv.appendChild(purpose);
+        container.appendChild(sectionDiv);
+    });
 }
 
 /**
