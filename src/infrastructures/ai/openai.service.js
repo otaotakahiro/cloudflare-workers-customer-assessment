@@ -3,7 +3,6 @@ import { SKILLS_PROMPT } from './prompts/skills-prompt.js';
 import { CAREER_PROMPT } from './prompts/career-prompt.js';
 import { FUTURE_PROMPT } from './prompts/future-prompt.js';
 import { PLUS_PROMPT } from './prompts/plus-prompt.js';
-import { COMPATIBILITY_PROMPT } from './prompts/compatibility-prompt.js';
 
 export class OpenaiService {
   constructor(apiKey, model = 'gpt-4.1-mini') {
