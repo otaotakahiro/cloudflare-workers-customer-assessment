@@ -9,208 +9,200 @@
 export function populateFutureTab(future) {
   if (!future) return;
 
-  console.log('リピート促進・フォローアップ戦略タブの表示処理を開始');
+  const container = document.getElementById('future-content');
+  if (!container) return;
 
-  // リピート促進方法の表示
-  populateRepeatPromotion(future.repeatPromotion);
-
-  // フォローアップ戦略の表示
-  populateFollowUpStrategy(future.followUpStrategy);
-
-  console.log('リピート促進・フォローアップ戦略タブの表示処理が完了');
-}
-
-/**
- * リピート促進方法の表示
- * @param {Object} repeatPromotion - リピート促進データ
- */
-function populateRepeatPromotion(repeatPromotion) {
-  if (!repeatPromotion) {
-    console.warn('リピート促進データがありません');
-    return;
-  }
-
-  const container = document.getElementById('timeline-container');
-  if (!container) {
-    console.error('リピート促進コンテナが見つかりません: timeline-container');
-    return;
-  }
-
-  console.log('リピート促進コンテナを取得しました。コンテンツをクリアします');
-
-  // コンテナをクリア
+  // Clear existing content
   container.innerHTML = '';
 
-  // タイミングセクション
-  if (repeatPromotion.timing && repeatPromotion.timing.length) {
-    const timingSection = document.createElement('div');
-    timingSection.className = 'mb-8';
-
-    // タイミングのタイトル
-    const timingTitle = document.createElement('h3');
-    timingTitle.className = 'text-xl font-bold mb-4 flex items-center text-blue-700 bg-blue-50 p-2 rounded-md';
-    timingTitle.innerHTML = '<i class="fas fa-clock text-blue-500 mr-2"></i>フォローアップタイミング';
-    timingSection.appendChild(timingTitle);
-
-    // タイミングリスト
-    const timingList = document.createElement('div');
-    timingList.className = 'space-y-4';
-
-    repeatPromotion.timing.forEach(item => {
-      const timingItem = document.createElement('div');
-      timingItem.className = 'bg-white p-4 border rounded-lg shadow-sm';
-
-      // 期間
-      const period = document.createElement('div');
-      period.className = 'font-bold text-blue-600 mb-2';
-      period.textContent = item.period;
-      timingItem.appendChild(period);
-
-      // 方法
-      const method = document.createElement('div');
-      method.className = 'mb-2';
-      method.innerHTML = `<span class="font-semibold">方法：</span>${item.method}`;
-      timingItem.appendChild(method);
-
-      // 内容
-      const content = document.createElement('div');
-      content.className = 'mb-2';
-      content.innerHTML = `<span class="font-semibold">内容：</span>${item.content}`;
-      timingItem.appendChild(content);
-
-      // 期待効果
-      const effect = document.createElement('div');
-      effect.className = 'text-sm text-gray-600';
-      effect.innerHTML = `<span class="font-semibold">期待効果：</span>${item.expectedEffect}`;
-      timingItem.appendChild(effect);
-
-      timingList.appendChild(timingItem);
-    });
-
-    timingSection.appendChild(timingList);
-    container.appendChild(timingSection);
-  }
-
-  // コミュニケーションセクション
-  if (repeatPromotion.communication) {
-    const communicationSection = document.createElement('div');
-    communicationSection.className = 'mb-8';
-
-    // コミュニケーションのタイトル
-    const communicationTitle = document.createElement('h3');
-    communicationTitle.className = 'text-xl font-bold mb-4 flex items-center text-green-700 bg-green-50 p-2 rounded-md';
-    communicationTitle.innerHTML = '<i class="fas fa-comments text-green-500 mr-2"></i>コミュニケーション戦略';
-    communicationSection.appendChild(communicationTitle);
-
-    // 好ましい方法
-    const preferredMethod = document.createElement('div');
-    preferredMethod.className = 'bg-white p-4 border rounded-lg shadow-sm mb-4';
-    preferredMethod.innerHTML = `
-      <div class="font-bold text-green-600 mb-2">好ましいコミュニケーション方法</div>
-      <div>${repeatPromotion.communication.preferredMethod}</div>
-    `;
-    communicationSection.appendChild(preferredMethod);
-
-    // キーポイント
-    if (repeatPromotion.communication.keyPoints && repeatPromotion.communication.keyPoints.length) {
-      const keyPoints = document.createElement('div');
-      keyPoints.className = 'bg-white p-4 border rounded-lg shadow-sm mb-4';
-      keyPoints.innerHTML = `
-        <div class="font-bold text-green-600 mb-2">重要なポイント</div>
-        <ul class="list-disc pl-5 space-y-1">
-          ${repeatPromotion.communication.keyPoints.map(point => `<li>${point}</li>`).join('')}
-        </ul>
-      `;
-      communicationSection.appendChild(keyPoints);
-    }
-
-    // 避けるべきポイント
-    if (repeatPromotion.communication.avoidPoints && repeatPromotion.communication.avoidPoints.length) {
-      const avoidPoints = document.createElement('div');
-      avoidPoints.className = 'bg-white p-4 border rounded-lg shadow-sm';
-      avoidPoints.innerHTML = `
-        <div class="font-bold text-red-600 mb-2">避けるべきポイント</div>
-        <ul class="list-disc pl-5 space-y-1">
-          ${repeatPromotion.communication.avoidPoints.map(point => `<li>${point}</li>`).join('')}
-        </ul>
-      `;
-      communicationSection.appendChild(avoidPoints);
-    }
-
-    container.appendChild(communicationSection);
-  }
-
-  console.log('リピート促進方法の表示を完了しました');
-}
-
-/**
- * フォローアップ戦略の表示
- * @param {Object} followUpStrategy - フォローアップ戦略データ
- */
-function populateFollowUpStrategy(followUpStrategy) {
-  if (!followUpStrategy) {
-    console.warn('フォローアップ戦略データがありません');
-    return;
-  }
-
-  const container = document.getElementById('career-proposals-container');
-  if (!container) {
-    console.error('フォローアップ戦略コンテナが見つかりません: career-proposals-container');
-    return;
-  }
-
-  console.log('フォローアップ戦略コンテナを取得しました。コンテンツをクリアします');
-
-  // コンテナをクリア
-  container.innerHTML = '';
-
-  // 各期間の戦略を表示
-  const periods = [
-    { key: 'shortTerm', title: '短期戦略（1-3ヶ月）', icon: 'rocket', color: 'blue' },
-    { key: 'mediumTerm', title: '中期戦略（3-6ヶ月）', icon: 'chart-line', color: 'green' },
-    { key: 'longTerm', title: '長期戦略（6ヶ月以上）', icon: 'mountain', color: 'purple' }
+  // Create main sections
+  const sections = [
+    { id: 'continuity-motivation', title: '継続動機' },
+    { id: 'repeat-acquisition', title: 'リピート獲得' },
+    { id: 'relationship-building', title: '関係構築' }
   ];
 
-  periods.forEach(period => {
-    const strategy = followUpStrategy[period.key];
-    if (!strategy) return;
+  sections.forEach(section => {
+    const sectionDiv = document.createElement('div');
+    sectionDiv.className = 'future-section';
+    sectionDiv.id = section.id;
 
-    const strategyItem = document.createElement('div');
-    strategyItem.className = 'border rounded-lg p-5 mb-5 shadow-sm';
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'section-title';
+    titleDiv.textContent = section.title;
 
-    // タイトル部分
-    const titleSection = document.createElement('div');
-    titleSection.className = `text-lg font-bold mb-3 p-2 rounded-md bg-${period.color}-50 text-${period.color}-700 inline-block`;
-    titleSection.innerHTML = `<i class="fas fa-${period.icon} mr-2"></i>${period.title}`;
-    strategyItem.appendChild(titleSection);
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'section-content';
 
-    // アクションリスト
-    if (strategy.actions && strategy.actions.length) {
-      const actionsList = document.createElement('div');
-      actionsList.className = 'mb-4';
-      actionsList.innerHTML = `
-        <div class="font-semibold text-gray-700 mb-2">具体的なアクション</div>
-        <ul class="space-y-2 ml-6 list-disc">
-          ${strategy.actions.map(action => `<li class="text-sm">${action}</li>`).join('')}
-        </ul>
-      `;
-      strategyItem.appendChild(actionsList);
-    }
-
-    // 目標リスト
-    if (strategy.goals && strategy.goals.length) {
-      const goalsList = document.createElement('div');
-      goalsList.innerHTML = `
-        <div class="font-semibold text-gray-700 mb-2">達成目標</div>
-        <ul class="space-y-2 ml-6 list-disc">
-          ${strategy.goals.map(goal => `<li class="text-sm">${goal}</li>`).join('')}
-        </ul>
-      `;
-      strategyItem.appendChild(goalsList);
-    }
-
-    container.appendChild(strategyItem);
+    sectionDiv.appendChild(titleDiv);
+    sectionDiv.appendChild(contentDiv);
+    container.appendChild(sectionDiv);
   });
 
-  console.log('フォローアップ戦略の表示を完了しました');
+  // Populate each section
+  populateContinuityMotivation(future.continuityMotivation);
+  populateRepeatAcquisitionScripts(future.repeatAcquisitionScripts);
+  populateRelationshipBuilding(future.relationshipBuilding);
+}
+
+function populateContinuityMotivation(motivation) {
+  const container = document.querySelector('#continuity-motivation .section-content');
+  if (!container || !motivation) return;
+
+  // Primary Motives
+  const primaryMotivesDiv = document.createElement('div');
+  primaryMotivesDiv.className = 'primary-motives';
+
+  const motivesTitle = document.createElement('h3');
+  motivesTitle.className = 'subsection-title';
+  motivesTitle.textContent = '主要な継続動機';
+  primaryMotivesDiv.appendChild(motivesTitle);
+
+  const motivesGrid = document.createElement('div');
+  motivesGrid.className = 'motives-grid';
+
+  motivation.primaryMotives.forEach(motive => {
+    const card = document.createElement('div');
+    card.className = 'motive-card';
+
+    const type = document.createElement('div');
+    type.className = 'motive-type';
+    type.textContent = motive.type;
+
+    const strength = document.createElement('div');
+    strength.className = 'motive-strength';
+    strength.textContent = `強度: ${motive.strength}`;
+
+    const description = document.createElement('div');
+    description.className = 'motive-description';
+    description.textContent = motive.description;
+
+    const approach = document.createElement('div');
+    approach.className = 'motive-approach';
+    approach.textContent = motive.approachMethod;
+
+    card.appendChild(type);
+    card.appendChild(strength);
+    card.appendChild(description);
+    card.appendChild(approach);
+    motivesGrid.appendChild(card);
+  });
+
+  primaryMotivesDiv.appendChild(motivesGrid);
+  container.appendChild(primaryMotivesDiv);
+
+  // Retention Strategy
+  const strategyDiv = document.createElement('div');
+  strategyDiv.className = 'retention-strategy';
+
+  const strategyTitle = document.createElement('h3');
+  strategyTitle.className = 'subsection-title';
+  strategyTitle.textContent = '継続戦略';
+  strategyDiv.appendChild(strategyTitle);
+
+  const strategyContent = document.createElement('div');
+  strategyContent.className = 'strategy-content';
+
+  const visitCycle = document.createElement('div');
+  visitCycle.className = 'strategy-item';
+  visitCycle.innerHTML = `<strong>推奨来店周期:</strong> ${motivation.retentionStrategy.visitCycle}`;
+
+  const optimalTiming = document.createElement('div');
+  optimalTiming.className = 'strategy-item';
+  optimalTiming.innerHTML = `<strong>最適なアプローチタイミング:</strong> ${motivation.retentionStrategy.optimalTiming}`;
+
+  const keyPoints = document.createElement('div');
+  keyPoints.className = 'strategy-item';
+  keyPoints.innerHTML = `
+    <strong>継続促進のポイント:</strong>
+    <ul>
+      ${motivation.retentionStrategy.keyPoints.map(point => `<li>${point}</li>`).join('')}
+    </ul>
+  `;
+
+  strategyContent.appendChild(visitCycle);
+  strategyContent.appendChild(optimalTiming);
+  strategyContent.appendChild(keyPoints);
+  strategyDiv.appendChild(strategyContent);
+  container.appendChild(strategyDiv);
+}
+
+function populateRepeatAcquisitionScripts(scripts) {
+  const container = document.querySelector('#repeat-acquisition .section-content');
+  if (!container || !scripts) return;
+
+  const grid = document.createElement('div');
+  grid.className = 'scripts-grid';
+
+  scripts.forEach(script => {
+    const card = document.createElement('div');
+    card.className = 'script-card';
+
+    const timing = document.createElement('div');
+    timing.className = 'script-timing';
+    timing.textContent = script.timing;
+
+    const scriptContent = document.createElement('div');
+    scriptContent.className = 'script-content';
+    scriptContent.textContent = script.script;
+
+    const effect = document.createElement('div');
+    effect.className = 'script-effect';
+    effect.textContent = script.expectedEffect;
+
+    const followUp = document.createElement('div');
+    followUp.className = 'script-followup';
+    followUp.textContent = script.followUpAction;
+
+    card.appendChild(timing);
+    card.appendChild(scriptContent);
+    card.appendChild(effect);
+    card.appendChild(followUp);
+    grid.appendChild(card);
+  });
+
+  container.appendChild(grid);
+}
+
+function populateRelationshipBuilding(building) {
+  const container = document.querySelector('#relationship-building .section-content');
+  if (!container || !building) return;
+
+  const content = document.createElement('div');
+  content.className = 'relationship-content';
+
+  // Communication Style
+  const styleDiv = document.createElement('div');
+  styleDiv.className = 'communication-style';
+  styleDiv.innerHTML = `
+    <h3 class="subsection-title">コミュニケーションスタイル</h3>
+    <p>${building.communicationStyle}</p>
+  `;
+  content.appendChild(styleDiv);
+
+  // Trust Factors
+  const trustDiv = document.createElement('div');
+  trustDiv.className = 'trust-factors';
+  trustDiv.innerHTML = `
+    <h3 class="subsection-title">信頼関係構築要因</h3>
+    <ul>
+      ${building.trustFactors.map(factor => `<li>${factor}</li>`).join('')}
+    </ul>
+  `;
+  content.appendChild(trustDiv);
+
+  // Loyalty Program
+  const loyaltyDiv = document.createElement('div');
+  loyaltyDiv.className = 'loyalty-program';
+  loyaltyDiv.innerHTML = `
+    <h3 class="subsection-title">ロイヤリティプログラム</h3>
+    <p><strong>適したタイプ:</strong> ${building.loyaltyProgram.suitableType}</p>
+    <h4>効果的なインセンティブ:</h4>
+    <ul>
+      ${building.loyaltyProgram.incentives.map(incentive => `<li>${incentive}</li>`).join('')}
+    </ul>
+  `;
+  content.appendChild(loyaltyDiv);
+
+  container.appendChild(content);
 }
