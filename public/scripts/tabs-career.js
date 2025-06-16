@@ -8,65 +8,182 @@
  * @returns {boolean} データが有効な場合はtrue
  */
 function validateCareerData(career) {
-    if (!career) return false;
+    // デバッグ情報の出力
+    console.log('Validating career data:', {
+        hasData: !!career,
+        dataType: career ? typeof career : 'undefined',
+        keys: career ? Object.keys(career) : [],
+        motivationScores: career?.motivationScores ? {
+            length: career.motivationScores.length,
+            firstItem: career.motivationScores[0]
+        } : null,
+        purchasePatterns: career?.purchasePatterns ? {
+            length: career.purchasePatterns.length,
+            firstItem: career.purchasePatterns[0]
+        } : null,
+        investmentTendencies: career?.investmentTendencies ? {
+            length: career.investmentTendencies.length,
+            firstItem: career.investmentTendencies[0]
+        } : null,
+        recommendedServices: career?.recommendedServices ? {
+            length: career.recommendedServices.length,
+            firstItem: career.recommendedServices[0]
+        } : null
+    });
 
-    // 美容施術に関連するキーワードのリスト（拡充版）
-    const beautyKeywords = [
-        // 施術関連
-        '美容', 'エステ', 'スキンケア', 'リフトアップ', '美白', '保湿', 'シワ', 'たるみ', '毛穴', 'ニキビ',
-        'フェイシャル', 'マッサージ', 'トリートメント', 'パック', 'クレンジング', '化粧水', '美容液',
-        'クリーム', 'サプリメント', 'サロン', 'クリニック', '施術', '治療', 'ケア',
-        // 効果関連
-        '美肌', '若返り', 'アンチエイジング', '肌質改善', '肌トラブル', '肌荒れ', '乾燥', '敏感',
-        'ハリ', 'ツヤ', '透明感', 'くすみ', 'シミ', 'くま', '目の下', '頬', '口元',
-        // 部位関連
-        '顔', '目', '頬', '口元', '額', '首', 'デコルテ', 'ボディ',
-        // その他
-        'メンテナンス', 'ケア', 'お手入れ', 'スキンケア', 'ビューティー', '美容', '美しさ'
-    ];
-
-    // 各項目の内容を検証
-    const hasBeautyContent = (text) => {
-        if (!text) return false;
-        return beautyKeywords.some(keyword => text.toLowerCase().includes(keyword.toLowerCase()));
-    };
+    if (!career) {
+        console.error('Invalid career data: Data is null or undefined');
+        return false;
+    }
 
     // 必須フィールドの存在確認
-    if (!career.motivationScores || !career.purchasePatterns ||
-        !career.investmentTendencies || !career.recommendedServices) {
-        console.error('Invalid career data: Missing required fields');
+    const requiredFields = ['motivationScores', 'purchasePatterns', 'investmentTendencies', 'recommendedServices'];
+    const missingFields = requiredFields.filter(field => !career[field]);
+
+    if (missingFields.length > 0) {
+        console.error(`Invalid career data: Missing required fields: ${missingFields.join(', ')}`);
         return false;
     }
 
-    // motivationScoresの検証
-    if (career.motivationScores.length < 5) {
-        console.error('Invalid career data: Insufficient motivation scores');
+    // 各セクションのデータ構造と内容の検証
+    try {
+        // motivationScoresの検証
+        if (!Array.isArray(career.motivationScores) || career.motivationScores.length < 3) {
+            console.error('Invalid career data: motivationScores must be an array with at least 3 items');
+            return false;
+        }
+
+        // 各motivationScoreの構造検証
+        const invalidScores = career.motivationScores.filter(score =>
+            !score.type ||
+            typeof score.score !== 'number' ||
+            score.score < 1 ||
+            score.score > 100 ||
+            !score.description ||
+            score.description.trim().length < 10
+        );
+
+        if (invalidScores.length > 0) {
+            console.error('Invalid career data: Some motivationScores have invalid structure or content');
+            return false;
+        }
+
+        // purchasePatternsの検証
+        if (!Array.isArray(career.purchasePatterns) || career.purchasePatterns.length < 2) {
+            console.error('Invalid career data: purchasePatterns must be an array with at least 2 items');
+            return false;
+        }
+
+        // 各purchasePatternの構造検証
+        const invalidPatterns = career.purchasePatterns.filter(pattern =>
+            !pattern.name ||
+            !pattern.description ||
+            !pattern.proposalScript ||
+            pattern.description.trim().length < 10 ||
+            pattern.proposalScript.trim().length < 10
+        );
+
+        if (invalidPatterns.length > 0) {
+            console.error('Invalid career data: Some purchasePatterns have invalid structure or content');
+            return false;
+        }
+
+        // investmentTendenciesの検証
+        if (!Array.isArray(career.investmentTendencies) || career.investmentTendencies.length < 2) {
+            console.error('Invalid career data: investmentTendencies must be an array with at least 2 items');
+            return false;
+        }
+
+        // 各investmentTendencyの構造検証
+        const invalidTendencies = career.investmentTendencies.filter(tendency =>
+            !tendency.title ||
+            !tendency.description ||
+            tendency.description.trim().length < 10
+        );
+
+        if (invalidTendencies.length > 0) {
+            console.error('Invalid career data: Some investmentTendencies have invalid structure or content');
+            return false;
+        }
+
+        // recommendedServicesの検証
+        if (!Array.isArray(career.recommendedServices) || career.recommendedServices.length < 3) {
+            console.error('Invalid career data: recommendedServices must be an array with at least 3 items');
+            return false;
+        }
+
+        // 各recommendedServiceの構造検証
+        const invalidServices = career.recommendedServices.filter(service =>
+            !service.name ||
+            !service.description ||
+            !service.proposalTiming ||
+            !service.scriptExample ||
+            service.description.trim().length < 10 ||
+            service.scriptExample.trim().length < 10
+        );
+
+        if (invalidServices.length > 0) {
+            console.error('Invalid career data: Some recommendedServices have invalid structure or content');
+            return false;
+        }
+
+        // 検証結果の詳細なログ出力
+        const validationResults = {
+            motivationScores: {
+                isArray: Array.isArray(career.motivationScores),
+                length: career.motivationScores?.length || 0,
+                validItems: career.motivationScores?.filter(score =>
+                    score.type &&
+                    typeof score.score === 'number' &&
+                    score.score >= 1 &&
+                    score.score <= 100 &&
+                    score.description &&
+                    score.description.trim().length >= 10
+                ).length || 0
+            },
+            purchasePatterns: {
+                isArray: Array.isArray(career.purchasePatterns),
+                length: career.purchasePatterns?.length || 0,
+                validItems: career.purchasePatterns?.filter(pattern =>
+                    pattern.name &&
+                    pattern.description &&
+                    pattern.proposalScript &&
+                    pattern.description.trim().length >= 10 &&
+                    pattern.proposalScript.trim().length >= 10
+                ).length || 0
+            },
+            investmentTendencies: {
+                isArray: Array.isArray(career.investmentTendencies),
+                length: career.investmentTendencies?.length || 0,
+                validItems: career.investmentTendencies?.filter(tendency =>
+                    tendency.title &&
+                    tendency.description &&
+                    tendency.description.trim().length >= 10
+                ).length || 0
+            },
+            recommendedServices: {
+                isArray: Array.isArray(career.recommendedServices),
+                length: career.recommendedServices?.length || 0,
+                validItems: career.recommendedServices?.filter(service =>
+                    service.name &&
+                    service.description &&
+                    service.proposalTiming &&
+                    service.scriptExample &&
+                    service.description.trim().length >= 10 &&
+                    service.scriptExample.trim().length >= 10
+                ).length || 0
+            }
+        };
+
+        console.log('Validation results:', validationResults);
+
+        // すべての検証をパス
+        return true;
+
+    } catch (error) {
+        console.error('Error validating career data:', error);
         return false;
     }
-
-    // 各セクションの美容関連コンテンツ検証
-    const hasValidContent =
-        // motivationScoresの検証（少なくとも3つ以上のスコアに美容関連キーワードが含まれていること）
-        career.motivationScores.filter(score => hasBeautyContent(score.description)).length >= 3 &&
-        // purchasePatternsの検証（少なくとも2つ以上のパターンに美容関連キーワードが含まれていること）
-        career.purchasePatterns.filter(pattern =>
-            hasBeautyContent(pattern.description) || hasBeautyContent(pattern.proposalScript)
-        ).length >= 2 &&
-        // investmentTendenciesの検証（少なくとも2つ以上の傾向に美容関連キーワードが含まれていること）
-        career.investmentTendencies.filter(tendency =>
-            hasBeautyContent(tendency.description)
-        ).length >= 2 &&
-        // recommendedServicesの検証（少なくとも3つ以上のサービスに美容関連キーワードが含まれていること）
-        career.recommendedServices.filter(service =>
-            hasBeautyContent(service.description) || hasBeautyContent(service.scriptExample)
-        ).length >= 3;
-
-    if (!hasValidContent) {
-        console.error('Invalid career data: Insufficient beauty treatment related content');
-        return false;
-    }
-
-    return true;
 }
 
 /**
