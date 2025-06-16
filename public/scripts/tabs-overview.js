@@ -7,10 +7,18 @@
  * @param {Object} overview - 人物概要データ
  */
 export function populateOverviewTab(overview) {
-    if (!overview) return;
+    if (!overview) {
+        console.warn('overview data is null or undefined');
+        return;
+    }
+
+    console.log('Populating overview tab with data:', overview);  // デバッグ用
 
     const container = document.getElementById('overview-content');
-    if (!container) return;
+    if (!container) {
+        console.error('overview-content container not found');
+        return;
+    }
 
     // Clear existing content
     container.innerHTML = '';
@@ -130,8 +138,8 @@ function populateServiceScripts(scripts) {
     const sections = [
         { key: 'greeting', title: '来店時' },
         { key: 'counseling', title: 'カウンセリング時' },
-        { key: 'closing', title: 'クロージング時' },
-        { key: 'followUp', title: 'アフターフォロー時' }
+        { key: 'treatment', title: '施術時' },
+        { key: 'closing', title: '退店時' }
     ];
 
     sections.forEach(section => {
@@ -149,6 +157,55 @@ function populateServiceScripts(scripts) {
         const purpose = document.createElement('div');
         purpose.className = 'script-purpose';
         purpose.textContent = scripts[section.key].purpose;
+
+        // Flow data display
+        if (scripts[section.key].flow) {
+            const flowContainer = document.createElement('div');
+            flowContainer.className = 'script-flow mt-4';
+
+            const flowTitle = document.createElement('h4');
+            flowTitle.className = 'flow-title text-sm font-semibold mb-2';
+            flowTitle.textContent = 'フロー';
+            flowContainer.appendChild(flowTitle);
+
+            scripts[section.key].flow.forEach(flowStep => {
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'flow-step mb-3';
+
+                const stepTitle = document.createElement('div');
+                stepTitle.className = 'step-title font-medium text-sm mb-1';
+                stepTitle.textContent = flowStep.step;
+                stepDiv.appendChild(stepTitle);
+
+                if (flowStep.actions) {
+                    const actionsList = document.createElement('ul');
+                    actionsList.className = 'step-actions list-disc list-inside ml-4';
+                    flowStep.actions.forEach(action => {
+                        const li = document.createElement('li');
+                        li.className = 'text-sm text-gray-700';
+                        li.textContent = action;
+                        actionsList.appendChild(li);
+                    });
+                    stepDiv.appendChild(actionsList);
+                }
+
+                if (flowStep.topics) {
+                    const topicsList = document.createElement('ul');
+                    topicsList.className = 'step-topics list-disc list-inside ml-4';
+                    flowStep.topics.forEach(topic => {
+                        const li = document.createElement('li');
+                        li.className = 'text-sm text-gray-700';
+                        li.textContent = topic;
+                        topicsList.appendChild(li);
+                    });
+                    stepDiv.appendChild(topicsList);
+                }
+
+                flowContainer.appendChild(stepDiv);
+            });
+
+            sectionDiv.appendChild(flowContainer);
+        }
 
         sectionDiv.appendChild(title);
         sectionDiv.appendChild(script);

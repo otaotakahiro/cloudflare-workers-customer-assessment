@@ -17,304 +17,304 @@ console.log('- populatePlusTab:', typeof populatePlusTab === 'function' ? '読�
 let profileData = null;
 
 // テスト用のモックデータ
-const TEST_DATA = {
-    name: "テスト 太郎",
-    birthDate: "1990年1月1日",
-    gender: "男性",
-    analysisDate: "2025年4月",
-    overview: {
-        strengths: ["論理的思考力が高い", "忍耐強く取り組める", "細部への配慮ができる", "誠実で信頼される", "集中力がある"],
-        weaknesses: ["完璧主義の傾向がある", "決断に時間がかかる", "感情表現が少ない", "柔軟性に欠けることがある", "自己主張が弱い"],
-        compatibility: {
-            types: [
-                {
-                    title: "論理派リーダー",
-                    description: "物事を論理的に分析し、合理的な判断で組織を導く力があります。",
-                    tags: ["分析力", "論理性", "決断力"],
-                    note: "感情的要素も取り入れるとより良いバランスになります"
-                },
-                {
-                    title: "誠実なサポーター",
-                    description: "周囲の人を支える力があり、信頼関係を築くのが上手です。",
-                    tags: ["信頼性", "サポート力", "忍耐力"],
-                    note: "自分の意見も積極的に出すとより貢献度が増します"
-                },
-                {
-                    title: "細部重視の実務家",
-                    description: "細部まで注意を払い、確実に仕事を進めることができます。",
-                    tags: ["正確性", "実務力", "集中力"],
-                    note: "全体像を意識しながら進めることで、より効果的な成果を出せます"
-                }
-            ]
-        },
-        personality: {
-            summary: "論理的で誠実、責任感が強く信頼される人物です。細部に注意を払い、確実に仕事を進めます。",
-            behavior: {
-                type: "計画型",
-                description: "事前に計画を立て、手順通りに進めることを好みます。"
-            },
-            impression: {
-                type: "信頼型",
-                description: "約束を守り、期待通りの成果を出す人という印象を与えます。"
-            }
-        },
-        evaluation: {
-            summary: "分析力と忍耐力に優れ、長期的なプロジェクトで実力を発揮します。",
-            strengths: "論理的思考と計画性が高く、複雑な問題を着実に解決する能力があります。また、誠実さから信頼される人物です。",
-            weaknesses: "完璧を求める傾向があり、時に決断が遅れる場合があります。また、変化への適応には時間がかかることがあります。",
-            conclusion: "計画と分析が必要な長期的なプロジェクトでリーダーシップを発揮できる人材です。"
-        }
-    },
-    skills: {
-        evaluations: [
-            { name: "リーダー適性", score: 4, description: "論理的な判断と誠実さで周囲からの信頼を得ることができます。" },
-            { name: "協調性", score: 3, description: "チームの一員として貢献する力がありますが、意見の主張はやや控えめです。" },
-            { name: "ストレス耐性", score: 4, description: "忍耐強く長期的な問題に対処する力があります。" },
-            { name: "柔軟性", score: 2, description: "計画変更や急な状況変化への適応にはやや時間がかかります。" },
-            { name: "主体性", score: 3, description: "自分の担当範囲では主体的に行動できますが、新規の取り組みには慎重です。" }
-        ],
-        interviewQuestions: [
-            {
-                question: "計画通りに進まなかった状況で、どのように対応したか例を挙げてください。",
-                purpose: "柔軟性と問題解決能力を見るための質問です。計画変更への対応が弱点の可能性があるため、実際の行動を確認します。"
-            },
-            {
-                question: "チーム内で意見が分かれた時、あなたはどのように行動しましたか？",
-                purpose: "意見対立における調整能力と自己主張のバランスを確認します。やや自己主張が弱い面があるため、その対処法を見ます。"
-            }
-        ],
-        warningSignals: [
-            "完璧を求めすぎて進捗が止まる場合がある",
-            "意思決定に必要以上に時間をかけることがある",
-            "変化やルール変更に強い抵抗を示すことがある",
-            "自分の意見を表明せず、不満を内に溜め込むことがある"
-        ]
-    },
-    career: {
-        aptitudeScores: [
-            { field: "フェイシャルエステ", score: 90 },
-            { field: "ボディケア", score: 85 },
-            { field: "ヘアケア", score: 80 },
-            { field: "ネイルケア", score: 75 },
-            { field: "メイクアップ", score: 65 }
-        ],
-        businessAreas: [
-            {
-                name: "アンチエイジングケア",
-                icon: "lightbulb",
-                description: "肌の若返りと美しさを保つための総合的なケアプログラム",
-                tags: ["若返り", "美肌", "リフトアップ"]
-            },
-            {
-                name: "ボディシェイプアップ",
-                icon: "chart-line",
-                description: "理想的な体型を実現するためのボディケアプログラム",
-                tags: ["ダイエット", "シェイプアップ", "ボディライン"]
-            }
-        ],
-        successKeywords: [
-            {
-                title: "定期的なケア習慣",
-                icon: "graduation-cap",
-                description: "定期的な施術とホームケアの組み合わせで効果を最大化"
-            },
-            {
-                title: "カスタマイズケア",
-                icon: "chart-line",
-                description: "個人の肌質や体質に合わせたオーダーメイドのケアプログラム"
-            },
-            {
-                title: "長期的な美しさ",
-                icon: "handshake",
-                description: "一時的な効果ではなく、持続的な美しさを実現するケア"
-            }
-        ],
-        suitableFields: [
-            {
-                name: "フェイシャルエステ",
-                examples: "リフトアップ、美白、保湿、毛穴ケアなど",
-                description: "肌の状態を改善し、若々しい印象を与える施術が適しています。定期的なケアで効果を維持できます。"
-            },
-            {
-                name: "ボディケア",
-                examples: "脂肪吸引、セルライト除去、ボディシェイプなど",
-                description: "体型の悩みを解決し、理想的なボディラインを実現する施術が効果的です。"
-            },
-            {
-                name: "ヘアケア",
-                examples: "育毛、ヘッドスパ、トリートメントなど",
-                description: "髪の健康と美しさを保つための施術が適しています。頭皮環境の改善も期待できます。"
-            }
-        ]
-    },
-    future: {
-        timeline: [
-            {
-                period: "半年後",
-                term: "短期",
-                phase: "適応期",
-                description: "現在の環境で信頼を獲得する時期。担当業務で確実な成果を出し、周囲からの評価を高めています。"
-            },
-            {
-                period: "1年後",
-                term: "中期",
-                phase: "成長期",
-                description: "より責任のある業務を任されるようになります。専門知識を深め、チーム内での存在感が増します。"
-            },
-            {
-                period: "3年後",
-                term: "中期",
-                phase: "発展期",
-                description: "これまでの経験を活かしたプロジェクトリーダーとしての役割が期待されます。後進の指導も担当します。"
-            },
-            {
-                period: "5年後",
-                term: "長期",
-                phase: "確立期",
-                description: "専門分野でのエキスパートとして認められ、組織内での立場が確立します。管理職への道も開けてきます。"
-            }
-        ],
-        careerProposals: [
-            {
-                term: "短期（1年以内）",
-                title: "基盤固めと専門性強化",
-                icon: "rocket",
-                actions: [
-                    "現在の業務での成果を確実に出し、信頼を獲得する",
-                    "専門知識を深めるための資格取得や学習に取り組む",
-                    "組織内の人間関係を強化し、協力体制を築く"
-                ]
-            },
-            {
-                term: "中期（1～3年）",
-                title: "視野拡大と責任範囲の拡大",
-                icon: "chart-line",
-                actions: [
-                    "小規模なプロジェクトのリーダーとしての経験を積む",
-                    "部門を越えた横断的な知識を習得する",
-                    "自分の専門性を活かした改善提案を積極的に行う"
-                ]
-            },
-            {
-                term: "長期（5年以上）",
-                title: "組織的影響力の確立",
-                icon: "mountain",
-                actions: [
-                    "専門分野でのエキスパートとして組織に貢献する",
-                    "管理職として部下の育成とチーム力向上に取り組む",
-                    "業界内でのネットワークを構築し、外部との連携を強化する"
-                ]
-            }
-        ]
-    },
-    plus: {
-        asCustomer: {
-            beautyTendencies: [
-                {
-                    title: "美容傾向1",
-                    description: "お客さんの美容に関する傾向とその特徴を説明"
-                },
-                {
-                    title: "美容傾向2",
-                    description: "お客さんの美容に関する傾向とその特徴を説明"
-                },
-                {
-                    title: "美容傾向3",
-                    description: "お客さんの美容に関する傾向とその特徴を説明"
-                }
-            ],
-            recommendedScripts: [
-                {
-                    title: "おすすめスクリプト1",
-                    description: "お客さんの美容に関するおすすめスクリプトとその効果を説明"
-                },
-                {
-                    title: "おすすめスクリプト2",
-                    description: "お客さんの美容に関するおすすめスクリプトとその効果を説明"
-                },
-                {
-                    title: "おすすめスクリプト3",
-                    description: "お客さんの美容に関するおすすめスクリプトとその効果を説明"
-                }
-            ],
-            stepByStepProposal: {
-                process: [
-                    {
-                        step: "段階1",
-                        description: "お客さんの美容に関する段階的提案プロセスの説明"
-                    },
-                    {
-                        step: "段階2",
-                        description: "お客さんの美容に関する段階的提案プロセスの説明"
-                    },
-                    {
-                        step: "段階3",
-                        description: "お客さんの美容に関する段階的提案プロセスの説明"
-                    }
-                ],
-                highEndProductGuide: {
-                    products: [
-                        {
-                            name: "高額商品1",
-                            description: "お客さんの美容に関する高額商品の説明とその効果"
-                        },
-                        {
-                            name: "高額商品2",
-                            description: "お客さんの美容に関する高額商品の説明とその効果"
-                        },
-                        {
-                            name: "高額商品3",
-                            description: "お客さんの美容に関する高額商品の説明とその効果"
-                        }
-                    ]
-                },
-                specialOfferEffect: {
-                    offers: [
-                        {
-                            name: "特別オファー1",
-                            description: "お客さんの美容に関する特別オファーの説明とその効果"
-                        },
-                        {
-                            name: "特別オファー2",
-                            description: "お客さんの美容に関する特別オファーの説明とその効果"
-                        },
-                        {
-                            name: "特別オファー3",
-                            description: "お客さんの美容に関する特別オファーの説明とその効果"
-                        }
-                    ]
-                }
-            }
-        }
-    }
-}
+// const TEST_DATA = {
+//     name: "テスト 太郎",
+//     birthDate: "1990年1月1日",
+//     gender: "男性",
+//     analysisDate: "2025年4月",
+//     overview: {
+//         strengths: ["論理的思考力が高い", "忍耐強く取り組める", "細部への配慮ができる", "誠実で信頼される", "集中力がある"],
+//         weaknesses: ["完璧主義の傾向がある", "決断に時間がかかる", "感情表現が少ない", "柔軟性に欠けることがある", "自己主張が弱い"],
+//         compatibility: {
+//             types: [
+//                 {
+//                     title: "論理派リーダー",
+//                     description: "物事を論理的に分析し、合理的な判断で組織を導く力があります。",
+//                     tags: ["分析力", "論理性", "決断力"],
+//                     note: "感情的要素も取り入れるとより良いバランスになります"
+//                 },
+//                 {
+//                     title: "誠実なサポーター",
+//                     description: "周囲の人を支える力があり、信頼関係を築くのが上手です。",
+//                     tags: ["信頼性", "サポート力", "忍耐力"],
+//                     note: "自分の意見も積極的に出すとより貢献度が増します"
+//                 },
+//                 {
+//                     title: "細部重視の実務家",
+//                     description: "細部まで注意を払い、確実に仕事を進めることができます。",
+//                     tags: ["正確性", "実務力", "集中力"],
+//                     note: "全体像を意識しながら進めることで、より効果的な成果を出せます"
+//                 }
+//             ]
+//         },
+//         personality: {
+//             summary: "論理的で誠実、責任感が強く信頼される人物です。細部に注意を払い、確実に仕事を進めます。",
+//             behavior: {
+//                 type: "計画型",
+//                 description: "事前に計画を立て、手順通りに進めることを好みます。"
+//             },
+//             impression: {
+//                 type: "信頼型",
+//                 description: "約束を守り、期待通りの成果を出す人という印象を与えます。"
+//             }
+//         },
+//         evaluation: {
+//             summary: "分析力と忍耐力に優れ、長期的なプロジェクトで実力を発揮します。",
+//             strengths: "論理的思考と計画性が高く、複雑な問題を着実に解決する能力があります。また、誠実さから信頼される人物です。",
+//             weaknesses: "完璧を求める傾向があり、時に決断が遅れる場合があります。また、変化への適応には時間がかかることがあります。",
+//             conclusion: "計画と分析が必要な長期的なプロジェクトでリーダーシップを発揮できる人材です。"
+//         }
+//     },
+//     skills: {
+//         evaluations: [
+//             { name: "リーダー適性", score: 4, description: "論理的な判断と誠実さで周囲からの信頼を得ることができます。" },
+//             { name: "協調性", score: 3, description: "チームの一員として貢献する力がありますが、意見の主張はやや控えめです。" },
+//             { name: "ストレス耐性", score: 4, description: "忍耐強く長期的な問題に対処する力があります。" },
+//             { name: "柔軟性", score: 2, description: "計画変更や急な状況変化への適応にはやや時間がかかります。" },
+//             { name: "主体性", score: 3, description: "自分の担当範囲では主体的に行動できますが、新規の取り組みには慎重です。" }
+//         ],
+//         interviewQuestions: [
+//             {
+//                 question: "計画通りに進まなかった状況で、どのように対応したか例を挙げてください。",
+//                 purpose: "柔軟性と問題解決能力を見るための質問です。計画変更への対応が弱点の可能性があるため、実際の行動を確認します。"
+//             },
+//             {
+//                 question: "チーム内で意見が分かれた時、あなたはどのように行動しましたか？",
+//                 purpose: "意見対立における調整能力と自己主張のバランスを確認します。やや自己主張が弱い面があるため、その対処法を見ます。"
+//             }
+//         ],
+//         warningSignals: [
+//             "完璧を求めすぎて進捗が止まる場合がある",
+//             "意思決定に必要以上に時間をかけることがある",
+//             "変化やルール変更に強い抵抗を示すことがある",
+//             "自分の意見を表明せず、不満を内に溜め込むことがある"
+//         ]
+//     },
+//     career: {
+//         aptitudeScores: [
+//             { field: "フェイシャルエステ", score: 90 },
+//             { field: "ボディケア", score: 85 },
+//             { field: "ヘアケア", score: 80 },
+//             { field: "ネイルケア", score: 75 },
+//             { field: "メイクアップ", score: 65 }
+//         ],
+//         businessAreas: [
+//             {
+//                 name: "アンチエイジングケア",
+//                 icon: "lightbulb",
+//                 description: "肌の若返りと美しさを保つための総合的なケアプログラム",
+//                 tags: ["若返り", "美肌", "リフトアップ"]
+//             },
+//             {
+//                 name: "ボディシェイプアップ",
+//                 icon: "chart-line",
+//                 description: "理想的な体型を実現するためのボディケアプログラム",
+//                 tags: ["ダイエット", "シェイプアップ", "ボディライン"]
+//             }
+//         ],
+//         successKeywords: [
+//             {
+//                 title: "定期的なケア習慣",
+//                 icon: "graduation-cap",
+//                 description: "定期的な施術とホームケアの組み合わせで効果を最大化"
+//             },
+//             {
+//                 title: "カスタマイズケア",
+//                 icon: "chart-line",
+//                 description: "個人の肌質や体質に合わせたオーダーメイドのケアプログラム"
+//             },
+//             {
+//                 title: "長期的な美しさ",
+//                 icon: "handshake",
+//                 description: "一時的な効果ではなく、持続的な美しさを実現するケア"
+//             }
+//         ],
+//         suitableFields: [
+//             {
+//                 name: "フェイシャルエステ",
+//                 examples: "リフトアップ、美白、保湿、毛穴ケアなど",
+//                 description: "肌の状態を改善し、若々しい印象を与える施術が適しています。定期的なケアで効果を維持できます。"
+//             },
+//             {
+//                 name: "ボディケア",
+//                 examples: "脂肪吸引、セルライト除去、ボディシェイプなど",
+//                 description: "体型の悩みを解決し、理想的なボディラインを実現する施術が効果的です。"
+//             },
+//             {
+//                 name: "ヘアケア",
+//                 examples: "育毛、ヘッドスパ、トリートメントなど",
+//                 description: "髪の健康と美しさを保つための施術が適しています。頭皮環境の改善も期待できます。"
+//             }
+//         ]
+//     },
+//     future: {
+//         timeline: [
+//             {
+//                 period: "半年後",
+//                 term: "短期",
+//                 phase: "適応期",
+//                 description: "現在の環境で信頼を獲得する時期。担当業務で確実な成果を出し、周囲からの評価を高めています。"
+//             },
+//             {
+//                 period: "1年後",
+//                 term: "中期",
+//                 phase: "成長期",
+//                 description: "より責任のある業務を任されるようになります。専門知識を深め、チーム内での存在感が増します。"
+//             },
+//             {
+//                 period: "3年後",
+//                 term: "中期",
+//                 phase: "発展期",
+//                 description: "これまでの経験を活かしたプロジェクトリーダーとしての役割が期待されます。後進の指導も担当します。"
+//             },
+//             {
+//                 period: "5年後",
+//                 term: "長期",
+//                 phase: "確立期",
+//                 description: "専門分野でのエキスパートとして認められ、組織内での立場が確立します。管理職への道も開けてきます。"
+//             }
+//         ],
+//         careerProposals: [
+//             {
+//                 term: "短期（1年以内）",
+//                 title: "基盤固めと専門性強化",
+//                 icon: "rocket",
+//                 actions: [
+//                     "現在の業務での成果を確実に出し、信頼を獲得する",
+//                     "専門知識を深めるための資格取得や学習に取り組む",
+//                     "組織内の人間関係を強化し、協力体制を築く"
+//                 ]
+//             },
+//             {
+//                 term: "中期（1～3年）",
+//                 title: "視野拡大と責任範囲の拡大",
+//                 icon: "chart-line",
+//                 actions: [
+//                     "小規模なプロジェクトのリーダーとしての経験を積む",
+//                     "部門を越えた横断的な知識を習得する",
+//                     "自分の専門性を活かした改善提案を積極的に行う"
+//                 ]
+//             },
+//             {
+//                 term: "長期（5年以上）",
+//                 title: "組織的影響力の確立",
+//                 icon: "mountain",
+//                 actions: [
+//                     "専門分野でのエキスパートとして組織に貢献する",
+//                     "管理職として部下の育成とチーム力向上に取り組む",
+//                     "業界内でのネットワークを構築し、外部との連携を強化する"
+//                 ]
+//             }
+//         ]
+//     },
+//     plus: {
+//         asCustomer: {
+//             beautyTendencies: [
+//                 {
+//                     title: "美容傾向1",
+//                     description: "お客さんの美容に関する傾向とその特徴を説明"
+//                 },
+//                 {
+//                     title: "美容傾向2",
+//                     description: "お客さんの美容に関する傾向とその特徴を説明"
+//                 },
+//                 {
+//                     title: "美容傾向3",
+//                     description: "お客さんの美容に関する傾向とその特徴を説明"
+//                 }
+//             ],
+//             recommendedScripts: [
+//                 {
+//                     title: "おすすめスクリプト1",
+//                     description: "お客さんの美容に関するおすすめスクリプトとその効果を説明"
+//                 },
+//                 {
+//                     title: "おすすめスクリプト2",
+//                     description: "お客さんの美容に関するおすすめスクリプトとその効果を説明"
+//                 },
+//                 {
+//                     title: "おすすめスクリプト3",
+//                     description: "お客さんの美容に関するおすすめスクリプトとその効果を説明"
+//                 }
+//             ],
+//             stepByStepProposal: {
+//                 process: [
+//                     {
+//                         step: "段階1",
+//                         description: "お客さんの美容に関する段階的提案プロセスの説明"
+//                     },
+//                     {
+//                         step: "段階2",
+//                         description: "お客さんの美容に関する段階的提案プロセスの説明"
+//                     },
+//                     {
+//                         step: "段階3",
+//                         description: "お客さんの美容に関する段階的提案プロセスの説明"
+//                     }
+//                 ],
+//                 highEndProductGuide: {
+//                     products: [
+//                         {
+//                             name: "高額商品1",
+//                             description: "お客さんの美容に関する高額商品の説明とその効果"
+//                         },
+//                         {
+//                             name: "高額商品2",
+//                             description: "お客さんの美容に関する高額商品の説明とその効果"
+//                         },
+//                         {
+//                             name: "高額商品3",
+//                             description: "お客さんの美容に関する高額商品の説明とその効果"
+//                         }
+//                     ]
+//                 },
+//                 specialOfferEffect: {
+//                     offers: [
+//                         {
+//                             name: "特別オファー1",
+//                             description: "お客さんの美容に関する特別オファーの説明とその効果"
+//                         },
+//                         {
+//                             name: "特別オファー2",
+//                             description: "お客さんの美容に関する特別オファーの説明とその効果"
+//                         },
+//                         {
+//                             name: "特別オファー3",
+//                             description: "お客さんの美容に関する特別オファーの説明とその効果"
+//                         }
+//                     ]
+//                 }
+//             }
+//         }
+//     }
+// }
 
-// デバッグ情報を処理するための機能（コンソールのみに出力）
-function updateDebug(message) {
-    // コンソール出力のみにする
-    if (process.env.NODE_ENV !== 'production') {
-        console.log("デバッグ情報:", message);
-    }
-}
+// // デバッグ情報を処理するための機能（コンソールのみに出力）
+// function updateDebug(message) {
+//     // コンソール出力のみにする
+//     if (process.env.NODE_ENV !== 'production') {
+//         console.log("デバッグ情報:", message);
+//     }
+// }
 
-// グローバルスコープでアクセス可能なテストデータロード関数
-window.loadTestData = function() {
-    console.log('loadTestData関数が呼び出されました');
+// // グローバルスコープでアクセス可能なテストデータロード関数
+// window.loadTestData = function() {
+//     console.log('loadTestData関数が呼び出されました');
 
-    // テストデータを直接使用
-    profileData = TEST_DATA;
+//     // テストデータを直接使用
+//     profileData = TEST_DATA;
 
-    // 基本情報を更新
-    updateBasicInfo();
+//     // 基本情報を更新
+//     updateBasicInfo();
 
-    // 全タブのデータを設定
-    populateAllTabs();
+//     // 全タブのデータを設定
+//     populateAllTabs();
 
-    // ローディングインジケータを非表示
-    showLoadingIndicator(false);
+//     // ローディングインジケータを非表示
+//     showLoadingIndicator(false);
 
-    console.log('テストデータのロードが完了しました');
-};
+//     console.log('テストデータのロードが完了しました');
+// };
 
 // 自動テストデータロードを無効化（API動作テストのため）
 // window.addEventListener('load', function() {
@@ -482,14 +482,43 @@ function loadEmbeddedData() {
     showLoadingIndicator(true);
     console.log('埋め込みデータ読み込み開始');
 
-    // ★ window.profileData が存在するか確認
     if (typeof window.profileData !== 'undefined' && window.profileData !== null) {
       console.log('window.profileDataが見つかりました。データを使用します。');
       profileData = window.profileData;
 
-      // デバッグ用にデータ構造を出力
+      // より詳細なデバッグログ
+      console.log('%c=== データ構造の詳細な診断 ===', 'color: red; font-weight: bold;');
+      console.log('1. profileDataの型:', typeof profileData);
+      console.log('2. profileDataのキー:', Object.keys(profileData));
+
+      if (profileData.analysis) {
+        console.log('3. analysisの型:', typeof profileData.analysis);
+        console.log('4. analysisのキー:', Object.keys(profileData.analysis));
+
+        if (profileData.analysis.data) {
+          console.log('5. analysis.dataの型:', typeof profileData.analysis.data);
+          console.log('6. analysis.dataのキー:', Object.keys(profileData.analysis.data));
+
+          if (profileData.analysis.data.career) {
+            console.log('7. careerの型:', typeof profileData.analysis.data.career);
+            console.log('8. careerのキー:', Object.keys(profileData.analysis.data.career));
+          } else {
+            console.log('7. careerは存在しません');
+          }
+        } else {
+          console.log('5. analysis.dataは存在しません');
+        }
+      } else {
+        console.log('3. analysisは存在しません');
+      }
+
+      // 元のデバッグログ
       console.log('%c埋め込みプロファイルデータ 詳細:', 'color: blue; font-weight: bold;');
-      console.log(JSON.stringify(profileData, null, 2)); // 詳細な構造を出力
+      console.log('profileData:', profileData);
+      console.log('profileData.analysis:', profileData.analysis);
+      console.log('profileData.analysis?.data:', profileData.analysis?.data);
+      console.log('profileData.analysis?.data?.career:', profileData.analysis?.data?.career);
+      console.log('profileData.analysis?.data?.career?.career:', profileData.analysis?.data?.career?.career);
 
       // ★ データから基本情報を抽出して表示更新
       const userInfo = {
@@ -507,12 +536,14 @@ function loadEmbeddedData() {
       // ★ 全タブの内容を更新
       console.log('データ構造に合わせて各タブのデータを抽出します...');
       const analysisData = profileData.analysis?.data;
-      console.log('analysis.data:', analysisData);
+      console.log('analysisData:', analysisData);
 
       // ★★★ ここを修正: より深い階層からデータを取得 ★★★
       const overviewData = analysisData?.overview?.overview;
+      console.log('overviewData:', overviewData);
       const skillsData = analysisData?.skills?.skills;
       const careerData = analysisData?.career?.career;
+      console.log('careerData (before populate):', careerData);
       const futureData = analysisData?.future?.future;
       const plusData = analysisData?.plus?.plus;
 
@@ -531,6 +562,7 @@ function loadEmbeddedData() {
       });
 
       populateAllTabsWithData(overviewData, skillsData, careerData, futureData, plusData);
+      console.log('careerData (after populate):', careerData);
 
       showLoadingIndicator(false);
       console.log('埋め込みデータの処理が完了しました');

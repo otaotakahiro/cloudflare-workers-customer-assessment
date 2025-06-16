@@ -140,24 +140,24 @@ function populateRepeatAcquisitionScripts(scripts) {
 
     const timing = document.createElement('div');
     timing.className = 'script-timing';
-    timing.textContent = script.timing;
+    timing.innerHTML = `<strong>タイミング:</strong> ${script.timing}`;
+    card.appendChild(timing);
 
     const scriptContent = document.createElement('div');
     scriptContent.className = 'script-content';
-    scriptContent.textContent = script.script;
+    scriptContent.innerHTML = `<strong>スクリプト:</strong><br>${script.script}`;
+    card.appendChild(scriptContent);
 
     const effect = document.createElement('div');
     effect.className = 'script-effect';
-    effect.textContent = script.expectedEffect;
+    effect.innerHTML = `<strong>期待される効果:</strong><br>${script.expectedEffect}`;
+    card.appendChild(effect);
 
     const followUp = document.createElement('div');
     followUp.className = 'script-followup';
-    followUp.textContent = script.followUpAction;
-
-    card.appendChild(timing);
-    card.appendChild(scriptContent);
-    card.appendChild(effect);
+    followUp.innerHTML = `<strong>フォローアップアクション:</strong><br>${script.followUpAction}`;
     card.appendChild(followUp);
+
     grid.appendChild(card);
   });
 
@@ -172,37 +172,65 @@ function populateRelationshipBuilding(building) {
   content.className = 'relationship-content';
 
   // Communication Style
-  const styleDiv = document.createElement('div');
-  styleDiv.className = 'communication-style';
-  styleDiv.innerHTML = `
-    <h3 class="subsection-title">コミュニケーションスタイル</h3>
-    <p>${building.communicationStyle}</p>
-  `;
-  content.appendChild(styleDiv);
+  if (building.communicationStyle) {
+    const styleDiv = document.createElement('div');
+    styleDiv.className = 'communication-style';
+    styleDiv.innerHTML = `
+      <h3 class="subsection-title">コミュニケーションスタイル</h3>
+      <p>${building.communicationStyle}</p>
+    `;
+    content.appendChild(styleDiv);
+  }
 
   // Trust Factors
-  const trustDiv = document.createElement('div');
-  trustDiv.className = 'trust-factors';
-  trustDiv.innerHTML = `
-    <h3 class="subsection-title">信頼関係構築要因</h3>
-    <ul>
-      ${building.trustFactors.map(factor => `<li>${factor}</li>`).join('')}
-    </ul>
-  `;
-  content.appendChild(trustDiv);
+  if (building.trustFactors && Array.isArray(building.trustFactors)) {
+    const trustDiv = document.createElement('div');
+    trustDiv.className = 'trust-factors';
+    trustDiv.innerHTML = `
+      <h3 class="subsection-title">信頼関係構築要因</h3>
+      <ul>
+        ${building.trustFactors.map(factor => `<li>${factor}</li>`).join('')}
+      </ul>
+    `;
+    content.appendChild(trustDiv);
+  }
 
   // Loyalty Program
-  const loyaltyDiv = document.createElement('div');
-  loyaltyDiv.className = 'loyalty-program';
-  loyaltyDiv.innerHTML = `
-    <h3 class="subsection-title">ロイヤリティプログラム</h3>
-    <p><strong>適したタイプ:</strong> ${building.loyaltyProgram.suitableType}</p>
-    <h4>効果的なインセンティブ:</h4>
-    <ul>
-      ${building.loyaltyProgram.incentives.map(incentive => `<li>${incentive}</li>`).join('')}
-    </ul>
-  `;
-  content.appendChild(loyaltyDiv);
+  if (building.loyaltyProgram) {
+    const loyaltyDiv = document.createElement('div');
+    loyaltyDiv.className = 'loyalty-program';
+
+    let loyaltyContent = `
+      <h3 class="subsection-title">ロイヤリティプログラム</h3>
+      <div class="loyalty-content">
+    `;
+
+    if (building.loyaltyProgram.suitableType) {
+      loyaltyContent += `<p><strong>適したタイプ:</strong> ${building.loyaltyProgram.suitableType}</p>`;
+    }
+
+    if (building.loyaltyProgram.incentives && Array.isArray(building.loyaltyProgram.incentives)) {
+      loyaltyContent += `
+        <h4>効果的なインセンティブ:</h4>
+        <ul>
+          ${building.loyaltyProgram.incentives.map(incentive => `<li>${incentive}</li>`).join('')}
+        </ul>
+      `;
+    }
+
+    if (building.loyaltyProgram.benefits && Array.isArray(building.loyaltyProgram.benefits)) {
+      loyaltyContent += `
+        <h4>特典内容:</h4>
+        <ul>
+          ${building.loyaltyProgram.benefits.map(benefit => `<li>${benefit}</li>`).join('')}
+        </ul>
+      `;
+    }
+
+    loyaltyContent += '</div>';
+    loyaltyDiv.innerHTML = loyaltyContent;
+    content.appendChild(loyaltyDiv);
+  }
 
   container.appendChild(content);
 }
