@@ -1,60 +1,81 @@
 /**
- * 美容施術提案タブ用の表示処理
+ * 美容施術提案タブ用の表示処理（最適化版）
+ * 静的HTML + 内容挿入方式
  */
 
 /**
  * 美容施術データの検証
- * @param {Object} career - 美容施術データ
+ * @param {Object} lifestyle - 美容施術データ
  * @returns {boolean} データが有効な場合はtrue
  */
-function validateCareerData(career) {
+function validateLifeStyleData(lifestyle) {
     // デバッグ情報の出力
-    console.log('Validating career data:', {
-        hasData: !!career,
-        dataType: career ? typeof career : 'undefined',
-        keys: career ? Object.keys(career) : [],
-        motivationScores: career?.motivationScores ? {
-            length: career.motivationScores.length,
-            firstItem: career.motivationScores[0]
+    console.log('Validating lifestyle data:', {
+        hasData: !!lifestyle,
+        dataType: lifestyle ? typeof lifestyle : 'undefined',
+        keys: lifestyle ? Object.keys(lifestyle) : [],
+        beautyAcupunctureMotivations: lifestyle?.beautyAcupunctureMotivations ? {
+            length: lifestyle.beautyAcupunctureMotivations.length,
+            firstItem: lifestyle.beautyAcupunctureMotivations[0]
         } : null,
-        purchasePatterns: career?.purchasePatterns ? {
-            length: career.purchasePatterns.length,
-            firstItem: career.purchasePatterns[0]
+        motivationScores: lifestyle?.motivationScores ? {
+            length: lifestyle.motivationScores.length,
+            firstItem: lifestyle.motivationScores[0]
         } : null,
-        investmentTendencies: career?.investmentTendencies ? {
-            length: career.investmentTendencies.length,
-            firstItem: career.investmentTendencies[0]
+        purchasePatterns: lifestyle?.purchasePatterns ? {
+            length: lifestyle.purchasePatterns.length,
+            firstItem: lifestyle.purchasePatterns[0]
         } : null,
-        recommendedServices: career?.recommendedServices ? {
-            length: career.recommendedServices.length,
-            firstItem: career.recommendedServices[0]
+        recommendedServices: lifestyle?.recommendedServices ? {
+            length: lifestyle.recommendedServices.length,
+            firstItem: lifestyle.recommendedServices[0]
         } : null
     });
 
-    if (!career) {
-        console.error('Invalid career data: Data is null or undefined');
+    if (!lifestyle) {
+        console.error('Invalid lifestyle data: Data is null or undefined');
         return false;
     }
 
-    // 必須フィールドの存在確認
-    const requiredFields = ['motivationScores', 'purchasePatterns', 'investmentTendencies', 'recommendedServices'];
-    const missingFields = requiredFields.filter(field => !career[field]);
+    // 必須フィールドの存在確認（新しい構造に対応）
+    const requiredFields = ['beautyAcupunctureMotivations', 'motivationScores', 'purchasePatterns', 'recommendedServices'];
+    const missingFields = requiredFields.filter(field => !lifestyle[field]);
 
     if (missingFields.length > 0) {
-        console.error(`Invalid career data: Missing required fields: ${missingFields.join(', ')}`);
+        console.error(`Invalid lifestyle data: Missing required fields: ${missingFields.join(', ')}`);
         return false;
     }
 
     // 各セクションのデータ構造と内容の検証
     try {
+        // beautyAcupunctureMotivationsの検証
+        if (!Array.isArray(lifestyle.beautyAcupunctureMotivations) || lifestyle.beautyAcupunctureMotivations.length < 1) {
+            console.error('Invalid lifestyle data: beautyAcupunctureMotivations must be an array with at least 1 item');
+            return false;
+        }
+
+        // 各beautyAcupunctureMotivationの構造検証
+        const invalidMotivations = lifestyle.beautyAcupunctureMotivations.filter(motivation =>
+            !motivation.rank ||
+            !motivation.motivation ||
+            !motivation.description ||
+            !motivation.staffCommunication ||
+            motivation.description.trim().length < 10
+        );
+
+        if (invalidMotivations.length > 0) {
+            console.error('Invalid lifestyle data: Some beautyAcupunctureMotivations have invalid structure or content');
+            return false;
+        }
+
         // motivationScoresの検証
-        if (!Array.isArray(career.motivationScores) || career.motivationScores.length < 3) {
-            console.error('Invalid career data: motivationScores must be an array with at least 3 items');
+        if (!Array.isArray(lifestyle.motivationScores) || lifestyle.motivationScores.length < 3) {
+            console.error('Invalid lifestyle data: motivationScores must be an array with at least 3 items');
             return false;
         }
 
         // 各motivationScoreの構造検証
-        const invalidScores = career.motivationScores.filter(score =>
+        const invalidScores = lifestyle.motivationScores.filter(score =>
             !score.type ||
             typeof score.score !== 'number' ||
             score.score < 1 ||
@@ -64,18 +85,18 @@ function validateCareerData(career) {
         );
 
         if (invalidScores.length > 0) {
-            console.error('Invalid career data: Some motivationScores have invalid structure or content');
+            console.error('Invalid lifestyle data: Some motivationScores have invalid structure or content');
             return false;
         }
 
         // purchasePatternsの検証
-        if (!Array.isArray(career.purchasePatterns) || career.purchasePatterns.length < 2) {
-            console.error('Invalid career data: purchasePatterns must be an array with at least 2 items');
+        if (!Array.isArray(lifestyle.purchasePatterns) || lifestyle.purchasePatterns.length < 2) {
+            console.error('Invalid lifestyle data: purchasePatterns must be an array with at least 2 items');
             return false;
         }
 
         // 各purchasePatternの構造検証
-        const invalidPatterns = career.purchasePatterns.filter(pattern =>
+        const invalidPatterns = lifestyle.purchasePatterns.filter(pattern =>
             !pattern.name ||
             !pattern.description ||
             !pattern.proposalScript ||
@@ -84,36 +105,18 @@ function validateCareerData(career) {
         );
 
         if (invalidPatterns.length > 0) {
-            console.error('Invalid career data: Some purchasePatterns have invalid structure or content');
-            return false;
-        }
-
-        // investmentTendenciesの検証
-        if (!Array.isArray(career.investmentTendencies) || career.investmentTendencies.length < 2) {
-            console.error('Invalid career data: investmentTendencies must be an array with at least 2 items');
-            return false;
-        }
-
-        // 各investmentTendencyの構造検証
-        const invalidTendencies = career.investmentTendencies.filter(tendency =>
-            !tendency.title ||
-            !tendency.description ||
-            tendency.description.trim().length < 10
-        );
-
-        if (invalidTendencies.length > 0) {
-            console.error('Invalid career data: Some investmentTendencies have invalid structure or content');
+            console.error('Invalid lifestyle data: Some purchasePatterns have invalid structure or content');
             return false;
         }
 
         // recommendedServicesの検証
-        if (!Array.isArray(career.recommendedServices) || career.recommendedServices.length < 3) {
-            console.error('Invalid career data: recommendedServices must be an array with at least 3 items');
+        if (!Array.isArray(lifestyle.recommendedServices) || lifestyle.recommendedServices.length < 3) {
+            console.error('Invalid lifestyle data: recommendedServices must be an array with at least 3 items');
             return false;
         }
 
         // 各recommendedServiceの構造検証
-        const invalidServices = career.recommendedServices.filter(service =>
+        const invalidServices = lifestyle.recommendedServices.filter(service =>
             !service.name ||
             !service.description ||
             !service.proposalTiming ||
@@ -123,16 +126,27 @@ function validateCareerData(career) {
         );
 
         if (invalidServices.length > 0) {
-            console.error('Invalid career data: Some recommendedServices have invalid structure or content');
+            console.error('Invalid lifestyle data: Some recommendedServices have invalid structure or content');
             return false;
         }
 
         // 検証結果の詳細なログ出力
         const validationResults = {
+            beautyAcupunctureMotivations: {
+                isArray: Array.isArray(lifestyle.beautyAcupunctureMotivations),
+                length: lifestyle.beautyAcupunctureMotivations?.length || 0,
+                validItems: lifestyle.beautyAcupunctureMotivations?.filter(motivation =>
+                    motivation.rank &&
+                    motivation.motivation &&
+                    motivation.description &&
+                    motivation.staffCommunication &&
+                    motivation.description.trim().length >= 10
+                ).length || 0
+            },
             motivationScores: {
-                isArray: Array.isArray(career.motivationScores),
-                length: career.motivationScores?.length || 0,
-                validItems: career.motivationScores?.filter(score =>
+                isArray: Array.isArray(lifestyle.motivationScores),
+                length: lifestyle.motivationScores?.length || 0,
+                validItems: lifestyle.motivationScores?.filter(score =>
                     score.type &&
                     typeof score.score === 'number' &&
                     score.score >= 1 &&
@@ -142,9 +156,9 @@ function validateCareerData(career) {
                 ).length || 0
             },
             purchasePatterns: {
-                isArray: Array.isArray(career.purchasePatterns),
-                length: career.purchasePatterns?.length || 0,
-                validItems: career.purchasePatterns?.filter(pattern =>
+                isArray: Array.isArray(lifestyle.purchasePatterns),
+                length: lifestyle.purchasePatterns?.length || 0,
+                validItems: lifestyle.purchasePatterns?.filter(pattern =>
                     pattern.name &&
                     pattern.description &&
                     pattern.proposalScript &&
@@ -152,19 +166,10 @@ function validateCareerData(career) {
                     pattern.proposalScript.trim().length >= 10
                 ).length || 0
             },
-            investmentTendencies: {
-                isArray: Array.isArray(career.investmentTendencies),
-                length: career.investmentTendencies?.length || 0,
-                validItems: career.investmentTendencies?.filter(tendency =>
-                    tendency.title &&
-                    tendency.description &&
-                    tendency.description.trim().length >= 10
-                ).length || 0
-            },
             recommendedServices: {
-                isArray: Array.isArray(career.recommendedServices),
-                length: career.recommendedServices?.length || 0,
-                validItems: career.recommendedServices?.filter(service =>
+                isArray: Array.isArray(lifestyle.recommendedServices),
+                length: lifestyle.recommendedServices?.length || 0,
+                validItems: lifestyle.recommendedServices?.filter(service =>
                     service.name &&
                     service.description &&
                     service.proposalTiming &&
@@ -181,188 +186,192 @@ function validateCareerData(career) {
         return true;
 
     } catch (error) {
-        console.error('Error validating career data:', error);
+        console.error('Error validating lifestyle data:', error);
         return false;
     }
 }
 
 /**
  * 美容施術提案タブのデータを表示
- * @param {Object} career - 美容施術データ
+ * @param {Object} lifestyle - 美容施術データ
  */
-export function populateCareerTab(career) {
-    if (!career || !validateCareerData(career)) {
-        console.error('Invalid career data: Not beauty treatment focused');
+export function populateLifeStyleTab(lifestyle) {
+    if (!lifestyle || !validateLifeStyleData(lifestyle)) {
+        console.error('Invalid lifestyle data: Not beauty treatment focused');
         return;
     }
 
-    const container = document.getElementById('career-content');
-    if (!container) return;
+    console.log('Populating lifestyle tab with data:', lifestyle);
 
-    // Clear existing content
-    container.innerHTML = '';
+    // 美容鍼施術に対する購買動機
+    populateBeautyAcupunctureMotivations(lifestyle.beautyAcupunctureMotivations);
 
-    // Create main sections
-    const sections = [
-        { id: 'motivation-scores', title: '購買動機スコア' },
-        { id: 'purchase-patterns', title: '購買パターン' },
-        { id: 'investment-tendencies', title: '投資傾向' },
-        { id: 'recommended-services', title: '推奨サービス' }
-    ];
+    // 購買動機スコア
+    populateMotivationScores(lifestyle.motivationScores);
 
-    sections.forEach(section => {
-        const sectionDiv = document.createElement('div');
-        sectionDiv.className = 'career-section';
-        sectionDiv.id = section.id;
+    // 購買パターン
+    populatePurchasePatterns(lifestyle.purchasePatterns);
 
-        const titleDiv = document.createElement('div');
-        titleDiv.className = 'section-title';
-        titleDiv.textContent = section.title;
-
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'section-content';
-
-        sectionDiv.appendChild(titleDiv);
-        sectionDiv.appendChild(contentDiv);
-        container.appendChild(sectionDiv);
-    });
-
-    // Populate each section
-    populateMotivationScores(career.motivationScores);
-    populatePurchasePatterns(career.purchasePatterns);
-    populateInvestmentTendencies(career.investmentTendencies);
-    populateRecommendedServices(career.recommendedServices);
+    // 推奨サービス
+    populateRecommendedServices(lifestyle.recommendedServices);
 }
 
+/**
+ * 美容鍼施術に対する購買動機を表示
+ * @param {Array} motivations - 購買動機データ配列
+ */
+function populateBeautyAcupunctureMotivations(motivations) {
+    if (!Array.isArray(motivations)) return;
+
+    motivations.forEach((motivation, index) => {
+        const cardId = index + 1;
+        const cardEl = document.getElementById(`motivation-card-${cardId}`);
+
+        if (!cardEl) return;
+
+        // カードを表示
+        cardEl.style.display = 'block';
+
+        // 動機タイトル
+        const titleEl = document.getElementById(`motivation-title-${cardId}`);
+        if (titleEl) {
+            titleEl.textContent = motivation.motivation || '';
+        }
+
+        // 説明
+        const descEl = document.getElementById(`motivation-description-${cardId}`);
+        if (descEl) {
+            descEl.textContent = motivation.description || '';
+        }
+
+        // スタッフコミュニケーション
+        const commEl = document.getElementById(`motivation-comm-${cardId}`);
+        if (commEl && motivation.staffCommunication) {
+            commEl.innerHTML = `
+                <strong>伝えるべき内容:</strong> ${motivation.staffCommunication.whatToConvey}<br>
+                <strong>伝え方:</strong> ${motivation.staffCommunication.howToConvey}<br>
+                <strong>タイミング:</strong> ${motivation.staffCommunication.timing}
+            `;
+        }
+    });
+}
+
+/**
+ * 購買動機スコアを表示
+ * @param {Array} scores - スコアデータ配列
+ */
 function populateMotivationScores(scores) {
-    const container = document.querySelector('#motivation-scores .section-content');
-    if (!container || !scores) return;
+    if (!Array.isArray(scores)) return;
 
-    const grid = document.createElement('div');
-    grid.className = 'motivation-scores-grid';
+    scores.forEach((score, index) => {
+        const cardId = index + 1;
+        const cardEl = document.getElementById(`score-card-${cardId}`);
 
-    scores.forEach(score => {
-        const card = document.createElement('div');
-        card.className = 'motivation-score-card';
+        if (!cardEl) return;
 
-        const scoreValue = document.createElement('div');
-        scoreValue.className = 'score-value';
-        scoreValue.textContent = score.score;
+        // カードを表示
+        cardEl.style.display = 'block';
 
-        const type = document.createElement('div');
-        type.className = 'score-type';
-        type.textContent = score.type;
+        // スコア値
+        const valueEl = document.getElementById(`score-value-${cardId}`);
+        if (valueEl) {
+            valueEl.textContent = score.score || '';
+        }
 
-        const description = document.createElement('div');
-        description.className = 'score-description';
-        description.textContent = score.description;
+        // タイプ
+        const typeEl = document.getElementById(`score-type-${cardId}`);
+        if (typeEl) {
+            typeEl.textContent = score.type || '';
+        }
 
-        card.appendChild(scoreValue);
-        card.appendChild(type);
-        card.appendChild(description);
-        grid.appendChild(card);
+        // 説明
+        const descEl = document.getElementById(`score-description-${cardId}`);
+        if (descEl) {
+            descEl.textContent = score.description || '';
+        }
     });
-
-    container.appendChild(grid);
 }
 
+/**
+ * 購買パターンを表示
+ * @param {Array} patterns - パターンデータ配列
+ */
 function populatePurchasePatterns(patterns) {
-    const container = document.querySelector('#purchase-patterns .section-content');
-    if (!container || !patterns) return;
+    if (!Array.isArray(patterns)) return;
 
-    const grid = document.createElement('div');
-    grid.className = 'purchase-patterns-grid';
+    patterns.forEach((pattern, index) => {
+        const cardId = index + 1;
+        const cardEl = document.getElementById(`pattern-card-${cardId}`);
 
-    patterns.forEach(pattern => {
-        const card = document.createElement('div');
-        card.className = 'purchase-pattern-card';
+        if (!cardEl) return;
 
-        const name = document.createElement('div');
-        name.className = 'pattern-name';
-        name.textContent = pattern.name;
+        // カードを表示
+        cardEl.style.display = 'block';
 
-        const description = document.createElement('div');
-        description.className = 'pattern-description';
-        description.textContent = pattern.description;
+        // 名前
+        const nameEl = document.getElementById(`pattern-name-${cardId}`);
+        if (nameEl) {
+            nameEl.textContent = pattern.name || '';
+        }
 
-        const script = document.createElement('div');
-        script.className = 'pattern-script';
-        script.textContent = pattern.proposalScript;
+        // 説明
+        const descEl = document.getElementById(`pattern-description-${cardId}`);
+        if (descEl) {
+            descEl.textContent = pattern.description || '';
+        }
 
-        card.appendChild(name);
-        card.appendChild(description);
-        card.appendChild(script);
-        grid.appendChild(card);
+        // スクリプト
+        const scriptEl = document.getElementById(`pattern-script-${cardId}`);
+        if (scriptEl) {
+            scriptEl.textContent = pattern.proposalScript || '';
+        }
     });
-
-    container.appendChild(grid);
 }
 
-function populateInvestmentTendencies(tendencies) {
-    const container = document.querySelector('#investment-tendencies .section-content');
-    if (!container || !tendencies) return;
-
-    const grid = document.createElement('div');
-    grid.className = 'investment-tendencies-grid';
-
-    tendencies.forEach(tendency => {
-        const card = document.createElement('div');
-        card.className = 'investment-tendency-card';
-
-        const title = document.createElement('div');
-        title.className = 'tendency-title';
-        title.textContent = tendency.title;
-
-        const description = document.createElement('div');
-        description.className = 'tendency-description';
-        description.textContent = tendency.description;
-
-        card.appendChild(title);
-        card.appendChild(description);
-        grid.appendChild(card);
-    });
-
-    container.appendChild(grid);
-}
-
+/**
+ * 推奨サービスを表示
+ * @param {Array} services - サービスデータ配列
+ */
 function populateRecommendedServices(services) {
-    const container = document.querySelector('#recommended-services .section-content');
-    if (!container || !services) return;
+    if (!Array.isArray(services)) return;
 
-    const grid = document.createElement('div');
-    grid.className = 'recommended-services-grid';
+    services.forEach((service, index) => {
+        const cardId = index + 1;
+        const cardEl = document.getElementById(`service-card-${cardId}`);
 
-    services.forEach(service => {
-        const card = document.createElement('div');
-        card.className = 'recommended-service-card';
+        if (!cardEl) return;
 
-        const name = document.createElement('div');
-        name.className = 'service-name';
-        name.textContent = service.name;
+        // カードを表示
+        cardEl.style.display = 'block';
 
-        const examples = document.createElement('div');
-        examples.className = 'service-examples';
-        examples.textContent = service.examples;
+        // サービス名
+        const nameEl = document.getElementById(`service-name-${cardId}`);
+        if (nameEl) {
+            nameEl.textContent = service.name || '';
+        }
 
-        const description = document.createElement('div');
-        description.className = 'service-description';
-        description.textContent = service.description;
+        // 例
+        const examplesEl = document.getElementById(`service-examples-${cardId}`);
+        if (examplesEl) {
+            examplesEl.textContent = service.examples || '';
+        }
 
-        const timing = document.createElement('div');
-        timing.className = 'service-timing';
-        timing.textContent = service.proposalTiming;
+        // 説明
+        const descEl = document.getElementById(`service-description-${cardId}`);
+        if (descEl) {
+            descEl.textContent = service.description || '';
+        }
 
-        const script = document.createElement('div');
-        script.className = 'service-script';
-        script.textContent = service.scriptExample;
+        // タイミング
+        const timingEl = document.getElementById(`service-timing-${cardId}`);
+        if (timingEl) {
+            timingEl.textContent = service.proposalTiming || '';
+        }
 
-        card.appendChild(name);
-        card.appendChild(examples);
-        card.appendChild(description);
-        card.appendChild(timing);
-        card.appendChild(script);
-        grid.appendChild(card);
+        // スクリプト例
+        const scriptEl = document.getElementById(`service-script-${cardId}`);
+        if (scriptEl) {
+            scriptEl.textContent = service.scriptExample || '';
+        }
     });
-
-    container.appendChild(grid);
 }

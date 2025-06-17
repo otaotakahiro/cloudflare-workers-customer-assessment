@@ -242,5 +242,86 @@ export default function (app) {
     }
   });
 
+  // --- 実行完了状態の更新 API (POST /update-completion) ---
+  app.post('/update-completion', async context => {
+    try {
+      const body = await context.req.json();
+      const { pageId, resultId, stepId, completed } = body;
+
+      if (!pageId || !resultId || !stepId || typeof completed !== 'boolean') {
+        return context.json({ error: '無効なリクエストです。必要なパラメータが不足しています。' }, 400);
+      }
+
+      // 現在の実行状態を取得
+      const communicationKey = `communication:${pageId}:${resultId}`;
+      const existingData = await context.env.CUSTOMER_ASSESSMENT_ANALYTICS.get(communicationKey);
+      let communicationData = existingData ? JSON.parse(existingData) : {
+        resultId,
+        pageId,
+        steps: {},
+        lastUpdated: new Date().toISOString()
+      };
+
+      // ステップの完了状態を更新
+      communicationData.steps[stepId] = {
+        completed,
+        updatedAt: new Date().toISOString()
+      };
+      communicationData.lastUpdated = new Date().toISOString();
+
+      // KVに保存
+      await context.env.CUSTOMER_ASSESSMENT_ANALYTICS.put(communicationKey, JSON.stringify(communicationData));
+
+      return context.json({
+        success: true,
+        message: '実行完了状態を更新しました。',
+        data: communicationData
+      });
+
+    } catch (error) {
+      console.error('Error updating completion status:', error);
+      if (error instanceof SyntaxError) {
+        return context.json({ error: '無効なリクエスト形式です。' }, 400);
+      }
+      return context.json({ error: '更新処理中にエラーが発生しました。' }, 500);
+    }
+  });
+
+  // --- 実行完了状態の取得 API (GET /completion-status) ---
+  app.get('/completion-status', async context => {
+    try {
+      const pageId = context.req.query('pageId');
+      const resultId = context.req.query('resultId');
+
+      if (!pageId || !resultId) {
+        return context.json({ error: 'pageId と resultId は必須です。' }, 400);
+      }
+
+      const communicationKey = `communication:${pageId}:${resultId}`;
+      const communicationData = await context.env.CUSTOMER_ASSESSMENT_ANALYTICS.get(communicationKey);
+
+      if (!communicationData) {
+        return context.json({
+          success: true,
+          data: {
+            resultId,
+            pageId,
+            steps: {},
+            lastUpdated: null
+          }
+        });
+      }
+
+      return context.json({
+        success: true,
+        data: JSON.parse(communicationData)
+      });
+
+    } catch (error) {
+      console.error('Error retrieving completion status:', error);
+      return context.json({ error: '実行完了状態の取得中にエラーが発生しました。' }, 500);
+    }
+  });
+
   return app;
 }

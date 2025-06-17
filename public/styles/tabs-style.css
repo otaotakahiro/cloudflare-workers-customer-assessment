@@ -962,7 +962,13 @@ li:before {
   color: #4a5568;
   font-size: 0.875rem;
   line-height: 1.6;
-  margin-bottom: 0.75rem;
+}
+
+.preference-approach {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 0.5rem 0;
+  margin: 0.75rem 0;
 }
 
 .preference-details {
@@ -1963,4 +1969,726 @@ li:before {
 .script-card .script-situation {
   font-weight: 600;
   margin-bottom: 1rem;
+}
+
+/* Personality Summary Styles */
+.personality-summary {
+  background: white;
+  border-radius: 12px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+
+.personality-summary h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+}
+
+.personality-summary h3 i {
+  margin-right: 0.75rem;
+  color: #3b82f6;
+  font-size: 1.2rem;
+}
+
+.personality-summary p {
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Personality Traits Styles */
+.personality-traits {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.personality-traits h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+}
+
+.personality-traits h3 i {
+  margin-right: 0.75rem;
+  color: #10b981;
+  font-size: 1.2rem;
+}
+
+.personality-traits ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.personality-traits li {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-left: 4px solid #10b981;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.personality-traits li:hover {
+  background: #f0fdf4;
+  transform: translateX(4px);
+}
+
+.personality-traits li i {
+  color: #10b981;
+  margin-right: 0.75rem;
+  font-size: 1rem;
+}
+
+.personality-traits li span {
+  color: #374151;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Personality Concerns Styles */
+.personality-concerns {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.personality-concerns h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+}
+
+.personality-concerns h3 i {
+  margin-right: 0.75rem;
+  color: #f59e0b;
+  font-size: 1.2rem;
+}
+
+.personality-concerns ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.personality-concerns li {
+  background: #fffbeb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-left: 4px solid #f59e0b;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.personality-concerns li:hover {
+  background: #fef3c7;
+  transform: translateX(4px);
+}
+
+.personality-concerns li i {
+  color: #f59e0b;
+  margin-right: 0.75rem;
+  font-size: 1rem;
+}
+
+.personality-concerns li span {
+  color: #374151;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Personality Expectations Styles */
+.personality-expectations {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.personality-expectations h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+}
+
+.personality-expectations h3 i {
+  margin-right: 0.75rem;
+  color: #8b5cf6;
+  font-size: 1.2rem;
+}
+
+.personality-expectations ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.personality-expectations li {
+  background: #faf5ff;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-left: 4px solid #8b5cf6;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.personality-expectations li:hover {
+  background: #f3e8ff;
+  transform: translateX(4px);
+}
+
+.personality-expectations li i {
+  color: #8b5cf6;
+  margin-right: 0.75rem;
+  font-size: 1rem;
+}
+
+.personality-expectations li span {
+  color: #374151;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Overview Section Styles */
+.overview-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+}
+
+.overview-section h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+}
+
+.overview-section h3 i {
+  margin-right: 0.75rem;
+  color: #3b82f6;
+  font-size: 1.2rem;
+}
+
+.overview-section p {
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.overview-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.overview-section li {
+  color: #4b5563;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #f9fafb;
+  border-radius: 6px;
+  border-left: 3px solid #3b82f6;
+  position: relative;
+}
+
+.overview-section li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: #3b82f6;
+  font-weight: bold;
+}
+
+/* Beauty Acupuncture Needs Styles */
+.beauty-acupuncture-needs {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+}
+
+.beauty-acupuncture-needs h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+}
+
+.beauty-acupuncture-needs h3 i {
+  margin-right: 0.75rem;
+  color: #ec4899;
+  font-size: 1.2rem;
+}
+
+.beauty-acupuncture-needs p {
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #fdf2f8;
+  border-radius: 8px;
+  border-left: 4px solid #ec4899;
+}
+
+.beauty-acupuncture-needs ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.beauty-acupuncture-needs li {
+  background: #fdf2f8;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-left: 4px solid #ec4899;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.beauty-acupuncture-needs li:hover {
+  background: #fce7f3;
+  transform: translateX(4px);
+}
+
+.beauty-acupuncture-needs li i {
+  color: #ec4899;
+  margin-right: 0.75rem;
+  font-size: 1rem;
+}
+
+.beauty-acupuncture-needs li span {
+  color: #374151;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Need Rank Card Styles */
+.need-rank-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.need-rank-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.need-rank-card .rank-number {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.need-rank-card .need-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+  padding-right: 3rem;
+  display: flex;
+  align-items: center;
+}
+
+.need-rank-card .need-title i {
+  margin-right: 0.75rem;
+  color: #3b82f6;
+  font-size: 1.1rem;
+}
+
+.need-rank-card .need-description {
+  color: #4b5563;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.need-rank-card .need-priority {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: #dbeafe;
+  color: #1d4ed8;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+.need-rank-card .need-urgency {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Motivation Rank Card Styles */
+.motivation-rank-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.motivation-rank-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.motivation-rank-card .motivation-rank {
+  margin-bottom: 1rem;
+}
+
+.motivation-rank-card .motivation-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+  padding-right: 3.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.motivation-rank-card .motivation-title i {
+  margin-right: 0.75rem;
+  color: #10b981;
+  font-size: 1.1rem;
+}
+
+.motivation-rank-card .motivation-description {
+  color: #4b5563;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.motivation-rank-card .motivation-score {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: #ecfdf5;
+  color: #065f46;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  border: 1px solid #d1fae5;
+}
+
+.motivation-rank-card .motivation-score i {
+  margin-right: 0.5rem;
+  color: #10b981;
+}
+
+.motivation-rank-card .motivation-type {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.motivation-rank-card .motivation-details {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 0.75rem;
+  border-left: 4px solid #10b981;
+}
+
+.motivation-rank-card .motivation-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.motivation-rank-card .motivation-details li {
+  color: #374151;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.motivation-rank-card .motivation-details li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: #10b981;
+  font-weight: bold;
+}
+
+/* Continuity Motivation Rank Card Styles */
+.continuity-motivation-rank-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.continuity-motivation-rank-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.continuity-motivation-rank-card .continuity-rank {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.continuity-motivation-rank-card .continuity-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+  padding-right: 3.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.continuity-motivation-rank-card .continuity-title i {
+  margin-right: 0.75rem;
+  color: #3b82f6;
+  font-size: 1.1rem;
+}
+
+.continuity-motivation-rank-card .continuity-description {
+  color: #4b5563;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.continuity-motivation-rank-card .continuity-score {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: #eff6ff;
+  color: #1e40af;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  border: 1px solid #dbeafe;
+}
+
+.continuity-motivation-rank-card .continuity-score i {
+  margin-right: 0.5rem;
+  color: #3b82f6;
+}
+
+.continuity-motivation-rank-card .continuity-type {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.continuity-motivation-rank-card .continuity-strategy {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 0.75rem;
+  border-left: 4px solid #3b82f6;
+}
+
+.continuity-motivation-rank-card .continuity-strategy h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+}
+
+.continuity-motivation-rank-card .continuity-strategy h4 i {
+  margin-right: 0.5rem;
+  color: #3b82f6;
+}
+
+.continuity-motivation-rank-card .continuity-strategy p {
+  color: #374151;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+.continuity-motivation-rank-card .continuity-strategy ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.continuity-motivation-rank-card .continuity-strategy li {
+  color: #374151;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #f1f5f9;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+}
+
+.continuity-motivation-rank-card .continuity-strategy li i {
+  color: #3b82f6;
+  margin-right: 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Responsive adjustments for all rank cards */
+@media (max-width: 768px) {
+  .need-rank-card,
+  .motivation-rank-card,
+  .continuity-motivation-rank-card {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .need-rank-card .rank-number,
+  .motivation-rank-card .motivation-rank,
+  .continuity-motivation-rank-card .continuity-rank {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.75rem;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .need-rank-card .need-title,
+  .motivation-rank-card .motivation-title,
+  .continuity-motivation-rank-card .continuity-title {
+    font-size: 1rem;
+    padding-right: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .need-rank-card .need-description,
+  .motivation-rank-card .motivation-description,
+  .continuity-motivation-rank-card .continuity-description {
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .motivation-rank-card .motivation-score,
+  .continuity-motivation-rank-card .continuity-score {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .motivation-rank-card .motivation-details,
+  .continuity-motivation-rank-card .continuity-strategy {
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .motivation-rank-card .motivation-details li,
+  .continuity-motivation-rank-card .continuity-strategy li {
+    font-size: 0.8rem;
+    padding: 0.375rem 0.5rem;
+  }
+}
+
+/* Animation for all rank cards */
+.need-rank-card,
+.motivation-rank-card,
+.continuity-motivation-rank-card {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Hover effects for interactive elements */
+.motivation-rank-card .motivation-details:hover,
+.continuity-motivation-rank-card .continuity-strategy:hover {
+  background: #f3f4f6;
+  transition: background-color 0.2s ease;
+}
+
+/* Focus states for accessibility */
+.need-rank-card:focus-within,
+.motivation-rank-card:focus-within,
+.continuity-motivation-rank-card:focus-within {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }

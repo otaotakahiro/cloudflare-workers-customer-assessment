@@ -1,7 +1,7 @@
 // タブモジュールをインポート
 import { populateOverviewTab } from './tabs-overview.js';
 import { populateSkillsTab } from './tabs-skills.js';
-import { populateCareerTab } from './tabs-career.js';
+import { populateLifeStyleTab } from './tabs-career.js';
 import { populateFutureTab } from './tabs-future.js';
 import { populatePlusTab } from './tabs-plus.js';
 
@@ -9,7 +9,7 @@ import { populatePlusTab } from './tabs-plus.js';
 console.log('タブモジュールのインポート状態:');
 console.log('- populateOverviewTab:', typeof populateOverviewTab === 'function' ? '読み込み成功' : '読み込み失敗');
 console.log('- populateSkillsTab:', typeof populateSkillsTab === 'function' ? '読み込み成功' : '読み込み失敗');
-console.log('- populateCareerTab:', typeof populateCareerTab === 'function' ? '読み込み成功' : '読み込み失敗');
+console.log('- populateLifeStyleTab:', typeof populateLifeStyleTab === 'function' ? '読み込み成功' : '読み込み失敗');
 console.log('- populateFutureTab:', typeof populateFutureTab === 'function' ? '読み込み成功' : '読み込み失敗');
 console.log('- populatePlusTab:', typeof populatePlusTab === 'function' ? '読み込み成功' : '読み込み失敗');
 
@@ -388,7 +388,7 @@ function initializeTabs() {
     const tabButtons = [
         document.getElementById('overview-tab'),
         document.getElementById('skills-tab'),
-        document.getElementById('career-tab'),
+        document.getElementById('lifestyle-tab'),
         document.getElementById('future-tab'),
         document.getElementById('plus-tab')
     ].filter(button => button !== null); // nullの要素を除外
@@ -399,7 +399,7 @@ function initializeTabs() {
     const tabContents = [
         document.getElementById('overview-content'),
         document.getElementById('skills-content'),
-        document.getElementById('career-content'),
+        document.getElementById('lifestyle-content'),
         document.getElementById('future-content'),
         document.getElementById('plus-content')
     ].filter(content => content !== null);
@@ -499,11 +499,11 @@ function loadEmbeddedData() {
           console.log('5. analysis.dataの型:', typeof profileData.analysis.data);
           console.log('6. analysis.dataのキー:', Object.keys(profileData.analysis.data));
 
-          if (profileData.analysis.data.career) {
-            console.log('7. careerの型:', typeof profileData.analysis.data.career);
-            console.log('8. careerのキー:', Object.keys(profileData.analysis.data.career));
+          if (profileData.analysis.data.lifestyle) {
+            console.log('7. lifestyleの型:', typeof profileData.analysis.data.lifestyle);
+            console.log('8. lifestyleのキー:', Object.keys(profileData.analysis.data.lifestyle));
           } else {
-            console.log('7. careerは存在しません');
+            console.log('7. lifestyleは存在しません');
           }
         } else {
           console.log('5. analysis.dataは存在しません');
@@ -518,7 +518,19 @@ function loadEmbeddedData() {
       console.log('profileData.analysis:', profileData.analysis);
       console.log('profileData.analysis?.data:', profileData.analysis?.data);
       console.log('profileData.analysis?.data?.career:', profileData.analysis?.data?.career);
-      console.log('profileData.analysis?.data?.career?.career:', profileData.analysis?.data?.career?.career);
+      console.log('profileData.analysis?.data?.career?.lifestyle:', profileData.analysis?.data?.career?.lifestyle);
+
+      // lifestyleデータの詳細な構造確認
+      if (profileData.analysis?.data?.career?.lifestyle) {
+        console.log('%cLifestyle Data Structure:', 'color: orange; font-weight: bold;');
+        console.log('lifestyle keys:', Object.keys(profileData.analysis.data.career.lifestyle));
+        console.log('lifestyle.beautyAcupunctureMotivations:', profileData.analysis.data.career.lifestyle.beautyAcupunctureMotivations);
+        console.log('lifestyle.motivationScores:', profileData.analysis.data.career.lifestyle.motivationScores);
+        console.log('lifestyle.purchasePatterns:', profileData.analysis.data.career.lifestyle.purchasePatterns);
+        console.log('lifestyle.recommendedServices:', profileData.analysis.data.career.lifestyle.recommendedServices);
+      } else {
+        console.log('%cLifestyle data not found in career.lifestyle', 'color: red; font-weight: bold;');
+      }
 
       // ★ データから基本情報を抽出して表示更新
       const userInfo = {
@@ -542,8 +554,8 @@ function loadEmbeddedData() {
       const overviewData = analysisData?.overview?.overview;
       console.log('overviewData:', overviewData);
       const skillsData = analysisData?.skills?.skills;
-      const careerData = analysisData?.career?.career;
-      console.log('careerData (before populate):', careerData);
+      const lifestyleData = analysisData?.career?.lifestyle;
+      console.log('lifestyleData (before populate):', lifestyleData);
       const futureData = analysisData?.future?.future;
       const plusData = analysisData?.plus?.plus;
 
@@ -556,13 +568,17 @@ function loadEmbeddedData() {
       console.log('抽出した各タブデータ:', {
         overview: overviewData ? '取得成功' : '取得失敗/null',
         skills: skillsData ? '取得成功' : '取得失敗/null',
-        career: careerData ? '取得成功' : '取得失敗/null',
+        lifestyle: lifestyleData ? '取得成功' : '取得失敗/null',
         future: futureData ? '取得成功' : '取得失敗/null',
         plus: plusData ? '取得成功' : '取得失敗/null'
       });
 
-      populateAllTabsWithData(overviewData, skillsData, careerData, futureData, plusData);
-      console.log('careerData (after populate):', careerData);
+      populateAllTabsWithData(overviewData, skillsData, lifestyleData, futureData, plusData);
+      console.log('lifestyleData (after populate):', lifestyleData);
+
+      // グローバル変数を設定（tabs-plus.jsで使用）
+      window.currentPageId = profileData.id || 'default-page';
+      window.profileData = profileData; // 既存のprofileDataをwindowオブジェクトにも設定
 
       showLoadingIndicator(false);
       console.log('埋め込みデータの処理が完了しました');
@@ -736,43 +752,49 @@ function updateBasicInfo() {
 /**
  * ★ 修正: 全タブのデータを設定 (引数でデータを受け取るように変更)
  */
-function populateAllTabsWithData(overview, skills, career, future, plus) {
+function populateAllTabsWithData(overview, skills, lifestyle, future, plus) {
     console.log('全タブのデータを設定します (引数データ使用)');
 
     try {
-        console.log('人物概要タブを設定...');
+        // --- 新フィールドの有無をデバッグ出力 ---
         if (overview) {
-            populateOverviewTab(overview);
+            console.log('[overview] beautyAcupunctureNeeds:', Array.isArray(overview.beautyAcupunctureNeeds) ? 'あり' : 'なし');
         } else {
             console.warn('人物概要データがありません');
         }
-
-        console.log('能力評価タブを設定...');
         if (skills) {
-            populateSkillsTab(skills);
+            console.log('[skills] customerPersonality:', skills.customerPersonality ? 'あり' : 'なし');
         } else {
             console.warn('能力評価データがありません');
         }
-
-        console.log('キャリア適性タブを設定...');
-        if (career) {
-            populateCareerTab(career);
+        if (lifestyle) {
+            console.log('[lifestyle] customerPersonality:', lifestyle.customerPersonality ? 'あり' : 'なし');
+            console.log('[lifestyle] beautyAcupunctureMotivations:', Array.isArray(lifestyle.beautyAcupunctureMotivations) ? 'あり' : 'なし');
         } else {
-            console.warn('キャリア適性データがありません');
+            console.warn('美容施術提案データがありません');
         }
-
-        console.log('未来予測タブを設定...');
         if (future) {
-            populateFutureTab(future);
+            console.log('[future] customerPersonality:', future.customerPersonality ? 'あり' : 'なし');
+            console.log('[future] beautyAcupunctureContinuityMotivations:', Array.isArray(future.beautyAcupunctureContinuityMotivations) ? 'あり' : 'なし');
         } else {
             console.warn('未来予測データがありません');
         }
 
-        console.log('プラスオンタブを設定...');
+        // --- 既存の各タブ呼び出し ---
+        if (overview) {
+            populateOverviewTab(overview);
+        }
+        if (skills) {
+            populateSkillsTab(skills);
+        }
+        if (lifestyle) {
+            populateLifeStyleTab(lifestyle);
+        }
+        if (future) {
+            populateFutureTab(future);
+        }
         if (plus) {
             populatePlusTab(plus);
-        } else {
-            console.warn('プラスオンデータがありません');
         }
 
         console.log('全タブのデータ設定が完了しました');
@@ -833,7 +855,10 @@ function diagnoseApiStructure(data) {
                 } else if (section === 'skills') {
                     checkKeys(source[section], ['evaluations', 'interviewQuestions', 'warningSignals'], msg, section);
                 } else if (section === 'career') {
-                    checkKeys(source[section], ['aptitudeScores', 'businessAreas', 'successKeywords', 'suitableFields'], msg, section);
+                    checkKeys(source[section], ['lifestyle'], msg, section);
+                    if (source[section].lifestyle) {
+                        checkKeys(source[section].lifestyle, ['beautyAcupunctureMotivations', 'motivationScores', 'purchasePatterns', 'recommendedServices'], msg, 'career.lifestyle');
+                    }
                 } else if (section === 'future') {
                     checkKeys(source[section], ['timeline', 'careerProposals'], msg, section);
                 } else if (section === 'plus') {

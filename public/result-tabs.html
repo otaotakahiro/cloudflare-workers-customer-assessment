@@ -29,7 +29,7 @@
           <button id="skills-tab" class="tab-button py-1.5 px-4 text-center font-medium text-sm text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300 mb-px sm:mb-0 sm:py-2">
             <i class="fas fa-chart-bar mr-1"></i>接客戦略
           </button>
-          <button id="career-tab" class="tab-button py-1.5 px-4 text-center font-medium text-sm text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300 mb-px sm:mb-0 sm:py-2">
+          <button id="lifestyle-tab" class="tab-button py-1.5 px-4 text-center font-medium text-sm text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300 mb-px sm:mb-0 sm:py-2">
             <i class="fas fa-briefcase mr-1"></i>施術提案
           </button>
           <button id="future-tab" class="tab-button py-1.5 px-4 text-center font-medium text-sm text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300 mb-px sm:mb-0 sm:py-2">
@@ -56,31 +56,471 @@
       <div class="tab-content-container" style="padding: 0;">
         <!-- 顧客特性タブの内容 -->
         <div class="tab-content active" id="overview-content">
-          <!-- JavaScriptで挿入 -->
+          <!-- 美容鍼施術に対する要望 -->
+          <div class="overview-section beauty-acupuncture-needs">
+            <div class="section-title">美容鍼施術に対する要望</div>
+            <div class="beauty-acupuncture-needs-grid">
+              <div id="need-card-1" class="need-rank-card" style="display: none;">
+                <div id="need-title-1" class="need-title"></div>
+                <div id="need-description-1" class="need-description"></div>
+                <div id="need-comm-1" class="need-comm"></div>
+              </div>
+              <div id="need-card-2" class="need-rank-card" style="display: none;">
+                <div id="need-title-2" class="need-title"></div>
+                <div id="need-description-2" class="need-description"></div>
+                <div id="need-comm-2" class="need-comm"></div>
+              </div>
+              <div id="need-card-3" class="need-rank-card" style="display: none;">
+                <div id="need-title-3" class="need-title"></div>
+                <div id="need-description-3" class="need-description"></div>
+                <div id="need-comm-3" class="need-comm"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 最適スタッフタイプ -->
+          <div class="overview-section" id="optimal-staff-types">
+            <div class="section-title">最適スタッフタイプ</div>
+            <div class="section-content">
+              <div class="staff-types-grid">
+                <div id="staff-type-card-1" class="staff-type-card" style="display: none;">
+                  <div id="staff-type-title-1" class="type-title"></div>
+                  <div id="staff-type-description-1" class="type-description"></div>
+                  <div id="staff-type-tags-1" class="type-tags"></div>
+                  <div id="staff-type-script-1" class="type-script"></div>
+                </div>
+                <div id="staff-type-card-2" class="staff-type-card" style="display: none;">
+                  <div id="staff-type-title-2" class="type-title"></div>
+                  <div id="staff-type-description-2" class="type-description"></div>
+                  <div id="staff-type-tags-2" class="type-tags"></div>
+                  <div id="staff-type-script-2" class="type-script"></div>
+                </div>
+                <div id="staff-type-card-3" class="staff-type-card" style="display: none;">
+                  <div id="staff-type-title-3" class="type-title"></div>
+                  <div id="staff-type-description-3" class="type-description"></div>
+                  <div id="staff-type-tags-3" class="type-tags"></div>
+                  <div id="staff-type-script-3" class="type-script"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- 接客戦略タブの内容 -->
         <div class="tab-content" id="skills-content">
-          <h2 class="text-2xl font-bold mb-6 bg-blue-50 p-2 rounded-md inline-block">接客戦略</h2>
-          <!-- JavaScriptで挿入 -->
+          <!-- 顧客の好み -->
+          <div class="skills-section" id="customer-preferences">
+            <div class="section-title">顧客の好み</div>
+            <div class="section-content">
+              <div class="preferences-grid">
+                <div id="preference-card-1" class="preference-card" style="display: none;">
+                  <div id="preference-name-1" class="preference-name"></div>
+                  <div id="preference-level-1" class="preference-level"></div>
+                  <div id="preference-description-1" class="preference-description"></div>
+                  <div id="preference-approach-1" class="preference-approach"></div>
+                  <div id="preference-beautyAcupunctureContext-1" class="preference-beautyAcupunctureContext"></div>
+                </div>
+                <div id="preference-card-2" class="preference-card" style="display: none;">
+                  <div id="preference-name-2" class="preference-name"></div>
+                  <div id="preference-level-2" class="preference-level"></div>
+                  <div id="preference-description-2" class="preference-description"></div>
+                  <div id="preference-approach-2" class="preference-approach"></div>
+                  <div id="preference-beautyAcupunctureContext-2" class="preference-beautyAcupunctureContext"></div>
+                </div>
+                <div id="preference-card-3" class="preference-card" style="display: none;">
+                  <div id="preference-name-3" class="preference-name"></div>
+                  <div id="preference-level-3" class="preference-level"></div>
+                  <div id="preference-description-3" class="preference-description"></div>
+                  <div id="preference-approach-3" class="preference-approach"></div>
+                  <div id="preference-beautyAcupunctureContext-3" class="preference-beautyAcupunctureContext"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 案内スクリプト -->
+          <div class="skills-section" id="guidance-scripts">
+            <div class="section-title">案内スクリプト</div>
+            <div class="section-content">
+              <div class="scripts-grid">
+                <div id="script-card-1" class="script-card" style="display: none;">
+                  <div id="script-situation-1" class="script-situation"></div>
+                  <div id="script-content-1" class="script-content"></div>
+                  <div id="script-reaction-1" class="script-reaction"></div>
+                  <div id="script-next-action-1" class="script-next-action"></div>
+                </div>
+                <div id="script-card-2" class="script-card" style="display: none;">
+                  <div id="script-situation-2" class="script-situation"></div>
+                  <div id="script-content-2" class="script-content"></div>
+                  <div id="script-reaction-2" class="script-reaction"></div>
+                  <div id="script-next-action-2" class="script-next-action"></div>
+                </div>
+                <div id="script-card-3" class="script-card" style="display: none;">
+                  <div id="script-situation-3" class="script-situation"></div>
+                  <div id="script-content-3" class="script-content"></div>
+                  <div id="script-reaction-3" class="script-reaction"></div>
+                  <div id="script-next-action-3" class="script-next-action"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 満足度指標 -->
+          <div class="skills-section" id="satisfaction-indicators">
+            <div class="section-title">満足度指標</div>
+            <div class="section-content">
+              <ul id="indicators-list" class="indicators-list"></ul>
+            </div>
+          </div>
+
+          <!-- 警告サイン -->
+          <div class="skills-section" id="warning-signals">
+            <div class="section-title">警告サイン</div>
+            <div class="section-content">
+              <ul id="signals-list" class="signals-list"></ul>
+            </div>
+          </div>
         </div>
 
         <!-- 施術提案タブの内容 -->
-        <div class="tab-content" id="career-content">
-          <h2 class="text-2xl font-bold mb-6 bg-blue-50 p-2 rounded-md inline-block">施術・商品提案</h2>
-          <!-- JavaScriptで挿入 -->
+        <div class="tab-content" id="lifestyle-content">
+          <!-- 美容鍼施術に対する購買動機 -->
+          <div class="lifestyle-section beauty-acupuncture-motivations">
+            <div class="section-title">美容鍼施術に対する購買動機</div>
+            <div class="beauty-acupuncture-motivations-grid">
+              <div id="motivation-card-1" class="motivation-rank-card" style="display: none;">
+                <div id="motivation-title-1" class="motivation-title"></div>
+                <div id="motivation-description-1" class="motivation-description"></div>
+                <div id="motivation-comm-1" class="motivation-comm"></div>
+              </div>
+              <div id="motivation-card-2" class="motivation-rank-card" style="display: none;">
+                <div id="motivation-title-2" class="motivation-title"></div>
+                <div id="motivation-description-2" class="motivation-description"></div>
+                <div id="motivation-comm-2" class="motivation-comm"></div>
+              </div>
+              <div id="motivation-card-3" class="motivation-rank-card" style="display: none;">
+                <div id="motivation-title-3" class="motivation-title"></div>
+                <div id="motivation-description-3" class="motivation-description"></div>
+                <div id="motivation-comm-3" class="motivation-comm"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 購買動機スコア -->
+          <div class="lifestyle-section" id="motivation-scores">
+            <div class="section-title">購買動機スコア</div>
+            <div class="section-content">
+              <div class="motivation-scores-grid">
+                <div id="score-card-1" class="motivation-score-card" style="display: none;">
+                  <div id="score-value-1" class="score-value"></div>
+                  <div id="score-type-1" class="score-type"></div>
+                  <div id="score-description-1" class="score-description"></div>
+                </div>
+                <div id="score-card-2" class="motivation-score-card" style="display: none;">
+                  <div id="score-value-2" class="score-value"></div>
+                  <div id="score-type-2" class="score-type"></div>
+                  <div id="score-description-2" class="score-description"></div>
+                </div>
+                <div id="score-card-3" class="motivation-score-card" style="display: none;">
+                  <div id="score-value-3" class="score-value"></div>
+                  <div id="score-type-3" class="score-type"></div>
+                  <div id="score-description-3" class="score-description"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 購買パターン -->
+          <div class="lifestyle-section" id="purchase-patterns">
+            <div class="section-title">購買パターン</div>
+            <div class="section-content">
+              <div class="purchase-patterns-grid">
+                <div id="pattern-card-1" class="purchase-pattern-card" style="display: none;">
+                  <div id="pattern-name-1" class="pattern-name"></div>
+                  <div id="pattern-description-1" class="pattern-description"></div>
+                  <div id="pattern-script-1" class="pattern-script"></div>
+                </div>
+                <div id="pattern-card-2" class="purchase-pattern-card" style="display: none;">
+                  <div id="pattern-name-2" class="pattern-name"></div>
+                  <div id="pattern-description-2" class="pattern-description"></div>
+                  <div id="pattern-script-2" class="pattern-script"></div>
+                </div>
+                <div id="pattern-card-3" class="purchase-pattern-card" style="display: none;">
+                  <div id="pattern-name-3" class="pattern-name"></div>
+                  <div id="pattern-description-3" class="pattern-description"></div>
+                  <div id="pattern-script-3" class="pattern-script"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 推奨サービス -->
+          <div class="lifestyle-section" id="recommended-services">
+            <div class="section-title">推奨サービス</div>
+            <div class="section-content">
+              <div class="recommended-services-grid">
+                <div id="service-card-1" class="recommended-service-card" style="display: none;">
+                  <div id="service-name-1" class="service-name"></div>
+                  <div id="service-examples-1" class="service-examples"></div>
+                  <div id="service-description-1" class="service-description"></div>
+                  <div id="service-timing-1" class="service-timing"></div>
+                  <div id="service-script-1" class="service-script"></div>
+                </div>
+                <div id="service-card-2" class="recommended-service-card" style="display: none;">
+                  <div id="service-name-2" class="service-name"></div>
+                  <div id="service-examples-2" class="service-examples"></div>
+                  <div id="service-description-2" class="service-description"></div>
+                  <div id="service-timing-2" class="service-timing"></div>
+                  <div id="service-script-2" class="service-script"></div>
+                </div>
+                <div id="service-card-3" class="recommended-service-card" style="display: none;">
+                  <div id="service-name-3" class="service-name"></div>
+                  <div id="service-examples-3" class="service-examples"></div>
+                  <div id="service-description-3" class="service-description"></div>
+                  <div id="service-timing-3" class="service-timing"></div>
+                  <div id="service-script-3" class="service-script"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- 継続戦略タブの内容 -->
         <div class="tab-content" id="future-content">
-          <h2 class="text-2xl font-bold mb-6 bg-blue-50 p-2 rounded-md inline-block">継続・リピート戦略</h2>
-          <!-- JavaScriptで挿入 -->
+          <!-- 美容鍼施術に対する継続動機 -->
+          <div class="future-section beauty-acupuncture-continuity-motivations">
+            <div class="section-title">美容鍼施術に対する継続動機</div>
+            <div class="beauty-acupuncture-continuity-motivations-grid">
+              <div id="continuity-motivation-card-1" class="continuity-motivation-rank-card" style="display: none;">
+                <div id="continuity-motivation-title-1" class="continuity-motivation-title"></div>
+                <div id="continuity-motivation-description-1" class="continuity-motivation-description"></div>
+                <div id="continuity-motivation-comm-1" class="continuity-motivation-comm"></div>
+              </div>
+              <div id="continuity-motivation-card-2" class="continuity-motivation-rank-card" style="display: none;">
+                <div id="continuity-motivation-title-2" class="continuity-motivation-title"></div>
+                <div id="continuity-motivation-description-2" class="continuity-motivation-description"></div>
+                <div id="continuity-motivation-comm-2" class="continuity-motivation-comm"></div>
+              </div>
+              <div id="continuity-motivation-card-3" class="continuity-motivation-rank-card" style="display: none;">
+                <div id="continuity-motivation-title-3" class="continuity-motivation-title"></div>
+                <div id="continuity-motivation-description-3" class="continuity-motivation-description"></div>
+                <div id="continuity-motivation-comm-3" class="continuity-motivation-comm"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 継続動機 -->
+          <div class="future-section" id="continuity-motivation">
+            <div class="section-title">継続動機</div>
+            <div class="section-content">
+              <div class="primary-motives">
+                <h3 class="subsection-title">主要な継続動機</h3>
+                <div class="motives-grid">
+                  <div id="motive-card-1" class="motive-card" style="display: none;">
+                    <div id="motive-type-1" class="motive-type"></div>
+                    <div id="motive-strength-1" class="motive-strength"></div>
+                    <div id="motive-description-1" class="motive-description"></div>
+                    <div id="motive-approach-1" class="motive-approach"></div>
+                  </div>
+                  <div id="motive-card-2" class="motive-card" style="display: none;">
+                    <div id="motive-type-2" class="motive-type"></div>
+                    <div id="motive-strength-2" class="motive-strength"></div>
+                    <div id="motive-description-2" class="motive-description"></div>
+                    <div id="motive-approach-2" class="motive-approach"></div>
+                  </div>
+                  <div id="motive-card-3" class="motive-card" style="display: none;">
+                    <div id="motive-type-3" class="motive-type"></div>
+                    <div id="motive-strength-3" class="motive-strength"></div>
+                    <div id="motive-description-3" class="motive-description"></div>
+                    <div id="motive-approach-3" class="motive-approach"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="retention-strategy">
+                <h3 class="subsection-title">継続戦略</h3>
+                <div class="strategy-content">
+                  <div id="visit-cycle" class="strategy-item"></div>
+                  <div id="optimal-timing" class="strategy-item"></div>
+                  <div id="key-points" class="strategy-item"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- リピート獲得 -->
+          <div class="future-section" id="repeat-acquisition">
+            <div class="section-title">リピート獲得</div>
+            <div class="section-content">
+              <div class="scripts-grid">
+                <div id="repeat-script-card-1" class="script-card" style="display: none;">
+                  <div id="repeat-script-timing-1" class="script-timing"></div>
+                  <div id="repeat-script-content-1" class="script-content"></div>
+                  <div id="repeat-script-effect-1" class="script-effect"></div>
+                  <div id="repeat-script-followup-1" class="script-followup"></div>
+                </div>
+                <div id="repeat-script-card-2" class="script-card" style="display: none;">
+                  <div id="repeat-script-timing-2" class="script-timing"></div>
+                  <div id="repeat-script-content-2" class="script-content"></div>
+                  <div id="repeat-script-effect-2" class="script-effect"></div>
+                  <div id="repeat-script-followup-2" class="script-followup"></div>
+                </div>
+                <div id="repeat-script-card-3" class="script-card" style="display: none;">
+                  <div id="repeat-script-timing-3" class="script-timing"></div>
+                  <div id="repeat-script-content-3" class="script-content"></div>
+                  <div id="repeat-script-effect-3" class="script-effect"></div>
+                  <div id="repeat-script-followup-3" class="script-followup"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 関係構築 -->
+          <div class="future-section" id="relationship-building">
+            <div class="section-title">関係構築</div>
+            <div class="section-content">
+              <div class="relationship-content">
+                <div id="communication-style" class="communication-style"></div>
+                <div id="trust-factors" class="trust-factors"></div>
+                <div id="loyalty-program" class="loyalty-program"></div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- アップセルタブの内容 -->
+        <!-- アップセル戦略タブの内容 -->
         <div class="tab-content" id="plus-content">
-          <h2 class="text-2xl font-bold mb-6 bg-blue-50 p-2 rounded-md inline-block">アップセル戦略</h2>
-          <!-- JavaScriptで挿入 -->
+          <!-- 価値観システム -->
+          <div class="plus-section" id="value-system">
+            <div class="section-title">価値観システム</div>
+            <div class="section-content">
+              <div class="investment-values">
+                <h3 class="subsection-title">投資価値観</h3>
+                <div class="values-grid">
+                  <div id="value-card-1" class="value-card" style="display: none;">
+                    <div id="value-type-1" class="value-type"></div>
+                    <div id="value-priority-1" class="value-priority"></div>
+                    <div id="value-description-1" class="value-description"></div>
+                    <div id="value-approach-1" class="value-approach"></div>
+                  </div>
+                  <div id="value-card-2" class="value-card" style="display: none;">
+                    <div id="value-type-2" class="value-type"></div>
+                    <div id="value-priority-2" class="value-priority"></div>
+                    <div id="value-description-2" class="value-description"></div>
+                    <div id="value-approach-2" class="value-approach"></div>
+                  </div>
+                  <div id="value-card-3" class="value-card" style="display: none;">
+                    <div id="value-type-3" class="value-type"></div>
+                    <div id="value-priority-3" class="value-priority"></div>
+                    <div id="value-description-3" class="value-description"></div>
+                    <div id="value-approach-3" class="value-approach"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="decision-factors">
+                <h3 class="subsection-title">決定要因</h3>
+                <ul id="factors-list" class="factors-list"></ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- アップセル戦略 -->
+          <div class="plus-section" id="upsell-strategies">
+            <div class="section-title">アップセル戦略</div>
+            <div class="section-content">
+              <div class="stepwise-approach">
+                <h3 class="subsection-title">段階的アプローチ</h3>
+                <div class="steps-list">
+                  <div id="step-card-1" class="step-card" style="display: none;">
+                    <div class="step-header">
+                      <div class="title-container">
+                        <div id="step-title-1" class="step-title"></div>
+                      </div>
+                      <button id="step-completion-1" class="completion-button">
+                        <i class="fas fa-circle"></i> 未実行
+                      </button>
+                    </div>
+                    <div id="step-method-1" class="step-method"></div>
+                    <div id="step-script-1" class="step-script"></div>
+                    <div id="step-timeline-1" class="step-timeline"></div>
+                  </div>
+                  <div id="step-card-2" class="step-card" style="display: none;">
+                    <div class="step-header">
+                      <div class="title-container">
+                        <div id="step-title-2" class="step-title"></div>
+                      </div>
+                      <button id="step-completion-2" class="completion-button">
+                        <i class="fas fa-circle"></i> 未実行
+                      </button>
+                    </div>
+                    <div id="step-method-2" class="step-method"></div>
+                    <div id="step-script-2" class="step-script"></div>
+                    <div id="step-timeline-2" class="step-timeline"></div>
+                  </div>
+                  <div id="step-card-3" class="step-card" style="display: none;">
+                    <div class="step-header">
+                      <div class="title-container">
+                        <div id="step-title-3" class="step-title"></div>
+                      </div>
+                      <button id="step-completion-3" class="completion-button">
+                        <i class="fas fa-circle"></i> 未実行
+                      </button>
+                    </div>
+                    <div id="step-method-3" class="step-method"></div>
+                    <div id="step-script-3" class="step-script"></div>
+                    <div id="step-timeline-3" class="step-timeline"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="premium-services">
+                <h3 class="subsection-title">プレミアムサービス提案</h3>
+                <div class="services-grid">
+                  <div id="premium-service-card-1" class="service-card" style="display: none;">
+                    <div id="premium-service-name-1" class="service-name"></div>
+                    <div id="premium-service-reason-1" class="service-reason"></div>
+                    <div id="premium-service-script-1" class="service-script"></div>
+                    <div id="premium-service-objection-1" class="service-objection"></div>
+                  </div>
+                  <div id="premium-service-card-2" class="service-card" style="display: none;">
+                    <div id="premium-service-name-2" class="service-name"></div>
+                    <div id="premium-service-reason-2" class="service-reason"></div>
+                    <div id="premium-service-script-2" class="service-script"></div>
+                    <div id="premium-service-objection-2" class="service-objection"></div>
+                  </div>
+                  <div id="premium-service-card-3" class="service-card" style="display: none;">
+                    <div id="premium-service-name-3" class="service-name"></div>
+                    <div id="premium-service-reason-3" class="service-reason"></div>
+                    <div id="premium-service-script-3" class="service-script"></div>
+                    <div id="premium-service-objection-3" class="service-objection"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="special-offers">
+                <h3 class="subsection-title">特別オファー</h3>
+                <div class="offers-grid">
+                  <div id="offer-card-1" class="offer-card" style="display: none;">
+                    <div id="offer-type-1" class="offer-type"></div>
+                    <div id="offer-description-1" class="offer-description"></div>
+                    <div id="offer-script-1" class="offer-script"></div>
+                    <div id="offer-urgency-1" class="offer-urgency"></div>
+                  </div>
+                  <div id="offer-card-2" class="offer-card" style="display: none;">
+                    <div id="offer-type-2" class="offer-type"></div>
+                    <div id="offer-description-2" class="offer-description"></div>
+                    <div id="offer-script-2" class="offer-script"></div>
+                    <div id="offer-urgency-2" class="offer-urgency"></div>
+                  </div>
+                  <div id="offer-card-3" class="offer-card" style="display: none;">
+                    <div id="offer-type-3" class="offer-type"></div>
+                    <div id="offer-description-3" class="offer-description"></div>
+                    <div id="offer-script-3" class="offer-script"></div>
+                    <div id="offer-urgency-3" class="offer-urgency"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

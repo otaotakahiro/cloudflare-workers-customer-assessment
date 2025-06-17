@@ -300,8 +300,8 @@ export class OpenaiService {
             presence_penalty: 0,
           }),
         }),
-        60000, // 60秒のタイムアウト
-        'OpenAI API request timed out after 60 seconds'
+        120000, // 120秒のタイムアウトに延長
+        'OpenAI API request timed out after 120 seconds'
       );
 
       if (!response.ok) {
@@ -426,7 +426,7 @@ export class OpenaiService {
           },
           body: JSON.stringify(requestBody),
         }),
-        60000, // タイムアウトを60秒に延長
+        120000,
         'OpenAI compatibility analysis timed out'
       );
 

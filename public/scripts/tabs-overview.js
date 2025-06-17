@@ -1,5 +1,6 @@
 /**
- * 人物概要タブのデータを設定するモジュール
+ * 人物概要タブのデータを設定するモジュール（最適化版）
+ * 静的HTML + 内容挿入方式
  */
 
 /**
@@ -12,205 +13,109 @@ export function populateOverviewTab(overview) {
         return;
     }
 
-    console.log('Populating overview tab with data:', overview);  // デバッグ用
+    console.log('Populating overview tab with data:', overview);
 
-    const container = document.getElementById('overview-content');
-    if (!container) {
-        console.error('overview-content container not found');
-        return;
-    }
+    // customerPersonalityは内部分析用のため表示しない
+    // populateCustomerPersonality(overview.customerPersonality);
 
-    // Clear existing content
-    container.innerHTML = '';
+    // 美容鍼施術に対する要望
+    populateBeautyAcupunctureNeeds(overview.beautyAcupunctureNeeds);
 
-    // Create main sections
-    const sections = [
-        { id: 'satisfaction-factors', title: '満足要因' },
-        { id: 'dissatisfaction-factors', title: '不満要因' },
-        { id: 'optimal-staff-types', title: '最適スタッフタイプ' },
-        { id: 'service-scripts', title: '接客スクリプト' }
-    ];
-
-    sections.forEach(section => {
-        const sectionDiv = document.createElement('div');
-        sectionDiv.className = 'overview-section';
-        sectionDiv.id = section.id;
-
-        const titleDiv = document.createElement('div');
-        titleDiv.className = 'section-title';
-        titleDiv.textContent = section.title;
-
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'section-content';
-
-        sectionDiv.appendChild(titleDiv);
-        sectionDiv.appendChild(contentDiv);
-        container.appendChild(sectionDiv);
-    });
-
-    // Populate each section
-    populateSatisfactionFactors(overview.satisfactionFactors);
-    populateDissatisfactionFactors(overview.dissatisfactionFactors);
+    // 最適スタッフタイプ
     populateOptimalStaffTypes(overview.optimalStaffTypes);
-    populateServiceScripts(overview.serviceScripts);
 }
 
-function populateSatisfactionFactors(factors) {
-    const container = document.querySelector('#satisfaction-factors .section-content');
-    if (!container || !factors) return;
-
-    const list = document.createElement('ul');
-    list.className = 'factors-list';
-
-    factors.forEach(factor => {
-        const item = document.createElement('li');
-        item.className = 'factor-item';
-        item.textContent = factor;
-        list.appendChild(item);
-    });
-
-    container.appendChild(list);
+/**
+ * 顧客の性格・傾向サマリーを表示（内部分析用のため非表示）
+ * @param {Object} personality - 性格データ
+ */
+function populateCustomerPersonality(personality) {
+    // 内部分析用のため表示処理を無効化
+    console.log('customerPersonality is for internal analysis only - not displaying');
+    return;
 }
 
-function populateDissatisfactionFactors(factors) {
-    const container = document.querySelector('#dissatisfaction-factors .section-content');
-    if (!container || !factors) return;
+/**
+ * 美容鍼施術に対する要望を表示
+ * @param {Array} needs - 要望データ配列
+ */
+function populateBeautyAcupunctureNeeds(needs) {
+    if (!Array.isArray(needs)) return;
 
-    const list = document.createElement('ul');
-    list.className = 'factors-list';
+    needs.forEach((need, index) => {
+        const cardId = index + 1;
+        const cardEl = document.getElementById(`need-card-${cardId}`);
 
-    factors.forEach(factor => {
-        const item = document.createElement('li');
-        item.className = 'factor-item';
-        item.textContent = factor;
-        list.appendChild(item);
-    });
+        if (!cardEl) return;
 
-    container.appendChild(list);
-}
+        // カードを表示
+        cardEl.style.display = 'block';
 
-function populateOptimalStaffTypes(types) {
-    const container = document.querySelector('#optimal-staff-types .section-content');
-    if (!container || !types) return;
-
-    const grid = document.createElement('div');
-    grid.className = 'staff-types-grid';
-
-    types.types.forEach(type => {
-        const card = document.createElement('div');
-        card.className = 'staff-type-card';
-
-        const title = document.createElement('div');
-        title.className = 'type-title';
-        title.textContent = type.title;
-
-        const description = document.createElement('div');
-        description.className = 'type-description';
-        description.textContent = type.description;
-
-        const tags = document.createElement('div');
-        tags.className = 'type-tags';
-        type.tags.forEach(tag => {
-            const tagSpan = document.createElement('span');
-            tagSpan.className = 'tag';
-            tagSpan.textContent = tag;
-            tags.appendChild(tagSpan);
-        });
-
-        const script = document.createElement('div');
-        script.className = 'type-script';
-        script.textContent = type.scriptExample;
-
-        card.appendChild(title);
-        card.appendChild(description);
-        card.appendChild(tags);
-        card.appendChild(script);
-        grid.appendChild(card);
-    });
-
-    container.appendChild(grid);
-}
-
-function populateServiceScripts(scripts) {
-    const container = document.querySelector('#service-scripts .section-content');
-    if (!container || !scripts) return;
-
-    const sections = [
-        { key: 'greeting', title: '来店時' },
-        { key: 'counseling', title: 'カウンセリング時' },
-        { key: 'treatment', title: '施術時' },
-        { key: 'closing', title: '退店時' }
-    ];
-
-    sections.forEach(section => {
-        const sectionDiv = document.createElement('div');
-        sectionDiv.className = 'script-section';
-
-        const title = document.createElement('h3');
-        title.className = 'script-title';
-        title.textContent = section.title;
-
-        const script = document.createElement('div');
-        script.className = 'script-content';
-        script.textContent = scripts[section.key].script;
-
-        const purpose = document.createElement('div');
-        purpose.className = 'script-purpose';
-        purpose.textContent = scripts[section.key].purpose;
-
-        // Flow data display
-        if (scripts[section.key].flow) {
-            const flowContainer = document.createElement('div');
-            flowContainer.className = 'script-flow mt-4';
-
-            const flowTitle = document.createElement('h4');
-            flowTitle.className = 'flow-title text-sm font-semibold mb-2';
-            flowTitle.textContent = 'フロー';
-            flowContainer.appendChild(flowTitle);
-
-            scripts[section.key].flow.forEach(flowStep => {
-                const stepDiv = document.createElement('div');
-                stepDiv.className = 'flow-step mb-3';
-
-                const stepTitle = document.createElement('div');
-                stepTitle.className = 'step-title font-medium text-sm mb-1';
-                stepTitle.textContent = flowStep.step;
-                stepDiv.appendChild(stepTitle);
-
-                if (flowStep.actions) {
-                    const actionsList = document.createElement('ul');
-                    actionsList.className = 'step-actions list-disc list-inside ml-4';
-                    flowStep.actions.forEach(action => {
-                        const li = document.createElement('li');
-                        li.className = 'text-sm text-gray-700';
-                        li.textContent = action;
-                        actionsList.appendChild(li);
-                    });
-                    stepDiv.appendChild(actionsList);
-                }
-
-                if (flowStep.topics) {
-                    const topicsList = document.createElement('ul');
-                    topicsList.className = 'step-topics list-disc list-inside ml-4';
-                    flowStep.topics.forEach(topic => {
-                        const li = document.createElement('li');
-                        li.className = 'text-sm text-gray-700';
-                        li.textContent = topic;
-                        topicsList.appendChild(li);
-                    });
-                    stepDiv.appendChild(topicsList);
-                }
-
-                flowContainer.appendChild(stepDiv);
-            });
-
-            sectionDiv.appendChild(flowContainer);
+        // タイトル
+        const titleEl = document.getElementById(`need-title-${cardId}`);
+        if (titleEl) {
+            titleEl.textContent = need.need || '';
         }
 
-        sectionDiv.appendChild(title);
-        sectionDiv.appendChild(script);
-        sectionDiv.appendChild(purpose);
-        container.appendChild(sectionDiv);
+        // 説明
+        const descEl = document.getElementById(`need-description-${cardId}`);
+        if (descEl) {
+            descEl.textContent = need.description || '';
+        }
+
+        // スタッフコミュニケーション
+        const commEl = document.getElementById(`need-comm-${cardId}`);
+        if (commEl && need.staffCommunication) {
+            commEl.innerHTML = `
+                <strong>伝えるべき内容:</strong> ${need.staffCommunication.whatToConvey}<br>
+                <strong>伝え方:</strong> ${need.staffCommunication.howToConvey}<br>
+                <strong>タイミング:</strong> ${need.staffCommunication.timing}
+            `;
+        }
+    });
+}
+
+/**
+ * 最適スタッフタイプを表示
+ * @param {Object} types - スタッフタイプデータ
+ */
+function populateOptimalStaffTypes(types) {
+    if (!types || !Array.isArray(types.types)) return;
+
+    types.types.forEach((type, index) => {
+        const cardId = index + 1;
+        const cardEl = document.getElementById(`staff-type-card-${cardId}`);
+
+        if (!cardEl) return;
+
+        // カードを表示
+        cardEl.style.display = 'block';
+
+        // タイトル
+        const titleEl = document.getElementById(`staff-type-title-${cardId}`);
+        if (titleEl) {
+            titleEl.textContent = type.title || '';
+        }
+
+        // 説明
+        const descEl = document.getElementById(`staff-type-description-${cardId}`);
+        if (descEl) {
+            descEl.textContent = type.description || '';
+        }
+
+        // タグ
+        const tagsEl = document.getElementById(`staff-type-tags-${cardId}`);
+        if (tagsEl && Array.isArray(type.tags)) {
+            tagsEl.innerHTML = type.tags.map(tag =>
+                `<span class="tag">${tag}</span>`
+            ).join('');
+        }
+
+        // スクリプト例
+        const scriptEl = document.getElementById(`staff-type-script-${cardId}`);
+        if (scriptEl) {
+            scriptEl.textContent = type.scriptExample || '';
+        }
     });
 }
 

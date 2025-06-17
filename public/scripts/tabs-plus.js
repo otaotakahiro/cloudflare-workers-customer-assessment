@@ -1,5 +1,6 @@
 /**
- * プラスオンタブ用の表示処理
+ * プラスオンタブ用の表示処理（最適化版）
+ * 静的HTML + 内容挿入方式
  */
 
 /**
@@ -9,295 +10,344 @@
 export function populatePlusTab(plus) {
   if (!plus) return;
 
-  const container = document.getElementById('plus-content');
-  if (!container) return;
+  console.log('Populating plus tab with data:', plus);
 
-  // Clear existing content
-  container.innerHTML = '';
-
-  // Create main sections
-  const sections = [
-    { id: 'value-system', title: '価値観システム' },
-    { id: 'upsell-strategies', title: 'アップセル戦略' }
-  ];
-
-  sections.forEach(section => {
-    const sectionDiv = document.createElement('div');
-    sectionDiv.className = 'plus-section';
-    sectionDiv.id = section.id;
-
-    const titleDiv = document.createElement('div');
-    titleDiv.className = 'section-title';
-    titleDiv.textContent = section.title;
-
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'section-content';
-
-    sectionDiv.appendChild(titleDiv);
-    sectionDiv.appendChild(contentDiv);
-    container.appendChild(sectionDiv);
-  });
-
-  // Populate each section
+  // 価値観システム
   populateValueSystem(plus.valueSystem);
+
+  // アップセル戦略
   populateUpsellStrategies(plus.upsellStrategies);
 }
 
+/**
+ * 価値観システムを表示
+ * @param {Object} system - 価値観システムデータ
+ */
 function populateValueSystem(system) {
-  const container = document.querySelector('#value-system .section-content');
-  if (!container || !system) return;
+  if (!system) return;
 
-  // Investment Values
-  const valuesDiv = document.createElement('div');
-  valuesDiv.className = 'investment-values';
+  // 投資価値観
+  if (Array.isArray(system.investmentValues)) {
+    system.investmentValues.forEach((value, index) => {
+      const cardId = index + 1;
+      const cardEl = document.getElementById(`value-card-${cardId}`);
 
-  const valuesTitle = document.createElement('h3');
-  valuesTitle.className = 'subsection-title';
-  valuesTitle.textContent = '投資価値観';
-  valuesDiv.appendChild(valuesTitle);
+      if (!cardEl) return;
 
-  const valuesGrid = document.createElement('div');
-  valuesGrid.className = 'values-grid';
+      // カードを表示
+      cardEl.style.display = 'block';
 
-  system.investmentValues.forEach(value => {
-    const card = document.createElement('div');
-    card.className = 'value-card';
+      // タイプ
+      const typeEl = document.getElementById(`value-type-${cardId}`);
+      if (typeEl) {
+        typeEl.textContent = value.type || '';
+      }
 
-    const type = document.createElement('div');
-    type.className = 'value-type';
-    type.textContent = value.type;
+      // 優先度
+      const priorityEl = document.getElementById(`value-priority-${cardId}`);
+      if (priorityEl) {
+        priorityEl.textContent = `優先度: ${value.priority || ''}`;
+      }
 
-    const priority = document.createElement('div');
-    priority.className = 'value-priority';
-    priority.textContent = `優先度: ${value.priority}`;
+      // 説明
+      const descEl = document.getElementById(`value-description-${cardId}`);
+      if (descEl) {
+        descEl.textContent = value.description || '';
+      }
 
-    const description = document.createElement('div');
-    description.className = 'value-description';
-    description.textContent = value.description;
+      // アップセルアプローチ
+      const approachEl = document.getElementById(`value-approach-${cardId}`);
+      if (approachEl) {
+        approachEl.textContent = value.upsellApproach || '';
+      }
+    });
+  }
 
-    const approach = document.createElement('div');
-    approach.className = 'value-approach';
-    approach.textContent = value.upsellApproach;
+  // 決定要因
+  if (Array.isArray(system.decisionFactors)) {
+    const factorsListEl = document.getElementById('factors-list');
+    if (factorsListEl) {
+      factorsListEl.innerHTML = '';
 
-    card.appendChild(type);
-    card.appendChild(priority);
-    card.appendChild(description);
-    card.appendChild(approach);
-    valuesGrid.appendChild(card);
-  });
-
-  valuesDiv.appendChild(valuesGrid);
-  container.appendChild(valuesDiv);
-
-  // Decision Factors
-  const factorsDiv = document.createElement('div');
-  factorsDiv.className = 'decision-factors';
-
-  const factorsTitle = document.createElement('h3');
-  factorsTitle.className = 'subsection-title';
-  factorsTitle.textContent = '決定要因';
-  factorsDiv.appendChild(factorsTitle);
-
-  const factorsList = document.createElement('ul');
-  factorsList.className = 'factors-list';
-
-  system.decisionFactors.forEach(factor => {
-    const item = document.createElement('li');
-    item.className = 'factor-item';
-    item.textContent = factor;
-    factorsList.appendChild(item);
-  });
-
-  factorsDiv.appendChild(factorsList);
-  container.appendChild(factorsDiv);
+      system.decisionFactors.forEach(factor => {
+        const item = document.createElement('li');
+        item.className = 'factor-item';
+        item.textContent = factor;
+        factorsListEl.appendChild(item);
+      });
+    }
+  }
 }
 
+/**
+ * アップセル戦略を表示
+ * @param {Object} strategies - アップセル戦略データ
+ */
 function populateUpsellStrategies(strategies) {
-  const container = document.querySelector('#upsell-strategies .section-content');
-  if (!container || !strategies) return;
+  if (!strategies) return;
 
-  // Stepwise Approach
-  const stepsDiv = document.createElement('div');
-  stepsDiv.className = 'stepwise-approach';
+  // 段階的アプローチ
+  populateStepwiseApproach(strategies.stepwiseApproach);
 
-  const stepsTitle = document.createElement('h3');
-  stepsTitle.className = 'subsection-title';
-  stepsTitle.textContent = '段階的アプローチ';
-  stepsDiv.appendChild(stepsTitle);
+  // プレミアムサービス提案
+  populatePremiumServices(strategies.premiumServiceProposal);
 
-  const stepsList = document.createElement('div');
-  stepsList.className = 'steps-list';
+  // 特別オファー
+  populateSpecialOffers(strategies.specialOffers);
+}
 
-  strategies.stepwiseApproach.forEach(step => {
-    const stepCard = document.createElement('div');
-    stepCard.className = 'step-card';
+/**
+ * 段階的アプローチを表示
+ * @param {Array} steps - ステップデータ配列
+ */
+function populateStepwiseApproach(steps) {
+  if (!Array.isArray(steps)) return;
+
+  steps.forEach((step, index) => {
+    const cardId = index + 1;
+    const cardEl = document.getElementById(`step-card-${cardId}`);
+
+    if (!cardEl) return;
+
+    // カードを表示
+    cardEl.style.display = 'block';
 
     // ステップの一意のIDを生成
     const stepId = `step-${step.step.toLowerCase().replace(/\s+/g, '-')}`;
-    stepCard.id = stepId;
+    cardEl.id = stepId;
 
     // ローカルストレージから状態を復元
     const savedState = localStorage.getItem(stepId);
-    stepCard.dataset.completed = savedState === 'true' ? 'true' : 'false';
+    cardEl.dataset.completed = savedState === 'true' ? 'true' : 'false';
     if (savedState === 'true') {
-      stepCard.classList.add('completed');
+      cardEl.classList.add('completed');
     }
 
-    const stepHeader = document.createElement('div');
-    stepHeader.className = 'step-header';
-
-    const titleContainer = document.createElement('div');
-    titleContainer.className = 'title-container';
-
-    const stepTitle = document.createElement('div');
-    stepTitle.className = 'step-title';
-    stepTitle.textContent = step.step;
-
-    const completionButton = document.createElement('button');
-    completionButton.className = 'completion-button';
-    completionButton.innerHTML = savedState === 'true'
-      ? '<i class="fas fa-check-circle"></i> 完了'
-      : '<i class="fas fa-circle"></i> 未実行';
-    completionButton.id = `step-completion-${step.step.toLowerCase().replace(/\s+/g, '-')}`;
-
-    if (savedState === 'true') {
-      completionButton.classList.add('completed');
+    // ステップタイトル
+    const titleEl = document.getElementById(`step-title-${cardId}`);
+    if (titleEl) {
+      titleEl.textContent = step.step || '';
     }
 
-    titleContainer.appendChild(stepTitle);
-    stepHeader.appendChild(titleContainer);
-    stepHeader.appendChild(completionButton);
+    // 完了ボタン
+    const completionButton = document.getElementById(`step-completion-${cardId}`);
+    if (completionButton) {
+      completionButton.innerHTML = savedState === 'true'
+        ? '<i class="fas fa-check-circle"></i> 完了'
+        : '<i class="fas fa-circle"></i> 未実行';
+      completionButton.id = `step-completion-${step.step.toLowerCase().replace(/\s+/g, '-')}`;
 
-    const method = document.createElement('div');
-    method.className = 'step-method';
-    method.textContent = step.method;
+      if (savedState === 'true') {
+        completionButton.classList.add('completed');
+      }
 
-    const script = document.createElement('div');
-    script.className = 'step-script';
-    script.textContent = step.script;
+      // 完了ボタンのクリックイベント
+      completionButton.addEventListener('click', async function(e) {
+        e.stopPropagation(); // カードのクリックイベントを防ぐ
 
-    const timeline = document.createElement('div');
-    timeline.className = 'step-timeline';
-    timeline.textContent = step.timeline;
+        const stepCard = this.closest('.step-card');
+        const isCompleted = stepCard.dataset.completed === 'true';
+        const newCompletedState = !isCompleted;
 
-    stepCard.appendChild(stepHeader);
-    stepCard.appendChild(method);
-    stepCard.appendChild(script);
-    stepCard.appendChild(timeline);
+        try {
+          // APIを呼び出して完了状態を更新
+          const response = await fetch('/api/results/update-completion', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              pageId: window.currentPageId,
+              resultId: window.profileData.resultId,
+              stepId: stepId,
+              completed: newCompletedState
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error('API呼び出しに失敗しました');
+          }
+
+          // 成功したらUIを更新
+          stepCard.dataset.completed = newCompletedState.toString();
+
+          if (newCompletedState) {
+            stepCard.classList.add('completed');
+            this.classList.add('completed');
+            this.innerHTML = '<i class="fas fa-check-circle"></i> 完了';
+          } else {
+            stepCard.classList.remove('completed');
+            this.classList.remove('completed');
+            this.innerHTML = '<i class="fas fa-circle"></i> 未実行';
+          }
+
+          // ローカルストレージにも保存（オフライン時のフォールバック用）
+          localStorage.setItem(stepId, newCompletedState.toString());
+
+        } catch (error) {
+          console.error('Error updating completion status:', error);
+          // エラー時は元の状態に戻す
+          stepCard.dataset.completed = isCompleted.toString();
+          showToast('実行完了状態の更新に失敗しました。', 'error');
+        }
+      });
+    }
+
+    // 方法
+    const methodEl = document.getElementById(`step-method-${cardId}`);
+    if (methodEl) {
+      methodEl.textContent = step.method || '';
+    }
+
+    // スクリプト
+    const scriptEl = document.getElementById(`step-script-${cardId}`);
+    if (scriptEl) {
+      scriptEl.textContent = step.script || '';
+    }
+
+    // タイムライン
+    const timelineEl = document.getElementById(`step-timeline-${cardId}`);
+    if (timelineEl) {
+      timelineEl.textContent = step.timeline || '';
+    }
 
     // カード全体のクリックイベント
-    stepCard.addEventListener('click', function(e) {
+    cardEl.addEventListener('click', async function(e) {
       // ボタン自体のクリックは無視（イベントの伝播を停止）
       if (e.target === completionButton || completionButton.contains(e.target)) {
         return;
       }
 
       const isCompleted = this.dataset.completed === 'true';
-      this.dataset.completed = !isCompleted;
+      const newCompletedState = !isCompleted;
 
-      if (!isCompleted) {
-        this.classList.add('completed');
-        completionButton.classList.add('completed');
-        completionButton.innerHTML = '<i class="fas fa-check-circle"></i> 完了';
-      } else {
-        this.classList.remove('completed');
-        completionButton.classList.remove('completed');
-        completionButton.innerHTML = '<i class="fas fa-circle"></i> 未実行';
+      try {
+        // APIを呼び出して完了状態を更新
+        const response = await fetch('/api/results/update-completion', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            pageId: window.currentPageId,
+            resultId: window.profileData.resultId,
+            stepId: stepId,
+            completed: newCompletedState
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('API呼び出しに失敗しました');
+        }
+
+        // 成功したらUIを更新
+        this.dataset.completed = newCompletedState.toString();
+
+        if (newCompletedState) {
+          this.classList.add('completed');
+          completionButton.classList.add('completed');
+          completionButton.innerHTML = '<i class="fas fa-check-circle"></i> 完了';
+        } else {
+          this.classList.remove('completed');
+          completionButton.classList.remove('completed');
+          completionButton.innerHTML = '<i class="fas fa-circle"></i> 未実行';
+        }
+
+        // ローカルストレージにも保存（オフライン時のフォールバック用）
+        localStorage.setItem(stepId, newCompletedState.toString());
+
+      } catch (error) {
+        console.error('Error updating completion status:', error);
+        // エラー時は元の状態に戻す
+        this.dataset.completed = isCompleted.toString();
+        showToast('実行完了状態の更新に失敗しました。', 'error');
       }
-
-      // 状態をローカルストレージに保存
-      localStorage.setItem(stepId, (!isCompleted).toString());
     });
-
-    stepsList.appendChild(stepCard);
   });
+}
 
-  stepsDiv.appendChild(stepsList);
-  container.appendChild(stepsDiv);
+/**
+ * プレミアムサービス提案を表示
+ * @param {Object} premiumServices - プレミアムサービスデータ
+ */
+function populatePremiumServices(premiumServices) {
+  if (!premiumServices || !Array.isArray(premiumServices.recommendedServices)) return;
 
-  // Premium Service Proposals
-  const premiumDiv = document.createElement('div');
-  premiumDiv.className = 'premium-services';
+  premiumServices.recommendedServices.forEach((service, index) => {
+    const cardId = index + 1;
+    const cardEl = document.getElementById(`premium-service-card-${cardId}`);
 
-  const premiumTitle = document.createElement('h3');
-  premiumTitle.className = 'subsection-title';
-  premiumTitle.textContent = 'プレミアムサービス提案';
-  premiumDiv.appendChild(premiumTitle);
+    if (!cardEl) return;
 
-  const servicesGrid = document.createElement('div');
-  servicesGrid.className = 'services-grid';
+    // カードを表示
+    cardEl.style.display = 'block';
 
-  strategies.premiumServiceProposal.recommendedServices.forEach(service => {
-    const serviceCard = document.createElement('div');
-    serviceCard.className = 'service-card';
+    // サービス名
+    const nameEl = document.getElementById(`premium-service-name-${cardId}`);
+    if (nameEl) {
+      nameEl.textContent = service.service || '';
+    }
 
-    const serviceName = document.createElement('div');
-    serviceName.className = 'service-name';
-    serviceName.textContent = service.service;
+    // 理由
+    const reasonEl = document.getElementById(`premium-service-reason-${cardId}`);
+    if (reasonEl) {
+      reasonEl.textContent = service.reason || '';
+    }
 
-    const reason = document.createElement('div');
-    reason.className = 'service-reason';
-    reason.textContent = service.reason;
+    // スクリプト
+    const scriptEl = document.getElementById(`premium-service-script-${cardId}`);
+    if (scriptEl) {
+      scriptEl.textContent = service.proposalScript || '';
+    }
 
-    const script = document.createElement('div');
-    script.className = 'service-script';
-    script.textContent = service.proposalScript;
-
-    const objection = document.createElement('div');
-    objection.className = 'service-objection';
-    objection.textContent = service.objectionHandling;
-
-    serviceCard.appendChild(serviceName);
-    serviceCard.appendChild(reason);
-    serviceCard.appendChild(script);
-    serviceCard.appendChild(objection);
-    servicesGrid.appendChild(serviceCard);
+    // 反論処理
+    const objectionEl = document.getElementById(`premium-service-objection-${cardId}`);
+    if (objectionEl) {
+      objectionEl.textContent = service.objectionHandling || '';
+    }
   });
+}
 
-  premiumDiv.appendChild(servicesGrid);
-  container.appendChild(premiumDiv);
+/**
+ * 特別オファーを表示
+ * @param {Object} specialOffers - 特別オファーデータ
+ */
+function populateSpecialOffers(specialOffers) {
+  if (!specialOffers || !Array.isArray(specialOffers.effectiveOffers)) return;
 
-  // Special Offers
-  const offersDiv = document.createElement('div');
-  offersDiv.className = 'special-offers';
+  specialOffers.effectiveOffers.forEach((offer, index) => {
+    const cardId = index + 1;
+    const cardEl = document.getElementById(`offer-card-${cardId}`);
 
-  const offersTitle = document.createElement('h3');
-  offersTitle.className = 'subsection-title';
-  offersTitle.textContent = '特別オファー';
-  offersDiv.appendChild(offersTitle);
+    if (!cardEl) return;
 
-  const offersGrid = document.createElement('div');
-  offersGrid.className = 'offers-grid';
+    // カードを表示
+    cardEl.style.display = 'block';
 
-  strategies.specialOffers.effectiveOffers.forEach(offer => {
-    const offerCard = document.createElement('div');
-    offerCard.className = 'offer-card';
+    // タイプ
+    const typeEl = document.getElementById(`offer-type-${cardId}`);
+    if (typeEl) {
+      typeEl.textContent = offer.type || '';
+    }
 
-    const type = document.createElement('div');
-    type.className = 'offer-type';
-    type.textContent = offer.type;
+    // 説明
+    const descEl = document.getElementById(`offer-description-${cardId}`);
+    if (descEl) {
+      descEl.textContent = offer.description || '';
+    }
 
-    const description = document.createElement('div');
-    description.className = 'offer-description';
-    description.textContent = offer.description;
+    // スクリプト
+    const scriptEl = document.getElementById(`offer-script-${cardId}`);
+    if (scriptEl) {
+      scriptEl.textContent = offer.presentationScript || '';
+    }
 
-    const script = document.createElement('div');
-    script.className = 'offer-script';
-    script.textContent = offer.presentationScript;
-
-    const urgency = document.createElement('div');
-    urgency.className = 'offer-urgency';
-    urgency.textContent = offer.urgencyFactor;
-
-    offerCard.appendChild(type);
-    offerCard.appendChild(description);
-    offerCard.appendChild(script);
-    offerCard.appendChild(urgency);
-    offersGrid.appendChild(offerCard);
+    // 緊急性
+    const urgencyEl = document.getElementById(`offer-urgency-${cardId}`);
+    if (urgencyEl) {
+      urgencyEl.textContent = offer.urgencyFactor || '';
+    }
   });
-
-  offersDiv.appendChild(offersGrid);
-  container.appendChild(offersDiv);
 }
 
 /**
@@ -588,3 +638,61 @@ function populateAsLeaderSection(asLeader) {
 
   console.log('リーダーとしてのアプローチセクションの表示を完了しました');
 }
+
+// ページ読み込み時に実行完了状態を取得
+async function loadCompletionStatus() {
+  // グローバル変数の存在確認を強化
+  if (!window.currentPageId || !window.profileData?.resultId) {
+    console.log('pageId or resultId not available, skipping completion status load');
+    console.log('window.currentPageId:', window.currentPageId);
+    console.log('window.profileData:', window.profileData);
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/results/completion-status?pageId=${window.currentPageId}&resultId=${window.profileData.resultId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch completion status');
+    }
+
+    const { data } = await response.json();
+
+    // 各ステップの完了状態を更新
+    Object.entries(data.steps).forEach(([stepId, stepData]) => {
+      const stepCard = document.getElementById(stepId);
+      if (stepCard) {
+        const completionButton = stepCard.querySelector('.completion-button');
+        if (completionButton) {
+          stepCard.dataset.completed = stepData.completed.toString();
+          if (stepData.completed) {
+            stepCard.classList.add('completed');
+            completionButton.classList.add('completed');
+            completionButton.innerHTML = '<i class="fas fa-check-circle"></i> 完了';
+          }
+        }
+      }
+    });
+
+  } catch (error) {
+    console.error('Error loading completion status:', error);
+    // エラー時はローカルストレージのデータを使用
+    document.querySelectorAll('.step-card').forEach(card => {
+      const stepId = card.id;
+      const savedState = localStorage.getItem(stepId);
+      if (savedState === 'true') {
+        card.dataset.completed = 'true';
+        card.classList.add('completed');
+        const button = card.querySelector('.completion-button');
+        if (button) {
+          button.classList.add('completed');
+          button.innerHTML = '<i class="fas fa-check-circle"></i> 完了';
+        }
+      }
+    });
+  }
+}
+
+// DOMContentLoadedイベントで実行完了状態を読み込む
+document.addEventListener('DOMContentLoaded', () => {
+  loadCompletionStatus();
+});
