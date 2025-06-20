@@ -18,11 +18,76 @@ export function populateOverviewTab(overview) {
     // customerPersonalityは内部分析用のため表示しない
     // populateCustomerPersonality(overview.customerPersonality);
 
+    // 顧客思考パターン
+    populateCustomerThinkingPatterns(overview.customerThinkingPatterns);
+
+    // 消費行動判断軸
+    populateConsumptionDecisionAxes(overview.consumptionDecisionAxes);
+
     // 美容鍼施術に対する要望
     populateBeautyAcupunctureNeeds(overview.beautyAcupunctureNeeds);
 
     // 最適スタッフタイプ
     populateOptimalStaffTypes(overview.optimalStaffTypes);
+}
+
+/**
+ * 顧客思考パターンを表示
+ * @param {Array} patterns - 思考パターンデータ配列
+ */
+function populateCustomerThinkingPatterns(patterns) {
+    if (!Array.isArray(patterns)) return;
+
+    patterns.forEach((pattern, index) => {
+        const cardId = index + 1;
+        const cardEl = document.getElementById(`thinking-pattern-card-${cardId}`);
+
+        if (!cardEl) return;
+
+        // カードを表示
+        cardEl.style.display = 'block';
+
+        // パターン名
+        const patternEl = document.getElementById(`thinking-pattern-name-${cardId}`);
+        if (patternEl) {
+            patternEl.textContent = pattern.pattern || '';
+        }
+
+        // レベル
+        const levelEl = document.getElementById(`thinking-pattern-level-${cardId}`);
+        if (levelEl) {
+            levelEl.textContent = pattern.level || '';
+        }
+
+        // 説明
+        const descEl = document.getElementById(`thinking-pattern-description-${cardId}`);
+        if (descEl) {
+            descEl.textContent = pattern.description || '';
+        }
+
+        // 決定要因
+        const decisionEl = document.getElementById(`thinking-pattern-decision-factors-${cardId}`);
+        if (decisionEl) {
+            decisionEl.textContent = pattern.decisionFactors || '';
+        }
+
+        // 美容鍼施術への訴求
+        const appealEl = document.getElementById(`thinking-pattern-beauty-acupuncture-appeal-${cardId}`);
+        if (appealEl) {
+            appealEl.textContent = pattern.beautyAcupunctureAppeal || '';
+        }
+
+        // 追加情報（interestTriggers, communicationPreference, satisfactionFactors, budgetJustification, commitmentMotivation）
+        const additionalEl = document.getElementById(`thinking-pattern-interest-triggers-${cardId}`);
+        if (additionalEl) {
+            const additionalInfo = pattern.interestTriggers ||
+                                  pattern.communicationPreference ||
+                                  pattern.satisfactionFactors ||
+                                  pattern.budgetJustification ||
+                                  pattern.commitmentMotivation || '';
+            additionalEl.textContent = additionalInfo;
+        }
+    });
 }
 
 /**
@@ -347,4 +412,58 @@ function populatePersonality(personality) {
 
     contentContainer.appendChild(traitsGrid);
     container.appendChild(personalitySection);
+}
+
+/**
+ * 消費行動判断軸を表示
+ * @param {Array} axes - 消費行動判断軸データ配列
+ */
+function populateConsumptionDecisionAxes(axes) {
+    if (!Array.isArray(axes)) return;
+
+    axes.forEach((axis, index) => {
+        const cardId = index + 1;
+        const cardEl = document.getElementById(`consumption-axis-card-${cardId}`);
+
+        if (!cardEl) return;
+
+        // カードを表示
+        cardEl.style.display = 'block';
+
+        // 判断軸名
+        const axisEl = document.getElementById(`consumption-axis-name-${cardId}`);
+        if (axisEl) {
+            axisEl.textContent = axis.axis || '';
+        }
+
+        // 優先度
+        const priorityEl = document.getElementById(`consumption-axis-priority-${cardId}`);
+        if (priorityEl) {
+            priorityEl.textContent = axis.priority || '';
+        }
+
+        // 説明
+        const descEl = document.getElementById(`consumption-axis-description-${cardId}`);
+        if (descEl) {
+            descEl.textContent = axis.description || '';
+        }
+
+        // 決定プロセス
+        const processEl = document.getElementById(`consumption-axis-process-${cardId}`);
+        if (processEl) {
+            processEl.textContent = axis.decisionProcess || '';
+        }
+
+        // 美容鍼施術での対応
+        const contextEl = document.getElementById(`consumption-axis-context-${cardId}`);
+        if (contextEl) {
+            contextEl.textContent = axis.beautyAcupunctureContext || '';
+        }
+
+        // スタッフ指針
+        const guidanceEl = document.getElementById(`consumption-axis-guidance-${cardId}`);
+        if (guidanceEl) {
+            guidanceEl.textContent = axis.staffGuidance || '';
+        }
+    });
 }
