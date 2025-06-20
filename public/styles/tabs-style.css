@@ -1486,56 +1486,66 @@ li:before {
 /* Purchase Pattern Card Styles */
 .purchase-pattern-card {
   background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-  border: 1px solid #e2e8f0;
-  position: relative;
-  overflow: hidden;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
 }
 
 .purchase-pattern-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  border-color: #cbd5e0;
-}
-
-.purchase-pattern-card i {
-  font-size: 1.5rem;
-  color: #805ad5;
-  margin-right: 1rem;
-  background: #f3e8ff;
-  padding: 0.75rem;
-  border-radius: 8px;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-color: #d1d5db;
 }
 
 .purchase-pattern-card .pattern-name {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  color: #2d3748;
-  margin: 0.75rem 0;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
 }
 
 .purchase-pattern-card .pattern-description {
-  color: #4a5568;
+  color: #6b7280;
   line-height: 1.6;
   margin-bottom: 1rem;
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 6px;
+  font-size: 0.875rem;
 }
 
 .purchase-pattern-card .pattern-script {
+  color: #374151;
   font-size: 0.875rem;
-  color: #718096;
   line-height: 1.5;
-  margin-top: 1rem;
-  padding: 1rem;
-  background: #f3e8ff;
+  padding: 0.75rem;
+  background: #f9fafb;
   border-radius: 6px;
-  border-left: 4px solid #805ad5;
+  border-left: 3px solid #3b82f6;
+}
+
+/* Responsive adjustments for purchase pattern cards */
+@media (max-width: 768px) {
+  .purchase-pattern-card {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .purchase-pattern-card .pattern-name {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .purchase-pattern-card .pattern-description {
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .purchase-pattern-card .pattern-script {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
 }
 
 /* Investment Tendency Card Styles */
@@ -2009,7 +2019,6 @@ li:before {
   padding: 0.5rem;
   margin-bottom: 0.5rem;
 }
-
 .personality-traits h3 {
   font-size: 1.25rem;
   font-weight: 600;
@@ -2692,3 +2701,136 @@ li:before {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;
 }
+
+/* Pattern Card Styles (thinking-pattern-card, etc.) */
+.pattern-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.pattern-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-color: #d1d5db;
+}
+
+.pattern-card .pattern-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.pattern-card .pattern-description {
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.pattern-card .pattern-decision-factors,
+.pattern-card .pattern-beauty-acupuncture-appeal,
+.pattern-card .pattern-interest-triggers {
+  color: #374151;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 6px;
+  border-left: 3px solid #3b82f6;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .pattern-card {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .pattern-card .pattern-name {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .pattern-card .pattern-description {
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+  .pattern-card .pattern-decision-factors,
+  .pattern-card .pattern-beauty-acupuncture-appeal,
+  .pattern-card .pattern-interest-triggers {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+}
+
+/* Consumption Axis Card Styles */
+.consumption-axis-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.consumption-axis-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-color: #d1d5db;
+}
+
+.consumption-axis-card .axis-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.consumption-axis-card .axis-description {
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.consumption-axis-card .axis-process,
+.consumption-axis-card .axis-context,
+.consumption-axis-card .axis-guidance {
+  color: #374151;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 6px;
+  border-left: 3px solid #3b82f6;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .consumption-axis-card {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .consumption-axis-card .axis-name {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .consumption-axis-card .axis-description {
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+  .consumption-axis-card .axis-process,
+  .consumption-axis-card .axis-context,
+  .consumption-axis-card .axis-guidance {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+}
+
