@@ -106,6 +106,12 @@ function populateContinuityMotivation(motivation) {
       if (approachEl) {
         approachEl.textContent = motive.approachMethod || '';
       }
+
+      // 美容鍼施術での対応
+      const beautyAcupunctureContextEl = document.getElementById(`motive-beautyAcupunctureContext-${cardId}`);
+      if (beautyAcupunctureContextEl) {
+        beautyAcupunctureContextEl.textContent = motive.beautyAcupunctureContext || '';
+      }
     });
   }
 
@@ -129,6 +135,11 @@ function populateContinuityMotivation(motivation) {
           ${motivation.retentionStrategy.keyPoints.map(point => `<li>${point}</li>`).join('')}
         </ul>
       `;
+    }
+
+    const beautyAcupunctureFocusEl = document.getElementById('beauty-acupuncture-focus');
+    if (beautyAcupunctureFocusEl) {
+      beautyAcupunctureFocusEl.innerHTML = `<strong>美容鍼施術特化戦略:</strong> ${motivation.retentionStrategy.beautyAcupunctureFocus || ''}`;
     }
   }
 }
