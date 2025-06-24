@@ -58,39 +58,39 @@ export const SKILLS_PROMPT = `
   "skills": {
     "customerPreferences": [
       {
-        "name": "価値重視度",
+        "name": "価値追求重視度",
         "level": "高・中・低",
-        "description": "価値に対する感度の説明",
-        "approachMethod": "判断軸に基づいた具体的な価値説明の仕方",
-        "beautyAcupunctureContext": "美容鍼施術における価値説明例"
+        "description": "美容サービス購入時に「何を得られるか」を最優先に考える判断軸への感度。効果・結果・成果を重視し、投資対効果を明確に示すことで購買意欲が高まる。",
+        "approachMethod": "判断軸に基づいた具体的な価値説明の仕方：効果の数値データ提示、施術前後の比較写真、投資対効果の計算例",
+        "beautyAcupunctureContext": "美容鍼施術における価値説明例：施術効果の数値化、投資対効果の明確化、期待値の具体化"
       },
       {
-        "name": "効果実感重視",
+        "name": "満足感重視度",
         "level": "高・中・低",
-        "description": "美容鍼の効果への期待度の説明",
-        "approachMethod": "判断軸に基づいた効果説明の具体的な方法",
-        "beautyAcupunctureContext": "美容鍼施術における効果説明例"
+        "description": "美容サービス購入時に「どのような体験・満足感を得られるか」を重視する判断軸への感度。施術中の快適さ、スタッフの対応、総合的な満足体験を求める。",
+        "approachMethod": "判断軸に基づいた満足感説明の具体的な方法：施術環境の詳細説明、スタッフの専門性紹介、施術中の快適性保証",
+        "beautyAcupunctureContext": "美容鍼施術における満足感説明例：施術環境の快適性説明、スタッフの専門性アピール、施術中のリラクゼーション効果"
       },
       {
-        "name": "安心・信頼志向",
+        "name": "期待値重視度",
         "level": "高・中・低",
-        "description": "安心感・信頼感への欲求度の説明",
-        "approachMethod": "判断軸に基づいた信頼関係を築く方法",
-        "beautyAcupunctureContext": "美容鍼施術における安心感・信頼感提供例"
+        "description": "美容サービス購入時に「どのような変化・改善を期待できるか」を重視する判断軸への感度。施術後の理想的な状態への変化を明確にイメージできることを求める。",
+        "approachMethod": "判断軸に基づいた期待値説明の具体的な方法：理想状態の詳細説明、変化の段階的プロセス説明、期待値の根拠データ提示",
+        "beautyAcupunctureContext": "美容鍼施術における期待値説明例：施術後の理想状態の具体化、変化の段階的説明、期待値の妥当性根拠"
       },
       {
-        "name": "特別感重視",
+        "name": "体験重視度",
         "level": "高・中・低",
-        "description": "特別感への欲求度",
-        "approachMethod": "判断軸に基づいたVIP感を提供する方法",
-        "beautyAcupunctureContext": "美容鍼施術における特別感演出例"
+        "description": "美容サービス購入時に「どのような特別な体験・サービスを受けられるか」を重視する判断軸への感度。日常では得られない特別感・VIP感を求める。",
+        "approachMethod": "判断軸に基づいた特別体験提供の方法：施術の独自性・専門性説明、VIP感のある環境紹介、特別サービスの詳細説明",
+        "beautyAcupunctureContext": "美容鍼施術における特別体験演出例：施術の独自性・専門性アピール、VIP感のある施術環境、特別なアフターケアサービス"
       },
       {
-        "name": "コミュニケーション好み",
+        "name": "継続効果重視度",
         "level": "高・中・低",
-        "description": "コミュニケーションの好み",
-        "approachMethod": "判断軸に基づいた会話のペース調整方法",
-        "beautyAcupunctureContext": "美容鍼施術におけるコミュニケーション例"
+        "description": "美容サービス購入時に「どのような長期的な効果・継続的な価値を得られるか」を重視する判断軸への感度。一時的な効果ではなく、持続的な改善・維持効果を求める。",
+        "approachMethod": "判断軸に基づいた継続効果説明の方法：長期的効果のデータ説明、継続価値の具体例提供、維持効果の詳細説明",
+        "beautyAcupunctureContext": "美容鍼施術における継続効果説明例：長期的効果のデータ提示、継続価値の具体化、維持効果の説明"
       }
     ],
     "guidanceScripts": [
@@ -195,9 +195,119 @@ export const SKILLS_PROMPT = `
 
 {
   "skills": {
-    // 指定したJSON構造をそのまま出力
+    "customerPreferences": [
+      {
+        "name": "価値追求重視度",
+        "level": "高・中・低",
+        "description": "美容サービス購入時に「何を得られるか」を最優先に考える判断軸への感度。効果・結果・成果を重視し、投資対効果を明確に示すことで購買意欲が高まる。",
+        "approachMethod": "判断軸に基づいた具体的な価値説明の仕方：効果の数値データ提示、施術前後の比較写真、投資対効果の計算例",
+        "beautyAcupunctureContext": "美容鍼施術における価値説明例：施術効果の数値化、投資対効果の明確化、期待値の具体化"
+      },
+      {
+        "name": "満足感重視度",
+        "level": "高・中・低",
+        "description": "美容サービス購入時に「どのような体験・満足感を得られるか」を重視する判断軸への感度。施術中の快適さ、スタッフの対応、総合的な満足体験を求める。",
+        "approachMethod": "判断軸に基づいた満足感説明の具体的な方法：施術環境の詳細説明、スタッフの専門性紹介、施術中の快適性保証",
+        "beautyAcupunctureContext": "美容鍼施術における満足感説明例：施術環境の快適性説明、スタッフの専門性アピール、施術中のリラクゼーション効果"
+      },
+      {
+        "name": "期待値重視度",
+        "level": "高・中・低",
+        "description": "美容サービス購入時に「どのような変化・改善を期待できるか」を重視する判断軸への感度。施術後の理想的な状態への変化を明確にイメージできることを求める。",
+        "approachMethod": "判断軸に基づいた期待値説明の具体的な方法：理想状態の詳細説明、変化の段階的プロセス説明、期待値の根拠データ提示",
+        "beautyAcupunctureContext": "美容鍼施術における期待値説明例：施術後の理想状態の具体化、変化の段階的説明、期待値の妥当性根拠"
+      },
+      {
+        "name": "体験重視度",
+        "level": "高・中・低",
+        "description": "美容サービス購入時に「どのような特別な体験・サービスを受けられるか」を重視する判断軸への感度。日常では得られない特別感・VIP感を求める。",
+        "approachMethod": "判断軸に基づいた特別体験提供の方法：施術の独自性・専門性説明、VIP感のある環境紹介、特別サービスの詳細説明",
+        "beautyAcupunctureContext": "美容鍼施術における特別体験演出例：施術の独自性・専門性アピール、VIP感のある施術環境、特別なアフターケアサービス"
+      },
+      {
+        "name": "継続効果重視度",
+        "level": "高・中・低",
+        "description": "美容サービス購入時に「どのような長期的な効果・継続的な価値を得られるか」を重視する判断軸への感度。一時的な効果ではなく、持続的な改善・維持効果を求める。",
+        "approachMethod": "判断軸に基づいた継続効果説明の方法：長期的効果のデータ説明、継続価値の具体例提供、維持効果の詳細説明",
+        "beautyAcupunctureContext": "美容鍼施術における継続効果説明例：長期的効果のデータ提示、継続価値の具体化、維持効果の説明"
+      }
+    ],
+    "guidanceScripts": [
+      {
+        "situation": "初回カウンセリング開始時",
+        "script": "判断軸に基づいた具体的な価値提案スクリプト",
+        "expectedReaction": "判断軸に基づいた顧客の予想される反応",
+        "nextAction": "反応に応じた次のアクション",
+        "beautyAcupunctureFocus": "美容鍼施術の価値説明ポイント"
+      },
+      {
+        "situation": "美容鍼施術提案時",
+        "script": "判断軸に基づいた美容鍼施術価値提案スクリプト",
+        "expectedReaction": "判断軸に基づいた顧客の予想される反応",
+        "nextAction": "反応に応じた次のアクション",
+        "beautyAcupunctureFocus": "美容鍼施術の価値と効果"
+      },
+      {
+        "situation": "美容鍼施術価格説明時",
+        "script": "判断軸に基づいた価値対価格説明スクリプト",
+        "expectedReaction": "判断軸に基づいた顧客の予想される反応",
+        "nextAction": "反応に応じた次のアクション",
+        "beautyAcupunctureFocus": "美容鍼施術の価値と投資対効果"
+      },
+      {
+        "situation": "美容鍼施術契約クロージング時",
+        "script": "判断軸に基づいた価値実現クロージングスクリプト",
+        "expectedReaction": "判断軸に基づいた顧客の予想される反応",
+        "nextAction": "反応に応じた次のアクション",
+        "beautyAcupunctureFocus": "美容鍼施術の継続価値"
+      }
+    ],
+    "satisfactionIndicators": [
+      {
+        "indicator": "価値満足している時のサイン",
+        "beautyAcupunctureContext": "美容鍼施術における価値満足サイン",
+        "staffResponse": "価値満足サインへの対応"
+      },
+      {
+        "indicator": "価値に興味を持っている時のサイン",
+        "beautyAcupunctureContext": "美容鍼施術における価値興味サイン",
+        "staffResponse": "価値興味サインへの対応"
+      },
+      {
+        "indicator": "価値を納得している時のサイン",
+        "beautyAcupunctureContext": "美容鍼施術における価値納得サイン",
+        "staffResponse": "価値納得サインへの対応"
+      },
+      {
+        "indicator": "価値実現意欲が高まっている時のサイン",
+        "beautyAcupunctureContext": "美容鍼施術における価値実現意欲サイン",
+        "staffResponse": "価値実現意欲サインへの対応"
+      }
+    ],
+    "warningSignals": [
+      {
+        "signal": "価値に疑問を感じている時のサイン",
+        "beautyAcupunctureContext": "美容鍼施術における価値疑問サイン",
+        "staffResponse": "価値疑問サインへの対応"
+      },
+      {
+        "signal": "価値対価格に抵抗を感じている時のサイン",
+        "beautyAcupunctureContext": "美容鍼施術における価値対価格抵抗サイン",
+        "staffResponse": "価値対価格抵抗サインへの対応"
+      },
+      {
+        "signal": "施術価値に疑問を持っている時のサイン",
+        "beautyAcupunctureContext": "美容鍼施術における施術価値疑問サイン",
+        "staffResponse": "施術価値疑問サインへの対応"
+      },
+      {
+        "signal": "価値実現を迷っている時のサイン",
+        "beautyAcupunctureContext": "美容鍼施術における価値実現迷いサイン",
+        "staffResponse": "価値実現迷いサインへの対応"
+      }
+    ]
   }
 }
 
-**重要**: 出力はJSON形式のみで、説明文や余分な文章は一切含めない。
+**重要**: 出力はJSON形式のみで、説明文や余分な文章は一切含めない。必ず上記の形式で出力すること。
 `;

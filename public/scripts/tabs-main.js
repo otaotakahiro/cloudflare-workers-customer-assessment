@@ -573,6 +573,46 @@ function loadEmbeddedData() {
         plus: plusData ? '取得成功' : '取得失敗/null'
       });
 
+      // --- 新フィールドの有無をデバッグ出力 ---
+      if (overviewData) {
+        console.log('[overview] customerThinkingPatterns:', Array.isArray(overviewData.customerThinkingPatterns) ? 'あり' : 'なし');
+        console.log('[overview] consumptionDecisionAxes:', Array.isArray(overviewData.consumptionDecisionAxes) ? 'あり' : 'なし');
+        console.log('[overview] beautyAcupunctureNeeds:', Array.isArray(overviewData.beautyAcupunctureNeeds) ? 'あり' : 'なし');
+        console.log('[overview] optimalStaffTypes:', overviewData.optimalStaffTypes ? 'あり' : 'なし');
+      } else {
+        console.warn('人物概要データがありません');
+      }
+      if (skillsData) {
+        console.log('[skills] customerPreferences:', Array.isArray(skillsData.customerPreferences) ? 'あり' : 'なし');
+        console.log('[skills] guidanceScripts:', Array.isArray(skillsData.guidanceScripts) ? 'あり' : 'なし');
+        console.log('[skills] satisfactionIndicators:', Array.isArray(skillsData.satisfactionIndicators) ? 'あり' : 'なし');
+        console.log('[skills] warningSignals:', Array.isArray(skillsData.warningSignals) ? 'あり' : 'なし');
+      } else {
+        console.warn('能力評価データがありません');
+      }
+      if (lifestyleData) {
+        console.log('[lifestyle] beautyAcupunctureMotivations:', Array.isArray(lifestyleData.beautyAcupunctureMotivations) ? 'あり' : 'なし');
+        console.log('[lifestyle] motivationScores:', Array.isArray(lifestyleData.motivationScores) ? 'あり' : 'なし');
+        console.log('[lifestyle] purchasePatterns:', Array.isArray(lifestyleData.purchasePatterns) ? 'あり' : 'なし');
+        console.log('[lifestyle] recommendedServices:', Array.isArray(lifestyleData.recommendedServices) ? 'あり' : 'なし');
+      } else {
+        console.warn('美容施術提案データがありません');
+      }
+      if (futureData) {
+        console.log('[future] beautyAcupunctureContinuityMotivations:', Array.isArray(futureData.beautyAcupunctureContinuityMotivations) ? 'あり' : 'なし');
+        console.log('[future] continuityMotivation:', futureData.continuityMotivation ? 'あり' : 'なし');
+        console.log('[future] repeatAcquisitionScripts:', Array.isArray(futureData.repeatAcquisitionScripts) ? 'あり' : 'なし');
+        console.log('[future] relationshipBuilding:', futureData.relationshipBuilding ? 'あり' : 'なし');
+      } else {
+        console.warn('未来予測データがありません');
+      }
+      if (plusData) {
+        console.log('[plus] valueSystem:', plusData.valueSystem ? 'あり' : 'なし');
+        console.log('[plus] upsellStrategies:', plusData.upsellStrategies ? 'あり' : 'なし');
+      } else {
+        console.warn('プラスオンデータがありません');
+      }
+
       populateAllTabsWithData(overviewData, skillsData, lifestyleData, futureData, plusData);
       console.log('lifestyleData (after populate):', lifestyleData);
 
@@ -758,26 +798,42 @@ function populateAllTabsWithData(overview, skills, lifestyle, future, plus) {
     try {
         // --- 新フィールドの有無をデバッグ出力 ---
         if (overview) {
+            console.log('[overview] customerThinkingPatterns:', Array.isArray(overview.customerThinkingPatterns) ? 'あり' : 'なし');
+            console.log('[overview] consumptionDecisionAxes:', Array.isArray(overview.consumptionDecisionAxes) ? 'あり' : 'なし');
             console.log('[overview] beautyAcupunctureNeeds:', Array.isArray(overview.beautyAcupunctureNeeds) ? 'あり' : 'なし');
+            console.log('[overview] optimalStaffTypes:', overview.optimalStaffTypes ? 'あり' : 'なし');
         } else {
             console.warn('人物概要データがありません');
         }
         if (skills) {
-            console.log('[skills] customerPersonality:', skills.customerPersonality ? 'あり' : 'なし');
+            console.log('[skills] customerPreferences:', Array.isArray(skills.customerPreferences) ? 'あり' : 'なし');
+            console.log('[skills] guidanceScripts:', Array.isArray(skills.guidanceScripts) ? 'あり' : 'なし');
+            console.log('[skills] satisfactionIndicators:', Array.isArray(skills.satisfactionIndicators) ? 'あり' : 'なし');
+            console.log('[skills] warningSignals:', Array.isArray(skills.warningSignals) ? 'あり' : 'なし');
         } else {
             console.warn('能力評価データがありません');
         }
         if (lifestyle) {
-            console.log('[lifestyle] customerPersonality:', lifestyle.customerPersonality ? 'あり' : 'なし');
             console.log('[lifestyle] beautyAcupunctureMotivations:', Array.isArray(lifestyle.beautyAcupunctureMotivations) ? 'あり' : 'なし');
+            console.log('[lifestyle] motivationScores:', Array.isArray(lifestyle.motivationScores) ? 'あり' : 'なし');
+            console.log('[lifestyle] purchasePatterns:', Array.isArray(lifestyle.purchasePatterns) ? 'あり' : 'なし');
+            console.log('[lifestyle] recommendedServices:', Array.isArray(lifestyle.recommendedServices) ? 'あり' : 'なし');
         } else {
             console.warn('美容施術提案データがありません');
         }
         if (future) {
-            console.log('[future] customerPersonality:', future.customerPersonality ? 'あり' : 'なし');
             console.log('[future] beautyAcupunctureContinuityMotivations:', Array.isArray(future.beautyAcupunctureContinuityMotivations) ? 'あり' : 'なし');
+            console.log('[future] continuityMotivation:', future.continuityMotivation ? 'あり' : 'なし');
+            console.log('[future] repeatAcquisitionScripts:', Array.isArray(future.repeatAcquisitionScripts) ? 'あり' : 'なし');
+            console.log('[future] relationshipBuilding:', future.relationshipBuilding ? 'あり' : 'なし');
         } else {
             console.warn('未来予測データがありません');
+        }
+        if (plus) {
+            console.log('[plus] valueSystem:', plus.valueSystem ? 'あり' : 'なし');
+            console.log('[plus] upsellStrategies:', plus.upsellStrategies ? 'あり' : 'なし');
+        } else {
+            console.warn('プラスオンデータがありません');
         }
 
         // --- 既存の各タブ呼び出し ---

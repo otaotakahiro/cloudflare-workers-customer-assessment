@@ -65,6 +65,7 @@ function populateCustomerPreferences(preferences) {
             approachEl.textContent = preference.approachMethod || '';
         }
 
+        // 美容鍼施術での対応例
         const beautyAcupunctureContextEl = document.getElementById(`preference-beautyAcupunctureContext-${cardId}`);
         if (beautyAcupunctureContextEl) {
             beautyAcupunctureContextEl.textContent = preference.beautyAcupunctureContext || '';

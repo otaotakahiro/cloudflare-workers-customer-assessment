@@ -92,23 +92,23 @@ export const FUTURE_PROMPT = `
         {
           "type": "価値継続重視型判断軸",
           "strength": "高・中・低",
-          "description": "価値継続を重視する判断軸の詳細説明",
-          "approachMethod": "価値継続に基づいた具体的なアプローチ方法",
-          "beautyAcupunctureContext": "美容鍼施術における価値継続促進方法"
+          "description": "美容サービス継続時に「どのような長期的な価値・効果を継続的に得られるか」を重視する判断軸。一時的な効果ではなく、持続的な価値実現を求める。",
+          "approachMethod": "価値継続に基づいた具体的なアプローチ方法：長期的価値のデータ提示、継続効果の具体例提供、持続的改善の根拠説明",
+          "beautyAcupunctureContext": "美容鍼施術における価値継続促進方法：施術効果の持続性データ、継続施術の価値説明、長期的改善効果の提示"
         },
         {
           "type": "満足維持重視型判断軸",
           "strength": "高・中・低",
-          "description": "満足維持を重視する判断軸の詳細説明",
-          "approachMethod": "満足維持に基づいた具体的なアプローチ方法",
-          "beautyAcupunctureContext": "美容鍼施術における満足維持促進方法"
+          "description": "美容サービス継続時に「どのような満足体験・快適感を継続的に維持できるか」を重視する判断軸。継続的な満足感・快適体験を求める。",
+          "approachMethod": "満足維持に基づいた具体的なアプローチ方法：継続的満足体験の説明、快適性の維持保証、満足度の継続的向上",
+          "beautyAcupunctureContext": "美容鍼施術における満足維持促進方法：継続的満足体験の演出、快適性の維持保証、満足度の継続的向上"
         },
         {
           "type": "期待実現重視型判断軸",
           "strength": "高・中・低",
-          "description": "期待実現を重視する判断軸の詳細説明",
-          "approachMethod": "期待実現に基づいた具体的なアプローチ方法",
-          "beautyAcupunctureContext": "美容鍼施術における期待実現促進方法"
+          "description": "美容サービス継続時に「どのような期待値・理想状態を段階的に実現できるか」を重視する判断軸。継続的な期待値実現・理想状態への段階的接近を求める。",
+          "approachMethod": "期待実現に基づいた具体的なアプローチ方法：段階的期待値実現の説明、理想状態への継続的接近、期待値実現の具体例提供",
+          "beautyAcupunctureContext": "美容鍼施術における期待実現促進方法：段階的期待値実現の説明、理想状態への継続的接近、期待値実現の具体例提供"
         }
       ],
       "retentionStrategy": {
@@ -194,9 +194,119 @@ export const FUTURE_PROMPT = `
 
 {
   "future": {
-    // 指定したJSON構造をそのまま出力
+    "beautyAcupunctureContinuityMotivations": [
+      {
+        "rank": 1,
+        "motivation": "美容鍼施術への第1位継続判断軸",
+        "description": "継続判断軸の詳細説明（価値継続・満足維持・期待実現など）",
+        "staffCommunication": {
+          "whatToConvey": "判断軸に基づいた伝えるべき継続価値内容",
+          "howToConvey": "判断軸に基づいた具体的な継続価値伝達方法",
+          "timing": "判断軸に基づいた伝えるタイミング"
+        }
+      },
+      {
+        "rank": 2,
+        "motivation": "美容鍼施術への第2位継続判断軸",
+        "description": "継続判断軸の詳細説明（価値継続・満足維持・期待実現など）",
+        "staffCommunication": {
+          "whatToConvey": "判断軸に基づいた伝えるべき継続価値内容",
+          "howToConvey": "判断軸に基づいた具体的な継続価値伝達方法",
+          "timing": "判断軸に基づいた伝えるタイミング"
+        }
+      },
+      {
+        "rank": 3,
+        "motivation": "美容鍼施術への第3位継続判断軸",
+        "description": "継続判断軸の詳細説明（価値継続・満足維持・期待実現など）",
+        "staffCommunication": {
+          "whatToConvey": "判断軸に基づいた伝えるべき継続価値内容",
+          "howToConvey": "判断軸に基づいた具体的な継続価値伝達方法",
+          "timing": "判断軸に基づいた伝えるタイミング"
+        }
+      }
+    ],
+    "continuityMotivation": {
+      "primaryMotives": [
+        {
+          "type": "価値継続重視型判断軸",
+          "strength": "高・中・低",
+          "description": "美容サービス継続時に「どのような長期的な価値・効果を継続的に得られるか」を重視する判断軸。一時的な効果ではなく、持続的な価値実現を求める。",
+          "approachMethod": "価値継続に基づいた具体的なアプローチ方法：長期的価値のデータ提示、継続効果の具体例提供、持続的改善の根拠説明",
+          "beautyAcupunctureContext": "美容鍼施術における価値継続促進方法：施術効果の持続性データ、継続施術の価値説明、長期的改善効果の提示"
+        },
+        {
+          "type": "満足維持重視型判断軸",
+          "strength": "高・中・低",
+          "description": "美容サービス継続時に「どのような満足体験・快適感を継続的に維持できるか」を重視する判断軸。継続的な満足感・快適体験を求める。",
+          "approachMethod": "満足維持に基づいた具体的なアプローチ方法：継続的満足体験の説明、快適性の維持保証、満足度の継続的向上",
+          "beautyAcupunctureContext": "美容鍼施術における満足維持促進方法：継続的満足体験の演出、快適性の維持保証、満足度の継続的向上"
+        },
+        {
+          "type": "期待実現重視型判断軸",
+          "strength": "高・中・低",
+          "description": "美容サービス継続時に「どのような期待値・理想状態を段階的に実現できるか」を重視する判断軸。継続的な期待値実現・理想状態への段階的接近を求める。",
+          "approachMethod": "期待実現に基づいた具体的なアプローチ方法：段階的期待値実現の説明、理想状態への継続的接近、期待値実現の具体例提供",
+          "beautyAcupunctureContext": "美容鍼施術における期待実現促進方法：段階的期待値実現の説明、理想状態への継続的接近、期待値実現の具体例提供"
+        }
+      ],
+      "retentionStrategy": {
+        "visitCycle": "推奨来店周期",
+        "optimalTiming": "最適なアプローチタイミング",
+        "keyPoints": [
+          "価値継続促進のポイント1",
+          "満足維持促進のポイント2",
+          "期待実現促進のポイント3"
+        ],
+        "beautyAcupunctureFocus": "美容鍼施術に特化した継続価値戦略のポイント"
+      }
+    },
+    "repeatAcquisitionScripts": [
+      {
+        "timing": "美容鍼施術直後",
+        "script": "施術直後の継続価値提案スクリプト",
+        "expectedEffect": "期待される継続効果",
+        "followUpAction": "フォローアップアクション"
+      },
+      {
+        "timing": "1週間後フォロー",
+        "script": "1週間後の継続価値提案スクリプト",
+        "expectedEffect": "期待される継続効果",
+        "followUpAction": "フォローアップアクション"
+      },
+      {
+        "timing": "2週間後リマインド",
+        "script": "2週間後の継続価値提案スクリプト",
+        "expectedEffect": "期待される継続効果",
+        "followUpAction": "フォローアップアクション"
+      },
+      {
+        "timing": "1ヶ月後フォロー",
+        "script": "1ヶ月後の継続価値提案スクリプト",
+        "expectedEffect": "期待される継続効果",
+        "followUpAction": "フォローアップアクション"
+      }
+    ],
+    "relationshipBuilding": {
+      "communicationStyle": "継続価値重視のコミュニケーションスタイル",
+      "trustFactors": [
+        "価値継続による信頼構築要因1",
+        "満足維持による信頼構築要因2",
+        "期待実現による信頼構築要因3",
+        "継続効果による信頼構築要因4"
+      ],
+      "loyaltyProgram": {
+        "suitableType": "継続価値重視のロイヤリティプログラムタイプ",
+        "incentives": [
+          "価値継続インセンティブ1",
+          "満足維持インセンティブ2",
+          "期待実現インセンティブ3",
+          "継続効果インセンティブ4"
+        ]
+      }
+    }
   }
 }
 
-**重要**: 出力はJSON形式のみで、説明文や余分な文章は一切含めない。
+**重要**: 出力はJSON形式のみで、説明文や余分な文章は一切含めない。必ず上記の形式で出力すること。
 `;

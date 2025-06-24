@@ -439,7 +439,7 @@ function populateConsumptionDecisionAxes(axes) {
         // 優先度
         const priorityEl = document.getElementById(`consumption-axis-priority-${cardId}`);
         if (priorityEl) {
-            priorityEl.textContent = axis.priority || '';
+            priorityEl.textContent = `優先度: ${axis.priority || ''}`;
         }
 
         // 説明
