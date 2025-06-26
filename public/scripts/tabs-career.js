@@ -344,6 +344,17 @@ function populateRecommendedServices(services) {
         // カードを表示
         cardEl.style.display = 'block';
 
+        // サービスの一意のIDを生成
+        const serviceId = `recommended-service-${service.name?.toLowerCase().replace(/\s+/g, '-')}`;
+        cardEl.id = serviceId;
+
+        // ローカルストレージから状態を復元
+        const savedState = localStorage.getItem(serviceId);
+        cardEl.dataset.completed = savedState === 'true' ? 'true' : 'false';
+        if (savedState === 'true') {
+            cardEl.classList.add('completed');
+        }
+
         // サービス名
         const nameEl = document.getElementById(`service-name-${cardId}`);
         if (nameEl) {
@@ -373,5 +384,196 @@ function populateRecommendedServices(services) {
         if (scriptEl) {
             scriptEl.textContent = service.scriptExample || '';
         }
+
+        // 完了ボタンを追加
+        const completionButton = document.createElement('button');
+        completionButton.className = 'completion-button mt-3 px-4 py-2 rounded-lg text-sm font-medium transition-colors';
+        completionButton.id = `service-completion-${service.name?.toLowerCase().replace(/\s+/g, '-')}`;
+        completionButton.innerHTML = savedState === 'true'
+            ? '<i class="fas fa-check-circle"></i> 完了'
+            : '<i class="fas fa-circle"></i> 未実行';
+
+        if (savedState === 'true') {
+            completionButton.classList.add('completed', 'bg-green-100', 'text-green-700', 'border-green-300');
+        } else {
+            completionButton.classList.add('bg-gray-100', 'text-gray-700', 'border-gray-300');
+        }
+
+        // 完了ボタンのクリックイベント
+        completionButton.addEventListener('click', async function(e) {
+            e.stopPropagation();
+
+            const serviceCard = this.closest('.service-card');
+            const isCompleted = serviceCard.dataset.completed === 'true';
+            const newCompletedState = !isCompleted;
+
+            try {
+                const response = await fetch('/api/results/update-completion', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        pageId: window.currentPageId,
+                        resultId: window.profileData.resultId,
+                        stepId: serviceId,
+                        completed: newCompletedState
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('API呼び出しに失敗しました');
+                }
+
+                serviceCard.dataset.completed = newCompletedState.toString();
+
+                if (newCompletedState) {
+                    serviceCard.classList.add('completed');
+                    this.classList.add('completed', 'bg-green-100', 'text-green-700', 'border-green-300');
+                    this.classList.remove('bg-gray-100', 'text-gray-700', 'border-gray-300');
+                    this.innerHTML = '<i class="fas fa-check-circle"></i> 完了';
+                } else {
+                    serviceCard.classList.remove('completed');
+                    this.classList.remove('completed', 'bg-green-100', 'text-green-700', 'border-green-300');
+                    this.classList.add('bg-gray-100', 'text-gray-700', 'border-gray-300');
+                    this.innerHTML = '<i class="fas fa-circle"></i> 未実行';
+                }
+
+                localStorage.setItem(serviceId, newCompletedState.toString());
+
+            } catch (error) {
+                console.error('Error updating completion status:', error);
+                serviceCard.dataset.completed = isCompleted.toString();
+                showToast('実行完了状態の更新に失敗しました。', 'error');
+            }
+        });
+
+        // カードに完了ボタンを追加
+        cardEl.appendChild(completionButton);
+
+        // カード全体のクリックイベント
+        cardEl.addEventListener('click', async function(e) {
+            if (e.target === completionButton || completionButton.contains(e.target)) {
+                return;
+            }
+
+            const isCompleted = this.dataset.completed === 'true';
+            const newCompletedState = !isCompleted;
+
+            try {
+                const response = await fetch('/api/results/update-completion', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        pageId: window.currentPageId,
+                        resultId: window.profileData.resultId,
+                        stepId: serviceId,
+                        completed: newCompletedState
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('API呼び出しに失敗しました');
+                }
+
+                this.dataset.completed = newCompletedState.toString();
+
+                if (newCompletedState) {
+                    this.classList.add('completed');
+                    completionButton.classList.add('completed', 'bg-green-100', 'text-green-700', 'border-green-300');
+                    completionButton.classList.remove('bg-gray-100', 'text-gray-700', 'border-gray-300');
+                    completionButton.innerHTML = '<i class="fas fa-check-circle"></i> 完了';
+                } else {
+                    this.classList.remove('completed');
+                    completionButton.classList.remove('completed', 'bg-green-100', 'text-green-700', 'border-green-300');
+                    completionButton.classList.add('bg-gray-100', 'text-gray-700', 'border-gray-300');
+                    completionButton.innerHTML = '<i class="fas fa-circle"></i> 未実行';
+                }
+
+                localStorage.setItem(serviceId, newCompletedState.toString());
+
+            } catch (error) {
+                console.error('Error updating completion status:', error);
+                this.dataset.completed = isCompleted.toString();
+                showToast('実行完了状態の更新に失敗しました。', 'error');
+            }
+        });
     });
 }
+
+// ページ読み込み時に実行完了状態を取得
+async function loadCompletionStatus() {
+  // グローバル変数の存在確認を強化
+  if (!window.currentPageId || !window.profileData?.resultId) {
+    console.log('pageId or resultId not available, skipping completion status load');
+    console.log('window.currentPageId:', window.currentPageId);
+    console.log('window.profileData:', window.profileData);
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/results/completion-status?pageId=${window.currentPageId}&resultId=${window.profileData.resultId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch completion status');
+    }
+    const { data } = await response.json();
+
+    // 各ステップの完了状態を更新
+    Object.entries(data.steps).forEach(([stepId, stepData]) => {
+      const stepCard = document.getElementById(stepId);
+      if (stepCard) {
+        const completionButton = stepCard.querySelector('.completion-button');
+        if (completionButton) {
+          stepCard.dataset.completed = stepData.completed.toString();
+          if (stepData.completed) {
+            stepCard.classList.add('completed');
+            completionButton.classList.add('completed', 'bg-green-100', 'text-green-700', 'border-green-300');
+            completionButton.classList.remove('bg-gray-100', 'text-gray-700', 'border-gray-300');
+            completionButton.innerHTML = '<i class="fas fa-check-circle"></i> 完了';
+          }
+        }
+      }
+    });
+
+    // 推奨サービスの完了状態を更新
+    document.querySelectorAll('.service-card').forEach(card => {
+      const stepId = card.id;
+      const savedState = localStorage.getItem(stepId);
+      if (savedState === 'true') {
+        card.dataset.completed = 'true';
+        card.classList.add('completed');
+        const button = card.querySelector('.completion-button');
+        if (button) {
+          button.classList.add('completed', 'bg-green-100', 'text-green-700', 'border-green-300');
+          button.classList.remove('bg-gray-100', 'text-gray-700', 'border-gray-300');
+          button.innerHTML = '<i class="fas fa-check-circle"></i> 完了';
+        }
+      }
+    });
+
+  } catch (error) {
+    console.error('Error loading completion status:', error);
+    // エラー時はローカルストレージのデータを使用
+    document.querySelectorAll('.service-card').forEach(card => {
+      const stepId = card.id;
+      const savedState = localStorage.getItem(stepId);
+      if (savedState === 'true') {
+        card.dataset.completed = 'true';
+        card.classList.add('completed');
+        const button = card.querySelector('.completion-button');
+        if (button) {
+          button.classList.add('completed', 'bg-green-100', 'text-green-700', 'border-green-300');
+          button.classList.remove('bg-gray-100', 'text-gray-700', 'border-gray-300');
+          button.innerHTML = '<i class="fas fa-check-circle"></i> 完了';
+        }
+      }
+    });
+  }
+}
+
+// DOMContentLoadedイベントで実行完了状態を読み込む
+document.addEventListener('DOMContentLoaded', () => {
+  loadCompletionStatus();
+});
