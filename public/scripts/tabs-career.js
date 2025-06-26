@@ -348,6 +348,9 @@ function populateRecommendedServices(services) {
         const serviceId = `recommended-service-${service.name?.toLowerCase().replace(/\s+/g, '-')}`;
         cardEl.id = serviceId;
 
+        // service-cardクラスを追加
+        cardEl.classList.add('service-card');
+
         // ローカルストレージから状態を復元
         const savedState = localStorage.getItem(serviceId);
         cardEl.dataset.completed = savedState === 'true' ? 'true' : 'false';
@@ -404,6 +407,12 @@ function populateRecommendedServices(services) {
             e.stopPropagation();
 
             const serviceCard = this.closest('.service-card');
+            if (!serviceCard) {
+                console.error('Service card element not found');
+                showToast('カード要素が見つかりません。', 'error');
+                return;
+            }
+
             const isCompleted = serviceCard.dataset.completed === 'true';
             const newCompletedState = !isCompleted;
 
@@ -454,6 +463,13 @@ function populateRecommendedServices(services) {
         // カード全体のクリックイベント
         cardEl.addEventListener('click', async function(e) {
             if (e.target === completionButton || completionButton.contains(e.target)) {
+                return;
+            }
+
+            // this.datasetが存在することを確認
+            if (!this || !this.dataset) {
+                console.error('Card element or dataset not found');
+                showToast('カード要素が見つかりません。', 'error');
                 return;
             }
 

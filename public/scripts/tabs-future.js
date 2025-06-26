@@ -164,6 +164,9 @@ function populateRepeatAcquisitionScripts(scripts) {
     const scriptId = `repeat-script-${script.timing?.toLowerCase().replace(/\s+/g, '-')}`;
     cardEl.id = scriptId;
 
+    // repeat-script-cardクラスを追加
+    cardEl.classList.add('repeat-script-card');
+
     // ローカルストレージから状態を復元
     const savedState = localStorage.getItem(scriptId);
     cardEl.dataset.completed = savedState === 'true' ? 'true' : 'false';
@@ -214,6 +217,12 @@ function populateRepeatAcquisitionScripts(scripts) {
       e.stopPropagation();
 
       const scriptCard = this.closest('.repeat-script-card');
+      if (!scriptCard) {
+        console.error('Repeat script card element not found');
+        showToast('カード要素が見つかりません。', 'error');
+        return;
+      }
+
       const isCompleted = scriptCard.dataset.completed === 'true';
       const newCompletedState = !isCompleted;
 
@@ -264,6 +273,13 @@ function populateRepeatAcquisitionScripts(scripts) {
     // カード全体のクリックイベント
     cardEl.addEventListener('click', async function(e) {
       if (e.target === completionButton || completionButton.contains(e.target)) {
+        return;
+      }
+
+      // this.datasetが存在することを確認
+      if (!this || !this.dataset) {
+        console.error('Card element or dataset not found');
+        showToast('カード要素が見つかりません。', 'error');
         return;
       }
 

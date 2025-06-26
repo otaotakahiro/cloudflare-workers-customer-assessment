@@ -286,6 +286,9 @@ function populatePremiumServices(premiumServices) {
     const serviceId = `premium-service-${service.service?.toLowerCase().replace(/\s+/g, '-')}`;
     cardEl.id = serviceId;
 
+    // premium-service-cardクラスを追加
+    cardEl.classList.add('premium-service-card');
+
     // ローカルストレージから状態を復元
     const savedState = localStorage.getItem(serviceId);
     cardEl.dataset.completed = savedState === 'true' ? 'true' : 'false';
@@ -336,6 +339,12 @@ function populatePremiumServices(premiumServices) {
       e.stopPropagation();
 
       const serviceCard = this.closest('.premium-service-card');
+      if (!serviceCard) {
+        console.error('Premium service card element not found');
+        showToast('カード要素が見つかりません。', 'error');
+        return;
+      }
+
       const isCompleted = serviceCard.dataset.completed === 'true';
       const newCompletedState = !isCompleted;
 
@@ -386,6 +395,13 @@ function populatePremiumServices(premiumServices) {
     // カード全体のクリックイベント
     cardEl.addEventListener('click', async function(e) {
       if (e.target === completionButton || completionButton.contains(e.target)) {
+        return;
+      }
+
+      // this.datasetが存在することを確認
+      if (!this || !this.dataset) {
+        console.error('Card element or dataset not found');
+        showToast('カード要素が見つかりません。', 'error');
         return;
       }
 
@@ -455,6 +471,9 @@ function populateSpecialOffers(specialOffers) {
     const offerId = `special-offer-${offer.type?.toLowerCase().replace(/\s+/g, '-')}`;
     cardEl.id = offerId;
 
+    // offer-cardクラスを追加
+    cardEl.classList.add('offer-card');
+
     // ローカルストレージから状態を復元
     const savedState = localStorage.getItem(offerId);
     cardEl.dataset.completed = savedState === 'true' ? 'true' : 'false';
@@ -505,6 +524,12 @@ function populateSpecialOffers(specialOffers) {
       e.stopPropagation();
 
       const offerCard = this.closest('.offer-card');
+      if (!offerCard) {
+        console.error('Offer card element not found');
+        showToast('カード要素が見つかりません。', 'error');
+        return;
+      }
+
       const isCompleted = offerCard.dataset.completed === 'true';
       const newCompletedState = !isCompleted;
 
@@ -555,6 +580,13 @@ function populateSpecialOffers(specialOffers) {
     // カード全体のクリックイベント
     cardEl.addEventListener('click', async function(e) {
       if (e.target === completionButton || completionButton.contains(e.target)) {
+        return;
+      }
+
+      // this.datasetが存在することを確認
+      if (!this || !this.dataset) {
+        console.error('Card element or dataset not found');
+        showToast('カード要素が見つかりません。', 'error');
         return;
       }
 
