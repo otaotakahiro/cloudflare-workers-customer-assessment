@@ -207,22 +207,43 @@ export class OpenaiService {
    */
   safeJsonParse(content) {
     try {
-      // Markdownコードブロックからの抽出
-      const jsonMatch = content.match(/```json\n([\s\S]*?)\n```/) || content.match(/```\n([\s\S]*?)\n```/);
-      let jsonContent;
-
-      if (jsonMatch) {
-        jsonContent = jsonMatch[1];
-      } else if (content.trim().startsWith('{') && content.trim().endsWith('}')) {
-        // コードブロックがない場合は直接JSONとして解析
-        jsonContent = content;
-      } else {
-        return { error: "Not JSON format", preview: content.substring(0, 100) };
+      // まず直接JSONとして解析を試行
+      if (content.trim().startsWith('{') && content.trim().endsWith('}')) {
+        return JSON.parse(content);
       }
 
-      return JSON.parse(jsonContent);
+      // Markdownコードブロックからの抽出
+      const jsonMatch = content.match(/```json\n([\s\S]*?)\n```/) || content.match(/```\n([\s\S]*?)\n```/);
+      if (jsonMatch) {
+        return JSON.parse(jsonMatch[1]);
+      }
+
+      // その他の形式を試行
+      const trimmedContent = content.trim();
+      if (trimmedContent.startsWith('{')) {
+        // 開始部分からJSONを抽出
+        const braceCount = { '{': 0, '}': 0 };
+        let endIndex = -1;
+
+        for (let i = 0; i < trimmedContent.length; i++) {
+          const char = trimmedContent[i];
+          if (char === '{') braceCount['{']++;
+          if (char === '}') braceCount['}']++;
+
+          if (braceCount['{'] > 0 && braceCount['{'] === braceCount['}']) {
+            endIndex = i + 1;
+            break;
+          }
+        }
+
+        if (endIndex > 0) {
+          return JSON.parse(trimmedContent.substring(0, endIndex));
+        }
+      }
+
+      return { error: "Not JSON format", preview: content.substring(0, 200) };
     } catch (error) {
-      return { error: error.message, preview: content.substring(0, 100) };
+      return { error: error.message, preview: content.substring(0, 200) };
     }
   }
 
@@ -298,6 +319,7 @@ export class OpenaiService {
             top_p: 1,
             frequency_penalty: 0,
             presence_penalty: 0,
+            response_format: { type: 'json_object' }, // JSON形式指定を追加
           }),
         }),
         120000, // 120秒のタイムアウトに延長
@@ -326,27 +348,16 @@ export class OpenaiService {
         console.warn(`Logging failed for ${type}, but continuing: ${logError.message}`);
       }
 
-      // Markdownコードブロックからの抽出
-      const jsonMatch = content.match(/```json\n([\s\S]*?)\n```/) || content.match(/```\n([\s\S]*?)\n```/);
-      let jsonContent;
-
-      if (jsonMatch) {
-        jsonContent = jsonMatch[1];
-      } else if (content.trim().startsWith('{') && content.trim().endsWith('}')) {
-        // コードブロックがない場合は直接JSONとして解析
-        jsonContent = content;
-      } else {
-        console.warn(`No JSON format found in response. Using raw content. Response begins with: ${content.substring(0, 100)}...`);
-        jsonContent = content;
+      // JSON解析の改善
+      const parsedResult = this.safeJsonParse(content);
+      if (parsedResult.error) {
+        console.error('Error parsing JSON response:', parsedResult.error);
+        console.error('Raw content preview:', parsedResult.preview);
+        console.error('Full content (first 500 chars):', content.substring(0, 500));
+        throw new Error(`JSONの解析に失敗しました。APIの応答形式が想定と異なります。エラー: ${parsedResult.error}`);
       }
 
-      try {
-        return JSON.parse(jsonContent);
-      } catch (error) {
-        console.error('Error parsing JSON response:', error);
-        console.error('Raw content:', jsonContent.substring(0, 200));
-        throw new Error('JSONの解析に失敗しました。APIの応答形式が想定と異なります。');
-      }
+      return parsedResult;
     } catch (error) {
       console.error('Analysis Tab Error:', error);
       throw error;

@@ -35,6 +35,7 @@ export const CAREER_PROMPT = `
 - キー名は厳密に固定、変更禁止
 - 直接JSON形式で出力、Markdownコードブロック不使用
 - motivationScoresのscore値は1-100の整数値を使用
+- 必ず有効なJSON形式で出力し、余分なテキストや説明は含めない
 
 ### 出力ルール
 - 全セクションを網羅的に出力
